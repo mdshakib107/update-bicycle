@@ -6,5 +6,11 @@ export const baseApi = createApi({
     baseUrl: "https://bicycle-store-ts-node.vercel.app/api",
     credentials: "include",
   }),
-  endpoints: () => ({}),
+  endpoints: (builder) => ({
+    getAllProducts: builder.query({
+      query: () => "/products",
+    }),
+  }),
 });
+
+export const { useGetAllProductsQuery } = baseApi;
