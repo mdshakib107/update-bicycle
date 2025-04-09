@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
-import Login from "../pages/Login";
-import Page404 from "../pages/shared/Page404";
 import HomeLayout from "../layout/home/HomeLayout";
+import Login from "../pages/authentication/Login";
+import Page404 from "../pages/shared/Page404";
 
 const routes = createBrowserRouter([
   {
