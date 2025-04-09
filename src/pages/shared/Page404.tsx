@@ -1,3 +1,4 @@
+import CustomButton from "@/components/shared/CustomButton";
 import { useNavigate } from "react-router-dom";
 
 
@@ -14,12 +15,12 @@ const Page404 = () => {
                 page cannot be found. The requested
                 URL was not found on this server.</p>
 
-            <button
-                onClick={() => navigate("/")}
-                className="py-3 px-8 rounded-full bg-purple-600 text-white mt-8 hover:cursor-pointer hover:bg-blue-400 hover:ease-in-out transition duration-500"
-            >
-                Back to home
-            </button>
+
+            <CustomButton
+                textName="Back to home"
+                handleAnything={() => navigate("/")}
+                className=" mt-8 hover:cursor-pointer "
+            />
         </div>
     );
 };
