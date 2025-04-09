@@ -5,6 +5,8 @@ import { Avatar, Card, Flex, Rate, Skeleton, Switch } from "antd";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { JSX } from "react/jsx-runtime";
+import CustomButton from "./CustomButton";
+import { FcMoneyTransfer } from "react-icons/fc";
 
 
 
@@ -27,6 +29,19 @@ export interface ItemsCardProps {
   data: ItemData;
   isPending: boolean;
 }
+
+// button for carf
+const actions: React.ReactNode[] = [  
+  <CustomButton 
+    textName={
+    <div className="flex gap-1 justify-content-center items-center">
+      <FcMoneyTransfer />
+      BuyNow
+    </div>
+  }
+    className="w-[90%] !py-2"
+  />
+];
 
 const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   // loading state
@@ -66,7 +81,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
             <Skeleton active avatar paragraph={{ rows: 4 }} />
           </div>
         ) : (
-          <Card loading={loading} style={{ minWidth: 200 }}>
+          <Card loading={loading} actions={actions} style={{ minWidth: 200 }}>
             {!Img ? (
               <img
                 alt="Bicycle"
