@@ -1,3 +1,4 @@
+import AllBicyclesLayout from "@/layout/AllBicycles/AllBicyclesLayout";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import HomeLayout from "../layout/home/HomeLayout";
@@ -14,6 +15,10 @@ const routes = createBrowserRouter([
         index: true,
         element: <HomeLayout />,
         // element: <ProtectedRoute><Home /></ProtectedRoute>,
+      },
+      {
+        path: "AllBicycles",
+        element: <AllBicyclesLayout />,
       },
     ],
   },
