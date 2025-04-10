@@ -5,6 +5,7 @@ import HomeLayout from "../layout/home/HomeLayout";
 import Login from "../pages/authentication/Login";
 import Page404 from "../pages/shared/Page404";
 import Register from "@/pages/authentication/register";
+import ForgotPassword from "@/pages/authentication/ForgotPassword";
 
 const routes = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const routes = createBrowserRouter([
   {
     path: "/register",
     element: <Register/>
+  },
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword/>
   }
 ]);
 
