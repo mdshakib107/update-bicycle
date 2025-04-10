@@ -4,6 +4,7 @@ import App from "../App";
 import HomeLayout from "../layout/home/HomeLayout";
 import Login from "../pages/authentication/Login";
 import Page404 from "../pages/shared/Page404";
+import Register from "@/pages/authentication/register";
 
 const routes = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const routes = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
+  {
+    path: "/register",
+    element: <Register/>
+  }
 ]);
 
 export default routes;
