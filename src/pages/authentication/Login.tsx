@@ -20,7 +20,7 @@ const Login = () => {
   const dispatch = useAppDispatch();
 
   // onFinish function for submitting the form
-  const onFinish = async (values: { email: string; password: string }) => {
+  const onFinish = async (values: { email: string; password: string; remember: boolean }) => {
     // console.log("Received values of form: ", values);
 
     const toastId = toast.loading("Logging in...");
@@ -41,6 +41,14 @@ const Login = () => {
             token: res.token,
           })
         );
+
+        // Persist token based on "remember me"
+        if (values.remember) {
+          localStorage.setItem("authToken", res.token);
+        } else {
+          sessionStorage.setItem("authToken", res.token);
+        }
+
         toast.success("Logged in successfully", {
           id: toastId,
           duration: 2000,
@@ -121,7 +129,8 @@ const Login = () => {
               }
             />
             <p className="text-center mt-2">
-              Don&apos;t have an account? <Link to="/register">Register now!</Link>
+              Don&apos;t have an account?{" "}
+              <Link to="/register">Register now!</Link>
             </p>
           </Form.Item>
         </Form>
