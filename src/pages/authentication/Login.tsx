@@ -104,7 +104,7 @@ const Login = () => {
               <Form.Item name="remember" valuePropName="checked" noStyle>
                 <Checkbox>Remember me</Checkbox>
               </Form.Item>
-              <Link to="">Forgot password</Link>
+              <Link to="/forgot-password">Forgot password</Link>
             </Flex>
           </Form.Item>
 
