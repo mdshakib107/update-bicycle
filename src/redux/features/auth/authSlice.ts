@@ -3,16 +3,18 @@ import { RootState } from "../../store";
 
 // user type
 export type TUser = {
+  name?: string;
   email: string;
-  role: string;
-  iat: number;
-  exp: number;
+  role?: string;
+  password?: string;
+  iat?: number;
+  exp?: number;
 };
 
 // auth state
 type TAuthState = {
   user: null | TUser;
-  token: null | object | string;
+  token?: null | object | string;
 };
 
 const initialState: TAuthState = {
