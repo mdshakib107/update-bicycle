@@ -1,6 +1,6 @@
 import Banner from "../../components/home/Banner";
 import Hero from "../../components/home/Hero";
-import Navbar from "../../components/home/Navbar";
+import Navbar from "../../components/home/ResponsiveNavbar";
 import FeaturedBicycles from "./FeaturedBicycles";
 
 const Home = () => {
