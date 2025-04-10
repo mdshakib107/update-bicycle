@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
-import useAuth from './useAuth'
 import { useEffect } from 'react'
+import { useAppDispatch } from '@/redux/hooks'
+import { logout } from '@/redux/features/auth/authSlice'
 
 // export
 const axiosSecure = axios.create({
@@ -11,8 +12,10 @@ const axiosSecure = axios.create({
 
 const useAxiosSecure = () => {
 
-  const { loggedOut } = useAuth()
   const navigate = useNavigate()
+
+  // dispatch
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
 
@@ -37,13 +40,13 @@ const useAxiosSecure = () => {
       async error => {
         // console.log('error tracked in the interceptor', error.response)
         if (error.response.status === 401 || error.response.status === 403) {
-          await loggedOut()
+          await dispatch(logout());
           navigate('/login')
         }
         return Promise.reject(error)
       }
     )
-  }, [loggedOut, navigate])
+  }, [dispatch, navigate])
 
   return axiosSecure
 }

@@ -1,13 +1,13 @@
+import CustomButton from "@/components/shared/CustomButton";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Checkbox, Flex, Form, Input } from "antd";
 import { TbFidgetSpinner } from "react-icons/tb";
-import { useLoginMutation } from "../redux/features/auth/authApi";
-import { useAppDispatch } from "../redux/hooks";
-import { setUser, TUser } from "../redux/features/auth/authSlice";
-import { verifyToken } from "../utils/verifyToken";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import CustomButton from "@/components/shared/CustomButton";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
+import { setUser, TUser } from "../../redux/features/auth/authSlice";
+import { useAppDispatch } from "../../redux/hooks";
+import { verifyToken } from "../../utils/verifyToken";
 
 const Login = () => {
   // useLogin mutation hook
@@ -35,10 +35,12 @@ const Login = () => {
       const user = verifyToken(res.token);
 
       if (user) {
-        dispatch(setUser({ 
-          user: user as TUser, 
-          token: res.token
-        }));
+        dispatch(
+          setUser({
+            user: user as TUser,
+            token: res.token,
+          })
+        );
         toast.success("Logged in successfully", {
           id: toastId,
           duration: 2000,
@@ -49,10 +51,12 @@ const Login = () => {
         toast.error("Failed to verify", { id: toastId });
         return <Navigate to="/login" replace={true} />;
       }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       // console.log('error',error)
-      toast.error(`${error?.data?.message || 'Something went wrong!'}`, { id: toastId });
+      toast.error(`${error?.data?.message || "Something went wrong!"}`, {
+        id: toastId,
+      });
       return <Navigate to="/login" replace={true} />;
     }
   };
@@ -100,13 +104,13 @@ const Login = () => {
               <Form.Item name="remember" valuePropName="checked" noStyle>
                 <Checkbox>Remember me</Checkbox>
               </Form.Item>
-              <a href="">Forgot password</a>
+              <Link to="">Forgot password</Link>
             </Flex>
           </Form.Item>
 
           {/* login button */}
           <Form.Item>
-            <CustomButton 
+            <CustomButton
               className="w-full !py-1.5"
               textName={
                 isLoading ? (
@@ -117,7 +121,7 @@ const Login = () => {
               }
             />
             <p className="text-center mt-2">
-              Don&apos;t have an account? <a href="">Register now!</a>
+              Don&apos;t have an account? <Link to="/register">Register now!</Link>
             </p>
           </Form.Item>
         </Form>
