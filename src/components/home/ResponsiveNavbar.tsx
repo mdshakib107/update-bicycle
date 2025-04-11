@@ -65,6 +65,9 @@ const ResponsiveNavbar = () => {
         <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize">
           <Link to="/AllBicycles">All Bicycle</Link>
         </li>
+        <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize">
+          <Link to="/about">About Us</Link>
+        </li>
 
         {/* about us mega menu */}
         <li className=" transition-all duration-500 cursor-pointer dark:text-[#abc2d3] hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] group relative">
