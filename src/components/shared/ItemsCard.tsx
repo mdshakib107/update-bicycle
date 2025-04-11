@@ -1,13 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // import image
 import cycle from "../../assets/images/img/bicycle.jpg";
 
-import { Avatar, Card, Flex, Rate, Skeleton, Switch } from "antd";
+import { Card, Flex, Skeleton } from "antd";
 import { useState } from "react";
+import { FcMoneyTransfer } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import { JSX } from "react/jsx-runtime";
 import CustomButton from "./CustomButton";
-import { FcMoneyTransfer } from "react-icons/fc";
-
 
 
 export interface ItemData {
@@ -20,9 +20,9 @@ export interface ItemData {
   description: string;
   quantity: number;
   inStock: boolean;
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
+  _id?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ItemsCardProps {
@@ -31,16 +31,16 @@ export interface ItemsCardProps {
 }
 
 // button for carf
-const actions: React.ReactNode[] = [  
-  <CustomButton 
+const actions: React.ReactNode[] = [
+  <CustomButton
     textName={
-    <div className="flex gap-1 justify-content-center items-center">
-      <FcMoneyTransfer />
-      BuyNow
-    </div>
-  }
+      <div className="flex gap-1 justify-content-center items-center">
+        <FcMoneyTransfer />
+        BuyNow
+      </div>
+    }
     className="w-[90%] !py-2"
-  />
+  />,
 ];
 
 const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
@@ -62,7 +62,6 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
     createdAt,
   } = data;
 
-
   return (
     <Link to={""}>
       <Flex
@@ -83,11 +82,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
         ) : (
           <Card loading={loading} actions={actions} style={{ minWidth: 200 }}>
             {!Img ? (
-              <img
-                alt="Bicycle"
-                src={cycle}
-                className="mb-6 w-full"
-              />
+              <img alt="Bicycle" src={cycle} className="mb-6 w-full" />
             ) : (
               <img alt="Bicycle" src={Img} className="mb-6 w-full h-52" />
             )}
