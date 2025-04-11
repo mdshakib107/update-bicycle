@@ -19,7 +19,6 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import CustomButton from "../shared/CustomButton";
 import { MdDashboard } from "react-icons/md";
 
-
 const ResponsiveNavbar = () => {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [mobileAboutUsOpen, setMobileAboutUsOpen] = useState(false);
@@ -56,17 +55,16 @@ const ResponsiveNavbar = () => {
 
   return (
     <nav className="flex items-center justify-between w-full relative h-auto shadow-md p-4 bg-base-100 border-purple-600 shadow-purple-600 rounded-4xl">
-    <div className="flex space-x-4 ">
-    <ul className="items-center gap-[20px] text-[1rem] text-[#424242] md:flex">
-        <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize">
-          <NavLink to="/sidebar"><MdDashboard className="h-20px w-20px" /></NavLink>
-        </li>
-       </ul>
-
-       
-      {/* logo */}
-      <img src={logo} alt="logo" className="w-[60px] " />
-      
+      <div className="flex space-x-4 ">
+        <ul className="items-center gap-[20px] text-[1rem] text-[#424242] md:flex">
+          <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize">
+            <NavLink to="/sidebar">
+              {/* <MdDashboard className="h-20px w-20px" /> */}
+              {/* logo */}
+              <img src={logo} alt="logo" className="w-[60px] " />
+            </NavLink>
+          </li>
+        </ul>
       </div>
 
       {/* nav links */}
@@ -170,18 +168,20 @@ const ResponsiveNavbar = () => {
                 )}
                 {user.role === "admin" ? "Admin" : "Customer"}
               </span>
-              <p className="flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50">
+              <NavLink
+                to="/sidebar"
+                className="flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50"
+              >
                 <FiUser />
                 View Profile
-              </p>
-              <p className="flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50">
+              </NavLink>
+              <NavLink
+                to="/sidebar"
+                className="flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50"
+              >
                 <IoSettingsOutline />
                 Settings
-              </p>
-              <p className="flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50">
-                <FiUser />
-                View Profile
-              </p>
+              </NavLink>
 
               {/* logout */}
               <div className="mt-3 border-t border-gray-200 pt-[5px]">
