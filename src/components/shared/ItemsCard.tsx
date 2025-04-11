@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 import { JSX } from "react/jsx-runtime";
 import CustomButton from "./CustomButton";
 
-
 export interface ItemData {
   map?(arg0: (d: ItemData) => JSX.Element): import("react").ReactNode;
   name: string;
@@ -63,7 +62,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   } = data;
 
   return (
-    <Link to={""}>
+    <Link to={`/bicycles/${_id}`}>
       <Flex
         gap="middle"
         align="start"
