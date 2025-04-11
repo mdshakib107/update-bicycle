@@ -7,8 +7,8 @@ const AllBicyclesLayout = () => {
       <div className="container mx-auto min-h-screen space-y-6 sm:space-y-8 lg:space-y-12 px-4 sm:px-6 lg:px-8">
         <ResponsiveNavbar />
         <AllBicycles />
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 };

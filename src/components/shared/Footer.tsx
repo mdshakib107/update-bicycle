@@ -7,8 +7,8 @@ import CustomButton from "./CustomButton";
 
 const Footer = () => {
   return (
-    <footer className="bg-white shadow-md rounded-t-2xl w-full p-3 md:p-4 relative shadow-purple-600 2xl:h-[30vh]">
-      <div className="w-full flex items-center justify-center pt-[30px] flex-col gap-[20px] pb-[130px]">
+    <footer className="bg-white shadow-md rounded-t-2xl w-full p-3 md:p-4 relative shadow-purple-600 2xl:h-[37vh] ">
+      <div className=" flex items-center justify-center pt-[30px] flex-col gap-[20px] pb-[130px]">
         <img src={logo} alt="logo" className="w-[5rem]" />
 
         <p className="text-[0.9rem] text-center sm:text-start text-gray-600">
@@ -16,7 +16,7 @@ const Footer = () => {
           producing quality work.
         </p>
 
-        <CustomButton textName="Contact Us"/>
+        <CustomButton textName="Contact Us" />
 
         <div className="flex gap-[15px] text-black mt-4">
           <a className="text-[1.3rem] p-1.5 cursor-pointer rounded-full bg-white text-[#424242] shadow-md">
@@ -42,16 +42,16 @@ const Footer = () => {
         <SlArrowUp className="p-2 rounded-full border border-gray-300 cursor-pointer text-[2rem] text-gray-300" />
       </div>
 
-      <img
+      {/* <img
         src="https://i.ibb.co/zNk7XT4/Rectangle-97.png"
         alt="background/image"
         className="absolute bottom-[20px] sm:bottom-0 left-0 right-0 z-10 rounded-t-xl w-full"
-      />
-      <img
+      /> */}
+      {/* <img
         src="https://i.ibb.co/0mp2FwS/Rectangle-95.png"
         alt="background/image"
         className="absolute bottom-0 left-0 right-0 z-10 rounded-t-xl w-full"
-      />
+      /> */}
     </footer>
   );
 };
