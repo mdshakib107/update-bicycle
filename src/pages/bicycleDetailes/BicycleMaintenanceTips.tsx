@@ -121,7 +121,7 @@ const BicycleMaintenanceTips = () => {
         </h3>
         <div className="w-full aspect-w-16 aspect-h-9">
           <YouTube
-            videoId="dQw4w9WgXcQ" // Replace with your actual YouTube video ID
+            videoId="Iuy7wwMm6HY"
             opts={opts}
             className="w-full h-full rounded-lg shadow-md"
           />

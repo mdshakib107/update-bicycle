@@ -12,14 +12,10 @@ const AllBicycles = () => {
   const products = data?.data;
 
   const filters = useSelector((state: RootState) => state.filter);
-  // console.log("redux filter", filters);
   if (isLoading) return <Loading />;
   if (isError) return toast.error("Failed to load products");
 
   const filteredProducts = products?.filter((product: ItemData) => {
-    // console.log("Product:", product); // ফিল্টারের আগে প্রোডাক্ট দেখা
-    // console.log("Filters:", filters); // ফিল্টারের অবস্থা দেখা
-
     const matchSearch =
       !filters.search ||
       product.name.toLowerCase().includes(filters.search.toLowerCase()) ||
@@ -41,16 +37,6 @@ const AllBicycles = () => {
 
     const isMatched =
       matchSearch && matchPrice && matchType && matchBrand && matchAvailability;
-
-    // console.log("Match Results:", {
-    //   matchSearch,
-    //   matchPrice,
-    //   matchType,
-    //   matchBrand,
-    //   matchAvailability,
-    //   isMatched,
-    // });
-
     return isMatched;
   });
 

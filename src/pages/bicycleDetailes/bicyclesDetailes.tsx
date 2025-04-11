@@ -7,7 +7,7 @@ import RelatedProducts from "./RelatedProducts";
 
 const BicyclesDetailPage = () => {
   const { Title, Text } = Typography;
-  const { id } = useParams(); // URL থেকে প্রোডাক্ট আইডি নিন
+  const { id } = useParams(); // Get the product ID from the URL parameters
   const { data, isLoading, error } = useGetProductByIdQuery(id!);
   const productData = data?.data;
   // console.log(productData);

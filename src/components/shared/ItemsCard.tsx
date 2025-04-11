@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // import image
 import cycle from "../../assets/images/img/bicycle.jpg";
 
@@ -18,9 +19,9 @@ export interface ItemData {
   description: string;
   quantity: number;
   inStock: boolean;
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
+  _id?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ItemsCardProps {

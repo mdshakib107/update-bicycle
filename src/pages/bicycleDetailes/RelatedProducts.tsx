@@ -1,6 +1,6 @@
 import { ItemData } from "@/components/shared/ItemsCard";
 import { useGetAllProductsQuery } from "@/redux/api/productApi";
-import { Card, Col, Image, Row, Typography } from "antd";
+import { Card, Col, Image, Row, Skeleton, Typography } from "antd";
 import { Link } from "react-router-dom";
 
 const { Title } = Typography;
@@ -11,7 +11,11 @@ interface RelatedProductsProps {
   currentProductId: string; // To exclude the current product from the list
 }
 
-const RelatedProducts: React.FC<RelatedProductsProps> = ({ brand, type }) => {
+const RelatedProducts: React.FC<RelatedProductsProps> = ({
+  brand,
+  type,
+  currentProductId,
+}) => {
   // Fetch all products
   const { data, isLoading } = useGetAllProductsQuery();
   const products = data?.data;
@@ -19,16 +23,19 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({ brand, type }) => {
   // Filter products to find related ones with the same brand and type, excluding the current product
   const relatedProducts = products
     ?.filter(
-      (product: ItemData) => product.brand === brand && product.type === type
+      (product: ItemData) =>
+        product.brand === brand &&
+        product.type === type &&
+        product._id !== currentProductId // Exclude the current product
     )
     .slice(0, 4); // Show only 4 related products
 
   if (isLoading) {
-    return <p>Loading related products...</p>;
+    return <Skeleton active />;
   }
 
   if (!relatedProducts || relatedProducts.length === 0) {
-    return <p>No related products found.</p>;
+    return <p className="text-red-500">No related products found.</p>;
   }
 
   return (
