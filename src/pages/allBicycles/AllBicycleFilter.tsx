@@ -11,7 +11,7 @@ const AllBicycleFilter = () => {
 
   const handleChange = (key: string, value: any) => {
     dispatch(setFilter({ [key]: value }));
-    console.log("Filter updated:", key, value);
+    // console.log("Filter updated:", key, value);
   };
 
   return (

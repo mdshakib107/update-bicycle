@@ -21,7 +21,6 @@ import CustomButton from "../shared/CustomButton";
 const ResponsiveNavbar = () => {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [mobileAboutUsOpen, setMobileAboutUsOpen] = useState(false);
-  const [mobileServiceOpen, setMobileServiceOpen] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   // navigation
@@ -44,50 +43,14 @@ const ResponsiveNavbar = () => {
     const toastId = toast.loading("Loading...");
 
     try {
+      localStorage.removeItem("authToken");
+      sessionStorage.removeItem("authToken");
       dispatch(logout());
       toast.success("Logged out successfully", { id: toastId, duration: 2000 });
     } catch (error) {
       toast.error(`Something went wrong: ${error}`, { id: toastId });
     }
   };
-
-  const menuLists: { title: string; href: string; description: string }[] = [
-    {
-      title: "Alert Dialog",
-      href: "/docs/primitives/alert-dialog",
-      description:
-        "A modal dialog that interrupts the user with important content and expects a response.",
-    },
-    {
-      title: "Hover Card",
-      href: "/docs/primitives/hover-card",
-      description:
-        "For sighted users to preview content available behind a link.",
-    },
-    {
-      title: "Progress",
-      href: "/docs/primitives/progress",
-      description:
-        "Displays an indicator showing the completion progress of a task, typically displayed as a progress bar.",
-    },
-    {
-      title: "Scroll-area",
-      href: "/docs/primitives/scroll-area",
-      description: "Visually or semantically separates content.",
-    },
-    {
-      title: "Tabs",
-      href: "/docs/primitives/tabs",
-      description:
-        "A set of layered sections of content—known as tab panels—that are displayed one at a time.",
-    },
-    {
-      title: "Tooltip",
-      href: "/docs/primitives/tooltip",
-      description:
-        "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
-    },
-  ];
 
   return (
     <nav className="flex items-center justify-between w-full relative h-auto shadow-md p-4 bg-base-100 border-purple-600 shadow-purple-600 rounded-4xl">
