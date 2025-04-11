@@ -57,11 +57,11 @@ const ResponsiveNavbar = () => {
     <nav className="flex items-center justify-between w-full relative h-auto shadow-md p-4 bg-base-100 border-purple-600 shadow-purple-600 rounded-4xl">
       <div className="flex space-x-4 ">
         <ul className="items-center gap-[20px] text-[1rem] text-[#424242] md:flex">
-          <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize">
+          <li className="transition-all duration-500 cursor-pointer hover:bg-[#d8e0e1] rounded-full capitalize">
             <NavLink to="/sidebar">
               {/* <MdDashboard className="h-20px w-20px" /> */}
               {/* logo */}
-              <img src={logo} alt="logo" className="w-[60px] " />
+              <img src={logo} alt="logo" className="w-[60px] border-2 border-purple-600 rounded-full" />
             </NavLink>
           </li>
         </ul>
