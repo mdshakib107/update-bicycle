@@ -7,8 +7,8 @@ import CustomButton from "./CustomButton";
 
 const Footer = () => {
   return (
-    <footer className="bg-white shadow-md rounded-t-2xl w-full p-3 md:p-4 relative shadow-purple-600 2xl:h-[37vh] ">
-      <div className=" flex items-center justify-center pt-[30px] flex-col gap-[20px] pb-[130px]">
+    <footer className="bg-white shadow-md rounded-t-2xl w-full p-3 md:p-4 relative shadow-purple-600 2xl:h-[30vh]">
+      <div className="w-full flex items-center justify-center pt-[30px] flex-col gap-[20px] pb-[130px]">
         <img src={logo} alt="logo" className="w-[5rem]" />
 
         <p className="text-[0.9rem] text-center sm:text-start text-gray-600">
@@ -36,22 +36,27 @@ const Footer = () => {
 
       <div className="z-30 absolute bottom-3 left-0 right-0 px-3 flex items-center justify-between w-full">
         <p className="text-[0.9rem] text-gray-300">
-          © {Date.now()} All Rights Reserved
+          ©
+          {new Date().getFullYear() !== 2025
+            ? 2025 - new Date().getFullYear()
+            : new Date().getFullYear()
+          }{" "}
+          All Rights Reserved
         </p>
 
         <SlArrowUp className="p-2 rounded-full border border-gray-300 cursor-pointer text-[2rem] text-gray-300" />
       </div>
 
-      {/* <img
+      <img
         src="https://i.ibb.co/zNk7XT4/Rectangle-97.png"
         alt="background/image"
         className="absolute bottom-[20px] sm:bottom-0 left-0 right-0 z-10 rounded-t-xl w-full"
-      /> */}
-      {/* <img
+      />
+      <img
         src="https://i.ibb.co/0mp2FwS/Rectangle-95.png"
         alt="background/image"
         className="absolute bottom-0 left-0 right-0 z-10 rounded-t-xl w-full"
-      /> */}
+      />
     </footer>
   );
 };
