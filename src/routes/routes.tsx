@@ -1,7 +1,7 @@
 import AllBicyclesLayout from "@/layout/AllBicycles/AllBicyclesLayout";
+import BicycleDetailsLayout from "@/layout/BicycleDetailsLayout/BicycleDetailsLayout";
 import ForgotPassword from "@/pages/authentication/ForgotPassword";
 import Register from "@/pages/authentication/register";
-import BicyclesDetailes from "@/pages/bicycleDetailes/bicyclesDetailes";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
@@ -35,7 +35,7 @@ const routes = createBrowserRouter([
       },
     
         path: "bicycles/:id", // Dynamic Route for Product Details
-        element: <BicyclesDetailes />,
+        element: <BicycleDetailsLayout />,
       },
     ],
   },
