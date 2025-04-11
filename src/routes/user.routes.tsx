@@ -13,7 +13,7 @@ export const userPaths = [
       name: 'Manage Profile',
       children: [
         {
-          path: '/:userId',
+          path: 'manage-user',
           element: <ManageProfile/>,
         },],
     },
@@ -29,7 +29,7 @@ export const userPaths = [
         name: 'View Orders',
         children: [
           {
-            path: '/:userId',
+            path: 'view-order',
            element: <ViewOrders/>,
           },],
       }
