@@ -2,6 +2,7 @@ import AllBicyclesLayout from "@/layout/AllBicycles/AllBicyclesLayout";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import HomeLayout from "../layout/home/HomeLayout";
+import Sidebar from "../components/layout/sidebar";
 import Login from "../pages/authentication/Login";
 import Page404 from "../pages/shared/Page404";
 import Register from "@/pages/authentication/register";
@@ -25,7 +26,13 @@ const routes = createBrowserRouter([
         path: "AllBicycles",
         element: <AllBicyclesLayout />,
       },
+    
     ],
+  },
+  {
+    path: '/sidebar',
+    element: <Sidebar />,
+
   },
   {
     path: "/login",
