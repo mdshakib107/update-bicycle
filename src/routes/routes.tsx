@@ -1,15 +1,18 @@
 import AllBicyclesLayout from "@/layout/AllBicycles/AllBicyclesLayout";
+import ForgotPassword from "@/pages/authentication/ForgotPassword";
+import Register from "@/pages/authentication/register";
+import BicyclesDetailes from "@/pages/bicycleDetailes/bicyclesDetailes";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
+import ProtectedRoute from "../components/layout/ProtectedRoute";
+import Sidebar from "../components/layout/sidebar";
 import HomeLayout from "../layout/home/HomeLayout";
 import Sidebar from "../components/layout/sidebar";
 import Login from "../pages/authentication/Login";
 import Page404 from "../pages/shared/Page404";
-import Register from "@/pages/authentication/register";
-import { adminPaths } from './admin.routes';
-import { userPaths } from './user.routes';
-import { routeGenerator } from '../utils/routesGenerator';
-import ProtectedRoute from '../components/layout/ProtectedRoute';
+import { routeGenerator } from "../utils/routesGenerator";
+import { adminPaths } from "./admin.routes";
+import { userPaths } from "./user.routes";
 
 const routes = createBrowserRouter([
   {
@@ -26,13 +29,7 @@ const routes = createBrowserRouter([
         path: "AllBicycles",
         element: <AllBicyclesLayout />,
       },
-    
     ],
-  },
-  {
-    path: '/sidebar',
-    element: <Sidebar />,
-
   },
   {
     path: "/login",
@@ -40,23 +37,34 @@ const routes = createBrowserRouter([
   },
   {
     path: "/register",
-    element: <Register/>
+    element: <Register />,
   },
-{
-  path: '/admin',
-  element: (<ProtectedRoute role="admin"> <App /></ProtectedRoute>  ),
- 
-  children: routeGenerator(adminPaths),
-},
-{
-  path: '/user',
-  element: ( <ProtectedRoute role="customer"> <App /> </ProtectedRoute>),
+  {
+    path: "/forgot-password",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "/admin",
+    element: (
+      <ProtectedRoute role="admin">
+        {" "}
+        <App />
+      </ProtectedRoute>
+    ),
 
- children: routeGenerator(userPaths),
-},
+    children: routeGenerator(adminPaths),
+  },
+  {
+    path: "/user",
+    element: (
+      <ProtectedRoute role="customer">
+        {" "}
+        <App />{" "}
+      </ProtectedRoute>
+    ),
 
-
-  
+    children: routeGenerator(userPaths),
+  },
 ]);
 
 export default routes;
