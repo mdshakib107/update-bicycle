@@ -94,7 +94,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
               title={name}
               description={
                 <div className="space-y-2">
-                  <p className="mb-2 font-semibold">{description}</p>
+                  <p className="mb-2 min-h-20 font-semibold">{description}</p>
                   <p className="flex justify-between">
                     <span className="font-medium">Brand:</span>
                     <span className="font-serif">{brand}</span>
