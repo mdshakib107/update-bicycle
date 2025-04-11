@@ -13,7 +13,7 @@ export const userPaths = [
       name: 'Manage Profile',
       children: [
         {
-          path: 'manage-user',
+          path: 'manage-profile',
           element: <ManageProfile/>,
         },],
     },
@@ -21,7 +21,7 @@ export const userPaths = [
         name: 'Update Password',
         children: [
             {
-            path: '/change-password',
+            path: 'change-password',
            element: <UpdatePassword />,
           },],
       },

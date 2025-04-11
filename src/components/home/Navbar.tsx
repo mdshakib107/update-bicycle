@@ -92,11 +92,9 @@ const ResponsiveNavbar = () => {
   ];
 
   return (
-    <nav className="flex items-center justify-between w-full relative h-auto shadow-md p-4 bg-base-100 border-purple-600 shadow-purple-600 rounded-4xl">
+    <div>
     
-    <div style={{ height: '100%' }}>
-  <Sidebar />
-</div>
+  <div> <nav className="flex items-center justify-between w-full relative h-auto shadow-md p-4 bg-base-100 border-purple-600 shadow-purple-600 rounded-4xl">
 
       {/* logo */}
       <img src={logo} alt="logo" className="w-[60px] " />
@@ -307,7 +305,7 @@ const ResponsiveNavbar = () => {
           </div>
         </ul>
       </aside>
-    </nav>
+    </nav></div></div> 
   );
 };
 

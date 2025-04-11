@@ -30,3 +30,10 @@ export type TSidebarItem =
     children?: TSidebarItem[];
   }
 | undefined;
+
+export type TResponse<T> = {
+  data: T;
+  success: boolean;
+  message?: string;
+};
+
