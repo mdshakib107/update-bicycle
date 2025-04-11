@@ -1,7 +1,8 @@
+import CustomButton from "@/components/shared/CustomButton";
 import { useGetProductByIdQuery } from "@/redux/api/productApi";
-import { Button, Card, Col, Image, Row, Skeleton, Typography } from "antd";
+import { Card, Col, Image, Row, Skeleton, Typography } from "antd";
 import { FcMoneyTransfer } from "react-icons/fc"; // Used in the buttons
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import BicycleMaintenanceTips from "./BicycleMaintenanceTips";
 import RelatedProducts from "./RelatedProducts";
 
@@ -57,14 +58,18 @@ const BicyclesDetailPage = () => {
 
             <div className="mt-6">
               {/* Button Section for "Buy Now" */}
-              <Button
-                type="primary"
-                icon={<FcMoneyTransfer />}
-                size="large"
-                className="w-full py-3 text-xl bg-blue-600 hover:bg-blue-700"
-              >
-                Buy Now
-              </Button>
+              <Link to={`/checkout/${productData._id}`}>
+                <CustomButton
+                  textName={
+                    <div className="flex gap-1 justify-content-center items-center">
+                      <FcMoneyTransfer />
+                      BuyNow
+                    </div>
+                  }
+                  className="w-[90%] !py-2"
+                />
+                ,
+              </Link>
             </div>
           </Card>
         </Col>
