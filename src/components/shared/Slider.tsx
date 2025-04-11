@@ -4,11 +4,14 @@ import { Carousel } from "antd";
 // import image
 import cycle from "../../assets/images/img/bicycle.jpg";
 import { ItemData, ItemsCardProps } from "./ItemsCard";
+import Loading from "./Loading";
 
 
 const Slider: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   // console.log(isPending);
   // console.log("product data ==>", data);
+  // If the data is still loading
+  if (isPending) return <Loading />;
 
   return (
     <Carousel
