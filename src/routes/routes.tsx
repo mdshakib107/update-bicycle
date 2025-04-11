@@ -33,7 +33,7 @@ const routes = createBrowserRouter([
         path: "/about",
         element: <AboutusLayout />,
       },
-    
+      {
         path: "bicycles/:id", // Dynamic Route for Product Details
         element: <BicycleDetailsLayout />,
       },
