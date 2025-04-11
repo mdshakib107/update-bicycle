@@ -1,39 +1,74 @@
 import ItemsCard, { ItemData } from "@/components/shared/ItemsCard";
 import Loading from "@/components/shared/Loading";
 import { useGetAllProductsQuery } from "@/redux/api/baseApi";
-import { Link } from "react-router-dom";
-import { toast } from "sonner";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+import AllBicycleFilter from "./AllBicycleFilter";
 
 const AllBicycles = () => {
   const { data, isLoading, isError } = useGetAllProductsQuery(undefined);
-  // console.log(data?.data);
   const products = data?.data;
+
+  const filters = useSelector((state: RootState) => state.filter);
+  // console.log("redux filter", filters);
   if (isLoading) return <Loading />;
-  if (isError) return toast.error("Error fetching bicycles");
+  if (isError) return <p>Error fetching bicycles</p>;
+
+  const filteredProducts = products?.filter((product: ItemData) => {
+    // console.log("Product:", product); // ফিল্টারের আগে প্রোডাক্ট দেখা
+    // console.log("Filters:", filters); // ফিল্টারের অবস্থা দেখা
+
+    const matchSearch =
+      !filters.search ||
+      product.name.toLowerCase().includes(filters.search.toLowerCase()) ||
+      product.brand.toLowerCase().includes(filters.search.toLowerCase());
+
+    const matchPrice =
+      product.price >= filters.priceRange[0] &&
+      product.price <= filters.priceRange[1];
+
+    const matchType =
+      !filters.type ||
+      product.type.toLowerCase() === filters.type.toLowerCase();
+
+    const matchBrand =
+      !filters.brand ||
+      product.brand.toLowerCase() === filters.brand.toLowerCase();
+
+    const matchAvailability = !filters.availability || product.inStock;
+
+    const isMatched =
+      matchSearch && matchPrice && matchType && matchBrand && matchAvailability;
+
+    // console.log("Match Results:", {
+    //   matchSearch,
+    //   matchPrice,
+    //   matchType,
+    //   matchBrand,
+    //   matchAvailability,
+    //   isMatched,
+    // });
+
+    return isMatched;
+  });
 
   return (
-    <div className=" w-full min-h-[45vh] sm:min-h-[55vh] lg:min-h-[60vh] rounded-4xl shadow-purple-600 shadow-2xl p-6 sm:p-8 md:p-12 lg:p-16">
-      {/* header */}
-      <header className="flex h-full flex-col gap-12 lg:gap-0 lg:flex-row justify-center items-center lg:mt-3">
-        <div className="px-6 sm:px-8 mt-8 lg:mt-0 w-full lg:w-[50%] space-y-6">
-          <h1 className="text-[32px] sm:text-[40px] lg:text-[60px] leading-[40px] sm:leading-[45px] lg:leading-[65px] font-[500] w-full text-center">
-            All Bicycles
-          </h1>
-
-          <p className="text-[16px] mt-2 w-full text-center">
-            <Link to="/">Home</Link> / All Bicycles
-          </p>
+    <div className="w-full">
+      <div className="grid grid-cols-5 gap-6 px-4 mt-10">
+        <div className="col-span-5 lg:col-span-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProducts?.map((product: ItemData) => (
+              <ItemsCard
+                key={product._id}
+                data={product}
+                isPending={isLoading}
+              />
+            ))}
+          </div>
         </div>
-      </header>
-
-      {/* grid */}
-      <div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 px-4 sm:px-6 lg:px-8 mt-10"
-        id="featured"
-      >
-        {products?.map((product: ItemData) => (
-          <ItemsCard key={product._id} data={product} isPending={isLoading} />
-        ))}
+        <div className="col-span-5 lg:col-span-1">
+          <AllBicycleFilter />
+        </div>
       </div>
     </div>
   );
