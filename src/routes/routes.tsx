@@ -9,6 +9,7 @@ import Sidebar from "../components/layout/sidebar";
 import HomeLayout from "../layout/home/HomeLayout";
 import Login from "../pages/authentication/Login";
 import Page404 from "../pages/shared/Page404";
+import AboutusLayout from "@/layout/about/AboutusLayout";
 import { routeGenerator } from "../utils/routesGenerator";
 import { adminPaths } from "./admin.routes";
 import { userPaths } from "./user.routes";
@@ -29,6 +30,10 @@ const routes = createBrowserRouter([
         element: <AllBicyclesLayout />,
       },
       {
+        path: "/about",
+        element: <AboutusLayout />,
+      },
+    
         path: "bicycles/:id", // Dynamic Route for Product Details
         element: <BicyclesDetailes />,
       },
