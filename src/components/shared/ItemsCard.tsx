@@ -5,7 +5,7 @@ import cycle from "../../assets/images/img/bicycle.jpg";
 import { Card, Flex, Skeleton } from "antd";
 import { useState } from "react";
 import { FcMoneyTransfer } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { JSX } from "react/jsx-runtime";
 import CustomButton from "./CustomButton";
 
@@ -33,11 +33,14 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   // loading state
   const [loading, _setLoading] = useState<boolean>(isPending);
 
+  // mavigation
+  const navigate = useNavigate();
+
   // destructure items
   const {
     brand,
     description,
-    inStock, 
+    inStock,
     name,
     quantity,
     Img,
@@ -49,22 +52,20 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   } = data;
 
   // button for card
-  const actions: React.ReactNode[] = [  
-    <Link to={`/checkout/${_id}`}>
-    
-    <CustomButton 
-  
-      textName={
-      <div className="flex gap-1 justify-content-center items-center">
-        <FcMoneyTransfer />
-        BuyNow
-      </div>
-    }
-      className="w-[90%] !py-2"
-    />
-    </Link>
+  const actions: React.ReactNode[] = [
+    <>
+      <CustomButton
+        handleAnything={() => navigate(`/checkout/${_id}`)}
+        textName={
+          <div className="flex gap-1 justify-content-center items-center">
+            <FcMoneyTransfer />
+            BuyNow
+          </div>
+        }
+        className="w-[90%] !py-2"
+      />
+    </>,
   ];
-
 
   return (
     <Link to={`/bicycles/${_id}`}>
