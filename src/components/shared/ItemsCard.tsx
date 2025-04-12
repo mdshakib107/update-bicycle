@@ -29,37 +29,6 @@ export interface ItemsCardProps {
   isPending: boolean;
 }
 
-// button for carf
-<<<<<<< HEAD
-// const actions: React.ReactNode[] = [  
-//   <Link to={`/checkout/${_id}`}>
-  
-//   <CustomButton 
-
-//     textName={
-//     <div className="flex gap-1 justify-content-center items-center">
-//       <FcMoneyTransfer />
-//       BuyNow
-//     </div>
-//   }
-//     className="w-[90%] !py-2"
-//   />
-//   </Link>
-// ];
-=======
-const actions: React.ReactNode[] = [
-  <CustomButton
-    textName={
-      <div className="flex gap-1 justify-content-center items-center">
-        <FcMoneyTransfer />
-        BuyNow
-      </div>
-    }
-    className="w-[90%] !py-2"
-  />,
-];
->>>>>>> b5ec5acf8a668e6709c4c2ecad799e5714148af0
-
 const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   // loading state
   const [loading, _setLoading] = useState<boolean>(isPending);
@@ -79,7 +48,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
     createdAt,
   } = data;
 
-<<<<<<< HEAD
+  // button for card
   const actions: React.ReactNode[] = [  
     <Link to={`/checkout/${_id}`}>
     
@@ -97,8 +66,6 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   ];
 
 
-=======
->>>>>>> b5ec5acf8a668e6709c4c2ecad799e5714148af0
   return (
     <Link to={`/bicycles/${_id}`}>
       <Flex
