@@ -55,7 +55,7 @@ const ResponsiveNavbar = () => {
 
   // NavLink is active
   // NavLink is active
-  const activeLink = ({ isActive }) => {
+  const activeLink = ({ isActive }: { isActive: boolean }) => {
     return isActive
       ? "text-[#3B9DF8] font-medium transition-all duration-300"
       : "text-[#424242] hover:text-[#3B9DF8] transition-all duration-300";
