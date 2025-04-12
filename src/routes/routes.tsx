@@ -9,6 +9,7 @@ import Sidebar from "../components/layout/sidebar";
 import HomeLayout from "../layout/home/HomeLayout";
 import Login from "../pages/authentication/Login";
 import Page404 from "../pages/shared/Page404";
+import Checkout from "../pages/checkout/Checkout";
 import AboutusLayout from "@/layout/about/AboutusLayout";
 import { routeGenerator } from "../utils/routesGenerator";
 import { adminPaths } from "./admin.routes";
@@ -63,6 +64,10 @@ const routes = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/checkout/:id",
+    element: <Checkout/>,
   },
   {
     path: "/register",
