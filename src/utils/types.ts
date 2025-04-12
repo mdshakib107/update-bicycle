@@ -70,6 +70,8 @@ export interface Order {
 
 // interface for get products api response
 export interface ApiResponse {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [x: string]: any;
   data: {
     meta: {
       page: number;
@@ -79,4 +81,12 @@ export interface ApiResponse {
     };
     result: ItemData[]; // An array of your `ItemData` objects
   };
+}
+
+// interface for get products by id api response
+export interface ApiResponseById {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [x: string]: any;
+  data:  ItemData; // An array of your `ItemData` objects
+  
 }

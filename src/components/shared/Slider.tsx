@@ -3,13 +3,19 @@ import { Carousel } from "antd";
 
 // import image
 import cycle from "../../assets/images/img/bicycle.jpg";
-import { ItemData, ItemsCardProps } from "./ItemsCard";
+import { ItemData } from "./ItemsCard";
 import Loading from "./Loading";
+import { ApiResponse } from '@/utils/types';
+
+interface ApiResponseWithIsPending {
+  data: ApiResponse,
+  isPending: boolean
+}
 
 
-const Slider: React.FC<ItemsCardProps> = ({ data, isPending }) => {
+const Slider: React.FC<ApiResponseWithIsPending> = ({ data, isPending }) => {
   // console.log(isPending);
-  // console.log("product data ==>", data);
+  // console.log("product data ==>", data.result);
   
   // If the data is still loading
   if (isPending) return <Loading />;
@@ -22,7 +28,7 @@ const Slider: React.FC<ItemsCardProps> = ({ data, isPending }) => {
       fade={true}
       className="min-w-full min-h-[55vh] bg-gradient-to-r from-blue-400 to-purple-600 rounded-4xl"
     >
-      {data && data.map && data?.map((d: ItemData) => (
+      {data?.result && data?.result.map && data?.result.map((d: ItemData) => (
         <div
           key={d?._id}
           className="rounded-4xl"

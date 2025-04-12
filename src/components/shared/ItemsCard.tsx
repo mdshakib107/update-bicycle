@@ -20,8 +20,8 @@ export interface ItemData {
   quantity: number;
   inStock: boolean;
   _id?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
 
 export interface ItemsCardProps {

@@ -1,6 +1,6 @@
 import { Button, Row } from 'antd';
-import PHForm from '../../../components/from/PHForm';
-import PHInput from '../../../components/from/PHInput';
+import PHForm from '../../../components/form/PHForm';
+import PHInput from '../../../components/form/PHInput';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
 import  { TResponse } from '../../../utils/types';
 import { useAppDispatch } from '../../../redux/hooks';
