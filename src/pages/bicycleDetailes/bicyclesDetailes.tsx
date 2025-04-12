@@ -16,7 +16,7 @@ const BicyclesDetailPage = () => {
   if (isLoading) return <Skeleton active />;
   if (error) return <p className="text-red-500">Something went wrong!</p>;
   return (
-    <div className="max-w-4xl mx-auto p-6 font-sans">
+    <div className="mx-auto p-6 font-sans shadow-2xl shadow-purple-600 rounded-4xl">
       {/* Product Image and Details Section */}
       <Row gutter={24}>
         {/* Left Column: Product Image */}
@@ -79,11 +79,13 @@ const BicyclesDetailPage = () => {
       <div className="mt-8">
         <BicycleMaintenanceTips />
       </div>
-      <RelatedProducts
-        brand={productData?.brand as string}
-        type={productData?.type as string}
-        currentProductId={productData?._id as string}
-      />
+      <div className="my-2 mx-8 p-4">
+        <RelatedProducts
+          brand={productData?.brand as string}
+          type={productData?.type as string}
+          currentProductId={productData?._id as string}
+        />
+      </div>
     </div>
   );
 };
