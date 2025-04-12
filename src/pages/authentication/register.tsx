@@ -4,7 +4,7 @@ import { Form, Input } from "antd";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useRegisterMutation } from "../../redux/features/auth/authApi"; // Import register mutation
+import { useRegisterMutation } from "../../redux/api/authApi"; // Import register mutation
 
 const Register = () => {
   // useRegister mutation hook

@@ -9,6 +9,7 @@ const AllBicycleFilter = () => {
   const dispatch = useDispatch();
   const filters = useSelector((state: RootState) => state.filter);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (key: string, value: any) => {
     dispatch(setFilter({ [key]: value }));
   };

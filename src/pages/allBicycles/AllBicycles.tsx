@@ -13,7 +13,7 @@ const AllBicycles = () => {
   // const { data, isLoading, isError } = useGetAllProductsQuery({ page, limit });
   const { data, isLoading, isError } = useGetAllProductsQuery(undefined);
   console.log("AllBicycles data", data);
-  const products = data?.data;
+  const products = data?.data?.result;
 
   const filters = useSelector((state: RootState) => state.filter);
   if (isLoading) return <Loading />;
