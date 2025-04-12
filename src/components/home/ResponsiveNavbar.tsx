@@ -17,7 +17,7 @@ import logo from "../../assets/images/logo/logo.png";
 import { logout, useCurrentUser } from "../../redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import CustomButton from "../shared/CustomButton";
-import { MdDashboard } from "react-icons/md";
+// import { MdDashboard } from "react-icons/md";
 
 const ResponsiveNavbar = () => {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
