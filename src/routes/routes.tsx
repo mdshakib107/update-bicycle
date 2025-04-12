@@ -13,6 +13,9 @@ import AboutusLayout from "@/layout/about/AboutusLayout";
 import { routeGenerator } from "../utils/routesGenerator";
 import { adminPaths } from "./admin.routes";
 import { userPaths } from "./user.routes";
+import TermsAndCondition from "@/pages/terms/TermsAndCondition";
+import PrivacyPolicy from "@/pages/terms/PrivacyPolicy";
+import PolicyLayout from "@/layout/policy/PolicyLayout";
 
 const routes = createBrowserRouter([
   {
@@ -32,6 +35,20 @@ const routes = createBrowserRouter([
       {
         path: "/about",
         element: <AboutusLayout />,
+      },
+      {
+        path: "/terms",
+        element: <PolicyLayout />,
+        children: [
+          {
+            index: true,
+            element: <TermsAndCondition />,
+          },
+          {
+            path: "policies",
+            element: <PrivacyPolicy />,
+          },
+        ],
       },
       {
         path: "bicycles/:id", // Dynamic Route for Product Details
