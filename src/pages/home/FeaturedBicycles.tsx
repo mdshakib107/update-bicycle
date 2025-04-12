@@ -39,7 +39,6 @@ const FeaturedBicycles = () => {
     },
   });
 
-  console.log(data)
 
   // handle click to navigate to #featured
   const handleClick = () => {
