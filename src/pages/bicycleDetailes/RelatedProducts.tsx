@@ -18,8 +18,8 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
 }) => {
   // Fetch all products
   const { data, isLoading } = useGetAllProductsQuery();
-  const products = data?.data;
-  console.log(products);
+  const products = data?.data?.result;
+  // console.log(products);
   // Filter products to find related ones with the same brand and type, excluding the current product
   const relatedProducts = products
     ?.filter(

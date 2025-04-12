@@ -1,6 +1,6 @@
 import { ItemData } from "@/components/shared/ItemsCard";
 import baseApi from "./baseApi";
-import { ApiResponse } from "@/utils/types";
+import { ApiResponse, ApiResponseById } from "@/utils/types";
 
 export const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -20,7 +20,7 @@ export const productApi = baseApi.injectEndpoints({
     // }),
 
     // Fetch a specific product by ID (GET)
-    getProductById: builder.query<ApiResponse, string>({
+    getProductById: builder.query<ApiResponseById, string>({
       query: (productId) => `/products/${productId}`,
       providesTags: (result, error, productId) => [
         { type: "Products", id: productId },

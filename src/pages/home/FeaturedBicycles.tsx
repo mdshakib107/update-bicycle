@@ -49,7 +49,7 @@ const FeaturedBicycles = () => {
   // If the data is still loading
   if (isPending) return <Loading />;
   // console.log(isPending);
-  console.log("product data ==>", data);
+  // console.log("product data ==>", data);
 
   //   if (error) return 'An error has occurred: ' + error.message + console.log(error, data)
 
