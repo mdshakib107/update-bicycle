@@ -8,7 +8,7 @@ import AllBicycleFilter from "./AllBicycleFilter";
 
 const AllBicycles = () => {
   const { data, isLoading, isError } = useGetAllProductsQuery(undefined);
-  console.log("AllBicycles data", data);
+  // console.log("AllBicycles data", data);
   const products = data?.data;
 
   const filters = useSelector((state: RootState) => state.filter);
