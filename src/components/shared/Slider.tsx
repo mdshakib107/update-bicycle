@@ -7,8 +7,8 @@ import { ItemData, ItemsCardProps } from "./ItemsCard";
 
 
 const Slider: React.FC<ItemsCardProps> = ({ data, isPending }) => {
-  console.log(isPending);
-  console.log("product data ==>", data);
+  // console.log(isPending);
+  // console.log("product data ==>", data);
 
   return (
     <Carousel

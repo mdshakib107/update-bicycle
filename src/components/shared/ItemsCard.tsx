@@ -31,17 +31,21 @@ export interface ItemsCardProps {
 }
 
 // button for carf
-const actions: React.ReactNode[] = [  
-  <CustomButton 
-    textName={
-    <div className="flex gap-1 justify-content-center items-center">
-      <FcMoneyTransfer />
-      BuyNow
-    </div>
-  }
-    className="w-[90%] !py-2"
-  />
-];
+// const actions: React.ReactNode[] = [  
+//   <Link to={`/checkout/${_id}`}>
+  
+//   <CustomButton 
+
+//     textName={
+//     <div className="flex gap-1 justify-content-center items-center">
+//       <FcMoneyTransfer />
+//       BuyNow
+//     </div>
+//   }
+//     className="w-[90%] !py-2"
+//   />
+//   </Link>
+// ];
 
 const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   // loading state
@@ -51,7 +55,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   const {
     brand,
     description,
-    inStock,
+    inStock, 
     name,
     quantity,
     Img,
@@ -61,6 +65,22 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
     price,
     createdAt,
   } = data;
+
+  const actions: React.ReactNode[] = [  
+    <Link to={`/checkout/${_id}`}>
+    
+    <CustomButton 
+  
+      textName={
+      <div className="flex gap-1 justify-content-center items-center">
+        <FcMoneyTransfer />
+        BuyNow
+      </div>
+    }
+      className="w-[90%] !py-2"
+    />
+    </Link>
+  ];
 
 
   return (
