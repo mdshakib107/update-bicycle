@@ -12,7 +12,7 @@ export const userApi = baseApi.injectEndpoints({
     // Fetch a specific user by ID (GET)
     getUserById: builder.query<TUser, string>({
       query: (userId) => `/users/${userId}`,
-      providesTags: (result, error, userId) => [{ type: "Users", id: userId }],
+      providesTags: (_result, _error, userId) => [{ type: "Users", id: userId }],
     }),
 
     // Create a new admin user (POST)
@@ -32,7 +32,7 @@ export const userApi = baseApi.injectEndpoints({
         method: "PUT",
         body: updateData,
       }),
-      invalidatesTags: (result, error, { userId }) => [
+      invalidatesTags: (_result, _error, { userId }) => [
         { type: "Users", id: userId },
       ],
     }),

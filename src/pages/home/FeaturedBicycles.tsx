@@ -49,7 +49,7 @@ const FeaturedBicycles = () => {
   // If the data is still loading
   if (isPending) return <Loading />;
   // console.log(isPending);
-  // console.log("product data ==>", data);
+  console.log("product data ==>", data);
 
   //   if (error) return 'An error has occurred: ' + error.message + console.log(error, data)
 
@@ -77,7 +77,7 @@ const FeaturedBicycles = () => {
 
       {/* grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 px-4 sm:px-6 lg:px-8 mt-10" id="featured">
-        {data?.map((d: ItemData) => (
+        {data?.result?.map((d: ItemData) => (
           <ItemsCard key={d._id} data={d} isPending={isPending} />
         ))}
       </div>

@@ -51,7 +51,7 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
                 hoverable
                 cover={
                   <Image
-                    src={product.image || "https://via.placeholder.com/150"}
+                    src={product.Img || "https://via.placeholder.com/150"}
                   />
                 }
                 className="rounded-lg shadow-md"

@@ -1,5 +1,6 @@
 // types.ts
 
+import { ItemData } from "@/components/shared/ItemsCard";
 import { ReactNode } from "react";
 
 export type TRoute = {
@@ -65,4 +66,17 @@ export interface Order {
   status: "pending" | "shipped" | "delivered" | "cancelled";
   createdAt: string;
   updatedAt?: string;
+}
+
+// interface for get products api response
+export interface ApiResponse {
+  data: {
+    meta: {
+      page: number;
+      limit: number;
+      total: number;
+      totalPage: number;
+    };
+    result: ItemData[]; // An array of your `ItemData` objects
+  };
 }
