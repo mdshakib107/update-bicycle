@@ -2,7 +2,7 @@ import CustomButton from "@/components/shared/CustomButton";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Checkbox, Flex, Form, Input } from "antd";
 import { TbFidgetSpinner } from "react-icons/tb";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useLoginMutation } from "../../redux/features/auth/authApi";
 import { setUser, TUser } from "../../redux/features/auth/authSlice";
@@ -20,7 +20,7 @@ const Login = () => {
   const dispatch = useAppDispatch();
 
   // onFinish function for submitting the form
-  const onFinish = async (values: { email: string; password: string }) => {
+  const onFinish = async (values: { email: string; password: string; remember: boolean }) => {
     // console.log("Received values of form: ", values);
 
     const toastId = toast.loading("Logging in...");
@@ -41,6 +41,14 @@ const Login = () => {
             token: res.token,
           })
         );
+
+        // Persist token based on "remember me"
+        if (values.remember) {
+          localStorage.setItem("authToken", res.token);
+        } else {
+          sessionStorage.setItem("authToken", res.token);
+        }
+
         toast.success("Logged in successfully", {
           id: toastId,
           duration: 2000,
@@ -104,7 +112,7 @@ const Login = () => {
               <Form.Item name="remember" valuePropName="checked" noStyle>
                 <Checkbox>Remember me</Checkbox>
               </Form.Item>
-              <a href="">Forgot password</a>
+              <Link to="/forgot-password">Forgot password</Link>
             </Flex>
           </Form.Item>
 
@@ -121,7 +129,8 @@ const Login = () => {
               }
             />
             <p className="text-center mt-2">
-              Don&apos;t have an account? <a href="">Register now!</a>
+              Don&apos;t have an account?{" "}
+              <Link to="/register">Register now!</Link>
             </p>
           </Form.Item>
         </Form>

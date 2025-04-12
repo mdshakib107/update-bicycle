@@ -1,14 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // import image
 import cycle from "../../assets/images/img/bicycle.jpg";
 
-import { Avatar, Card, Flex, Rate, Skeleton, Switch } from "antd";
+import { Card, Flex, Skeleton } from "antd";
 import { useState } from "react";
+import { FcMoneyTransfer } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import { JSX } from "react/jsx-runtime";
 import CustomButton from "./CustomButton";
-import { FcMoneyTransfer } from "react-icons/fc";
-
-
 
 export interface ItemData {
   map?(arg0: (d: ItemData) => JSX.Element): import("react").ReactNode;
@@ -20,9 +19,9 @@ export interface ItemData {
   description: string;
   quantity: number;
   inStock: boolean;
-  _id: string;
-  createdAt: string;
-  updatedAt: string;
+  _id?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface ItemsCardProps {
@@ -31,6 +30,7 @@ export interface ItemsCardProps {
 }
 
 // button for carf
+<<<<<<< HEAD
 // const actions: React.ReactNode[] = [  
 //   <Link to={`/checkout/${_id}`}>
   
@@ -46,6 +46,19 @@ export interface ItemsCardProps {
 //   />
 //   </Link>
 // ];
+=======
+const actions: React.ReactNode[] = [
+  <CustomButton
+    textName={
+      <div className="flex gap-1 justify-content-center items-center">
+        <FcMoneyTransfer />
+        BuyNow
+      </div>
+    }
+    className="w-[90%] !py-2"
+  />,
+];
+>>>>>>> b5ec5acf8a668e6709c4c2ecad799e5714148af0
 
 const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   // loading state
@@ -66,6 +79,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
     createdAt,
   } = data;
 
+<<<<<<< HEAD
   const actions: React.ReactNode[] = [  
     <Link to={`/checkout/${_id}`}>
     
@@ -83,8 +97,10 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   ];
 
 
+=======
+>>>>>>> b5ec5acf8a668e6709c4c2ecad799e5714148af0
   return (
-    <Link to={""}>
+    <Link to={`/bicycles/${_id}`}>
       <Flex
         gap="middle"
         align="start"
@@ -103,11 +119,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
         ) : (
           <Card loading={loading} actions={actions} style={{ minWidth: 200 }}>
             {!Img ? (
-              <img
-                alt="Bicycle"
-                src={cycle}
-                className="mb-6 w-full"
-              />
+              <img alt="Bicycle" src={cycle} className="mb-6 w-full" />
             ) : (
               <img alt="Bicycle" src={Img} className="mb-6 w-full h-52" />
             )}
@@ -120,7 +132,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
               title={name}
               description={
                 <div className="space-y-2">
-                  <p className="mb-2 font-semibold">{description}</p>
+                  <p className="mb-2 min-h-20 font-semibold">{description}</p>
                   <p className="flex justify-between">
                     <span className="font-medium">Brand:</span>
                     <span className="font-serif">{brand}</span>
