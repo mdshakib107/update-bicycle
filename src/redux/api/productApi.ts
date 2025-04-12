@@ -4,10 +4,19 @@ import baseApi from "./baseApi";
 export const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Fetch all products (GET)
+    //delete when new api is integrated with pagination functionality
     getAllProducts: builder.query<ItemData[], void>({
       query: () => "/products",
       providesTags: ["Products"],
     }),
+    //user when new api is integrated with pagination functionality
+    // getAllProducts: builder.query<
+    //   { meta: { total: number }; result: ItemData[] },
+    //   { page: number; limit: number }
+    // >({
+    //   query: ({ page, limit }) => `/products?page=${page}&limit=${limit}`,
+    //   providesTags: ["Products"],
+    // }),
 
     // Fetch a specific product by ID (GET)
     getProductById: builder.query<ItemData, string>({
