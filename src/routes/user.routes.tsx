@@ -1,6 +1,6 @@
 import UserDashboard from '../layout/Dashboard/user/UserDashboard';
-import ManageProfile from '../layout/Dashboard/user/manageProfile'
-import UpdatePassword from '../layout/Dashboard/user/updatePassword'
+import ManageProfile from '../layout/Dashboard/user/Manage Profile/ManageProfile'
+import UpdatePassword from '../layout/Dashboard/user/UpdatePassword'
 import ViewOrders from '../layout/Dashboard/user/viewOrders'
 
 export const userPaths = [
@@ -11,20 +11,14 @@ export const userPaths = [
     },
     {
       name: 'Manage Profile',
-      children: [
-        {
-          path: 'manage-profile',
-          element: <ManageProfile/>,
-        },],
+      path: 'manage-profile',
+      element: <ManageProfile />,
     },
     {
-        name: 'Update Password',
-        children: [
-            {
-            path: 'change-password',
-           element: <UpdatePassword />,
-          },],
-      },
+      name: 'Update Password',
+      path: 'update-password',
+      element: <UpdatePassword />,
+    },
       {
         name: 'View Orders',
         children: [
