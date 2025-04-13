@@ -5,9 +5,8 @@ import Register from "@/pages/authentication/register";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
-//import Sidebar from "../components/layout/sidebar";
-import HomeLayout from "../layout/home/HomeLayout";
 import Sidebar from "../components/layout/sidebar";
+import HomeLayout from "../layout/home/HomeLayout";
 import Login from "../pages/authentication/Login";
 import Page404 from "../pages/shared/Page404";
 import Checkout from "../pages/checkout/Checkout";
@@ -18,6 +17,7 @@ import { userPaths } from "./user.routes";
 import TermsAndCondition from "@/pages/terms/TermsAndCondition";
 import PrivacyPolicy from "@/pages/terms/PrivacyPolicy";
 import PolicyLayout from "@/layout/policy/PolicyLayout";
+import CheckoutLayout from "@/layout/checkout/CheckoutLayout";
 
 const routes = createBrowserRouter([
   {
@@ -34,15 +34,47 @@ const routes = createBrowserRouter([
         path: "AllBicycles",
         element: <AllBicyclesLayout />,
       },
+      {
+        path: "/about",
+        element: <AboutusLayout />,
+      },
+      {
+        path: "/terms",
+        element: <PolicyLayout />,
+        children: [
+          {
+            index: true,
+            element: <TermsAndCondition />,
+          },
+          {
+            path: "policies",
+            element: <PrivacyPolicy />,
+          },
+        ],
+      },
+      {
+        path: "/checkout/:id",
+        element: <CheckoutLayout />,
+        children: [
+          {
+            index: true,
+            element: <Checkout />,
+          },
+        ],
+      },
+      {
+        path: "bicycles/:id", // Dynamic Route for Product Details
+        element: <BicycleDetailsLayout />,
+      },
     ],
+  },
+  {
+    path: "/sidebar",
+    element: <Sidebar />,
   },
   {
     path: "/login",
     element: <Login />,
-  },
-  {
-    path: "/checkout/:id",
-    element: <Checkout/>,
   },
   {
     path: "/register",
