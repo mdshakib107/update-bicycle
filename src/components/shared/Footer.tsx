@@ -5,8 +5,19 @@ import { SlArrowUp } from "react-icons/sl";
 import logo from "../../assets/images/logo/logo.png";
 import CustomButton from "./CustomButton";
 import { Link } from "react-router-dom";
+import ContactUs from "../modals/ContactUs";
+import { useState } from "react";
 
 const Footer = () => {
+
+  // modal open close state
+  const [modal2Open, setModal2Open] = useState(false);
+
+  // open modal contact us
+  const handleClick = () => {
+    setModal2Open(true);
+  };
+
   return (
     <footer className="bg-white shadow-md rounded-t-2xl w-full p-3 md:p-4 relative shadow-purple-600 2xl:h-[30vh]">
       <div className="w-full flex items-center justify-center pt-[30px] flex-col gap-[20px] pb-[130px]">
@@ -27,7 +38,10 @@ const Footer = () => {
           producing quality work.
         </p>
 
-        <CustomButton textName="Contact Us" />
+        <CustomButton textName="Contact Us" handleAnything={handleClick} />
+
+        {/* Render modal conditionally */}
+        <ContactUs modal2Open={modal2Open} setModal2Open={setModal2Open} />
 
         <div className="flex gap-[15px] text-black mt-4">
           <Link
