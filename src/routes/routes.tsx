@@ -17,6 +17,7 @@ import { userPaths } from "./user.routes";
 import TermsAndCondition from "@/pages/terms/TermsAndCondition";
 import PrivacyPolicy from "@/pages/terms/PrivacyPolicy";
 import PolicyLayout from "@/layout/policy/PolicyLayout";
+import CheckoutLayout from "@/layout/checkout/CheckoutLayout";
 
 const routes = createBrowserRouter([
   {
@@ -52,6 +53,16 @@ const routes = createBrowserRouter([
         ],
       },
       {
+        path: "/checkout/:id",
+        element: <CheckoutLayout />,
+        children: [
+          {
+            index: true,
+            element: <Checkout />,
+          },
+        ],
+      },
+      {
         path: "bicycles/:id", // Dynamic Route for Product Details
         element: <BicycleDetailsLayout />,
       },
@@ -64,10 +75,6 @@ const routes = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
-  },
-  {
-    path: "/checkout/:id",
-    element: <Checkout/>,
   },
   {
     path: "/register",
