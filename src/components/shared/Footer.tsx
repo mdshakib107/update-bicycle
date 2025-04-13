@@ -4,12 +4,23 @@ import { CgFacebook } from "react-icons/cg";
 import { SlArrowUp } from "react-icons/sl";
 import logo from "../../assets/images/logo/logo.png";
 import CustomButton from "./CustomButton";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
     <footer className="bg-white shadow-md rounded-t-2xl w-full p-3 md:p-4 relative shadow-purple-600 2xl:h-[30vh]">
       <div className="w-full flex items-center justify-center pt-[30px] flex-col gap-[20px] pb-[130px]">
-        <img src={logo} alt="logo" className="w-[5rem]" />
+        {/* motto */}
+        <h3 className="text-2xl font-semibold font-serif">
+          ☘️Safe Journey With Nature🌿
+        </h3>
+
+        {/* logo */}
+        <img
+          src={logo}
+          alt="logo"
+          className="w-[5rem] border-2 border-purple-600 rounded-full"
+        />
 
         <p className="text-[0.9rem] text-center sm:text-start text-gray-600">
           High level experience in web design and development knowledge,
@@ -19,18 +30,30 @@ const Footer = () => {
         <CustomButton textName="Contact Us" />
 
         <div className="flex gap-[15px] text-black mt-4">
-          <a className="text-[1.3rem] p-1.5 cursor-pointer rounded-full bg-white text-[#424242] shadow-md">
+          <Link
+            to={""}
+            className="text-[1.3rem] p-1.5 cursor-pointer rounded-full hover:bg-[#d8e0e1] hover:scale-110 bg-white text-[#424242] shadow-md"
+          >
             <CgFacebook />
-          </a>
-          <a className="text-[1.2rem] p-1.5 cursor-pointer rounded-full bg-white text-[#424242] shadow-md">
+          </Link>
+          <Link
+            to={""}
+            className="text-[1.2rem] p-1.5 cursor-pointer rounded-full hover:bg-[#d8e0e1] hover:scale-110  bg-white text-[#424242] shadow-md"
+          >
             <BsTwitter />
-          </a>
-          <a className="text-[1.2rem] p-1.5 cursor-pointer rounded-full bg-white text-[#424242] shadow-md">
+          </Link>
+          <Link
+            to={""}
+            className="text-[1.2rem] p-1.5 cursor-pointer rounded-full hover:bg-[#d8e0e1] hover:scale-110  bg-white text-[#424242] shadow-md"
+          >
             <BsInstagram />
-          </a>
-          <a className="text-[1.2rem] p-1.5 cursor-pointer rounded-full bg-white text-[#424242] shadow-md">
+          </Link>
+          <Link
+            to={""}
+            className="text-[1.2rem] p-1.5 cursor-pointer rounded-full hover:bg-[#d8e0e1] hover:scale-110  bg-white text-[#424242] shadow-md"
+          >
             <BsLinkedin />
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -39,8 +62,7 @@ const Footer = () => {
           ©
           {new Date().getFullYear() !== 2025
             ? 2025 - new Date().getFullYear()
-            : new Date().getFullYear()
-          }{" "}
+            : new Date().getFullYear()}{" "}
           All Rights Reserved
         </p>
 

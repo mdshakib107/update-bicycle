@@ -1,0 +1,185 @@
+import Loading from "../../components/shared/Loading";
+import useAxiosCommon from "../../hooks/useAxiosCommon";
+import {  useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
+import { useForm } from "react-hook-form";
+
+const Checkout = () => {
+  const axiosCommon = useAxiosCommon();
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [userId, setUserId] = useState("67af6de7d85f7b98d6443998");
+
+  type TStatus =
+    | "PENDING"
+    | "PROCESSING"
+    | "ON THE WAY"
+    | "DELIVERED"
+    | "CANCELED";
+
+  type TOrderedItem = {
+    product: string;
+    quantity: number;
+    price: number;
+  };
+
+  type TOrder = {
+    products: TOrderedItem[];
+    user: string;
+    totalPrice: number;
+    isDeleted?: boolean;
+    status: TStatus;
+    paymentStatus: 'UNPAID'
+  };
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      quantity: 1,
+    },
+  });
+
+  const { isPending, data: product } = useQuery({
+    queryKey: ["checkoutProduct", id],
+    queryFn: async () => {
+      try {
+        // const response = await axios(`${import.meta.env.VITE_SERVER}/api/products`);
+        const response = await axiosCommon.get(`/api/products/${id}`);
+        // console.log("response ==>",response);
+
+        if (response.status !== 200) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // return the featured Bicycles
+        return response.data.data;
+      } catch (error: any) {
+        console.error("Error fetching featured bicycles:", error);
+
+        // toast
+        toast.error(error.message);
+        throw error;
+      }
+    },
+    enabled: !!id,
+  });
+
+  // console.log({id, data});
+
+  const quantity = watch("quantity");
+
+  useEffect(() => {
+    if (product && product.price) {
+      const total = product.price * quantity;
+      setTotalPrice(Number(total.toFixed(2)));
+    }
+  }, [product, quantity]);
+
+  const onSubmit = async (formData: any) => {
+    // Prepare order data
+    const orderData = {
+      products: [
+        {
+          product: id,
+          quantity: formData.quantity,
+          price: product.price,
+        },
+      ],
+      user: userId,
+      totalPrice: totalPrice,
+      isDeleted: false,
+      status: "PENDING",
+      paymentStatus: 'UNPAID'
+    };
+
+    // console.log(orderData);
+
+    const response = await axiosCommon.post(
+      "/api/orders/create-order",
+      orderData
+    );
+    window.location.replace(response.data.data.GatewayPageURL);
+    console.log(response.data.data);
+  };
+
+  if (isPending) return <Loading />;
+  // console.log(product);
+  return (
+    <div className="w-full my-10">
+      {product && (
+        <div className="w-2/3 mx-auto">
+          {/* <img src={product.Img} alt="" className="hidden md:flex"/> */}
+          <img
+            src="../../../src/assets/images/img/bicycle.jpg"
+            alt=""
+            className="hidden md:flex"
+          />
+          <div className="w-full mx-auto p-6 bg-white rounded shadow-md">
+            <h2 className="text-2xl font-bold mb-6">Checkout</h2>
+
+            <div className="mb-6 border-b pb-4">
+              <h3 className="text-xl font-semibold">{product?.name}</h3>
+              <p className="text-gray-600">Tk{product?.price} per unit</p>
+            </div>
+
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <div className="mb-4">
+                <label className="block text-gray-700 mb-2" htmlFor="quantity">
+                  Quantity
+                </label>
+                <input
+                  type="number"
+                  id="quantity"
+                  min="1"
+                  max="100"
+                  className="w-full p-2 border rounded"
+                  {...register("quantity", {
+                    required: "Quantity is required",
+                    min: {
+                      value: 1,
+                      message: "Quantity must be at least 1",
+                    },
+                    valueAsNumber: true,
+                  })}
+                />
+                {errors.quantity && (
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.quantity.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold">Order Summary</h4>
+                <div className="flex justify-between mt-2">
+                  <span>Subtotal ({quantity} items):</span>
+                  <span>Tk{totalPrice}</span>
+                </div>
+                <div className="border-t mt-2 pt-2 font-bold flex justify-between">
+                  <span>Total:</span>
+                  <span>Tk{totalPrice}</span>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+              >
+                Place Order
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default Checkout;
