@@ -22,18 +22,19 @@ const ContactUs: React.FC<ContactUsProps> = ({ modal2Open, setModal2Open }) => {
         onCancel={() => setModal2Open(false)}
         width={1000} // Optional: Adjust modal width to fit form
       >
-        <div className="grid max-w-screen-xl grid-cols-1 gap-8 px-2 py-6 mx-auto rounded-lg md:grid-cols-2 md:px-4 lg:px-6 xl:px-8 dark:bg-gray-100 dark:text-gray-800">
+        <div className="grid grid-cols-1 gap-8 px-4 py-6 mx-auto rounded-lg md:grid-cols-2 md:px-6 lg:px-8 xl:px-10 dark:bg-gray-100 dark:text-gray-800">
           {/* Left Side */}
           <div className="flex flex-col justify-between">
             <div className="space-y-2">
-              <h2 className="text-4xl font-bold leading-tight lg:text-5xl">
+              <h2 className="text-3xl font-bold leading-tight lg:text-5xl">
                 Let's talk!
               </h2>
               <div className="dark:text-gray-600">
                 Any kind of related query? Let us know!
               </div>
             </div>
-            <img src={img} alt="Doodle" className="p-6 h-52 md:h-64" />
+            <img src={img} alt="Doodle" className="p-6 h-40 md:h-52 lg:h-64" />{" "}
+            {/* ✅ Responsive height */}
           </div>
 
           {/* Right Side - Form */}
@@ -46,7 +47,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ modal2Open, setModal2Open }) => {
                 id="name"
                 type="text"
                 placeholder=""
-                className="w-full p-3 rounded bg-gray-100"
+                className="w-full p-3 rounded bg-gray-100 focus:outline-none focus:ring-1 focus:ring-purple-600" // ✅ Added focus ring
               />
             </div>
             <div>
@@ -56,7 +57,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ modal2Open, setModal2Open }) => {
               <input
                 id="email"
                 type="email"
-                className="w-full p-3 rounded bg-gray-100"
+                className="w-full p-3 rounded bg-gray-100 focus:outline-none focus:ring-1 focus:ring-purple-600" // ✅ Added focus ring
               />
             </div>
             <div>
@@ -66,14 +67,14 @@ const ContactUs: React.FC<ContactUsProps> = ({ modal2Open, setModal2Open }) => {
               <textarea
                 id="message"
                 rows={3}
-                className="w-full p-3 rounded bg-gray-100"
+                className="w-full p-3 rounded bg-gray-100 focus:outline-none focus:ring-1 focus:ring-purple-600" // ✅ Added focus ring
               ></textarea>
             </div>
 
             {/* handle function & api needed for work */}
             <CustomButton
               textName="Send Message"
-              className="w-full p-3 text-sm font-bold tracking-wide uppercase rounded dark:bg-violet-600 dark:text-gray-50"
+              className="w-full p-3 text-sm font-bold tracking-wide uppercase"
             />
           </form>
         </div>
