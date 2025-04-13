@@ -119,7 +119,7 @@ const PrivacyPolicy: React.FC = () => {
             If you have any questions about this Privacy Policy, please contact
             us at{" "}
             <a
-              href="mailto:support@ridevibe.com"
+              href="mailto:support@bicycle.com"
               className="text-green-600 underline"
             >
               support@bicycle.com
