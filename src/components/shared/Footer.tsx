@@ -9,7 +9,6 @@ import ContactUs from "../modals/ContactUs";
 import { useState } from "react";
 
 const Footer = () => {
-
   // modal open close state
   const [modal2Open, setModal2Open] = useState(false);
 
@@ -72,15 +71,19 @@ const Footer = () => {
       </div>
 
       <div className="z-30 absolute bottom-3 left-0 right-0 px-3 flex items-center justify-between w-full">
-        <p className="text-[0.9rem] text-gray-300">
+        {/* year of making */}
+        <p className="text-[0.9rem] text-white">
           ©
           {new Date().getFullYear() !== 2025
             ? 2025 - new Date().getFullYear()
             : new Date().getFullYear()}{" "}
-          All Rights Reserved
+          All Rights Reserved by Bicycle
         </p>
 
-        <SlArrowUp className="p-2 rounded-full border border-gray-300 cursor-pointer text-[2rem] text-gray-300" />
+        {/* go to top */}
+        <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+          <SlArrowUp className="p-2 rounded-full border border-purple-600 cursor-pointer text-[2rem] text-purple-600 hover:bg-blue-400 hover:scale-110" />
+        </button>
       </div>
 
       <img

@@ -1,12 +1,42 @@
 import { Modal } from "antd";
 import img from "../../assets/images/img/doodle.svg";
 import CustomButton from "../shared/CustomButton";
+import { toast } from "sonner";
 
 //  interface for contact modal
 interface ContactUsProps {
   modal2Open: boolean;
   setModal2Open: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+// handle submit
+const handleClick = (
+    e: React.FormEvent<HTMLFormElement>,
+    setModal2Open: React.Dispatch<React.SetStateAction<boolean>>
+  ) => {
+  e.preventDefault();
+
+  const name = (document.getElementById("name") as HTMLInputElement)?.value;
+  const email = (document.getElementById("email") as HTMLInputElement)?.value;
+  const message = (document.getElementById("message") as HTMLTextAreaElement)
+    ?.value;
+
+  if (!name) {
+    toast.error("Please fill in required name field.");
+    return;
+  }
+  if (!email) {
+    toast.error("Please fill in required email field.");
+    return;
+  }
+  if (!message) {
+    toast.error("Please fill in required message field.");
+    return;
+  }
+
+  toast.success("Message sent!");
+  setModal2Open(false);
+};
 
 const ContactUs: React.FC<ContactUsProps> = ({ modal2Open, setModal2Open }) => {
   return (
@@ -38,7 +68,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ modal2Open, setModal2Open }) => {
           </div>
 
           {/* Right Side - Form */}
-          <form noValidate className="space-y-6">
+          <form noValidate className="space-y-6" onSubmit={(e) => handleClick(e, setModal2Open)}>
             <div>
               <label htmlFor="name" className="text-sm">
                 Full name
@@ -47,7 +77,8 @@ const ContactUs: React.FC<ContactUsProps> = ({ modal2Open, setModal2Open }) => {
                 id="name"
                 type="text"
                 placeholder=""
-                className="w-full p-3 rounded bg-gray-100 focus:outline-none focus:ring-1 focus:ring-purple-600" // ✅ Added focus ring
+                required
+                className="w-full p-3 rounded bg-gray-100 focus:outline-none focus:ring-1 focus:ring-purple-600" // focus ring
               />
             </div>
             <div>
@@ -57,7 +88,8 @@ const ContactUs: React.FC<ContactUsProps> = ({ modal2Open, setModal2Open }) => {
               <input
                 id="email"
                 type="email"
-                className="w-full p-3 rounded bg-gray-100 focus:outline-none focus:ring-1 focus:ring-purple-600" // ✅ Added focus ring
+                required
+                className="w-full p-3 rounded bg-gray-100 focus:outline-none focus:ring-1 focus:ring-purple-600" // focus ring
               />
             </div>
             <div>
@@ -67,7 +99,8 @@ const ContactUs: React.FC<ContactUsProps> = ({ modal2Open, setModal2Open }) => {
               <textarea
                 id="message"
                 rows={3}
-                className="w-full p-3 rounded bg-gray-100 focus:outline-none focus:ring-1 focus:ring-purple-600" // ✅ Added focus ring
+                required
+                className="w-full p-3 rounded bg-gray-100 focus:outline-none focus:ring-1 focus:ring-purple-600" // focus ring
               ></textarea>
             </div>
 
@@ -75,6 +108,7 @@ const ContactUs: React.FC<ContactUsProps> = ({ modal2Open, setModal2Open }) => {
             <CustomButton
               textName="Send Message"
               className="w-full p-3 text-sm font-bold tracking-wide uppercase"
+              type="submit"
             />
           </form>
         </div>
