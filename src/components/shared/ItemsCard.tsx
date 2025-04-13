@@ -55,7 +55,11 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   const actions: React.ReactNode[] = [
     <>
       <CustomButton
-        handleAnything={() => navigate(`/checkout/${_id}`)}
+        handleAnything={(e) => {
+          e.preventDefault(); //  Prevent <Link> default nav
+          e.stopPropagation(); //  Prevents the Link from triggering / event bubbling
+          navigate(`/checkout/${_id}`);
+        }}
         textName={
           <div className="flex gap-1 justify-content-center items-center">
             <FcMoneyTransfer />
