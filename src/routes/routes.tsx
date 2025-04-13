@@ -17,6 +17,7 @@ import { userPaths } from "./user.routes";
 import TermsAndCondition from "@/pages/terms/TermsAndCondition";
 import PrivacyPolicy from "@/pages/terms/PrivacyPolicy";
 import PolicyLayout from "@/layout/policy/PolicyLayout";
+import CheckoutLayout from "@/layout/checkout/CheckoutLayout";
 
 const routes = createBrowserRouter([
   {
@@ -48,6 +49,16 @@ const routes = createBrowserRouter([
           {
             path: "policies",
             element: <PrivacyPolicy />,
+          },
+        ],
+      },
+      {
+        path: "/checkout/:id",
+        element: <CheckoutLayout />,
+        children: [
+          {
+            index: true,
+            element: <Checkout />,
           },
         ],
       },

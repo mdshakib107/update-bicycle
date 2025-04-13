@@ -7,6 +7,14 @@ import CustomButton from "./CustomButton";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+  // modal open close state
+  const [modal2Open, setModal2Open] = useState(false);
+
+  // open modal contact us
+  const handleClick = () => {
+    setModal2Open(true);
+  };
+
   return (
     <footer className="bg-white shadow-md rounded-t-2xl w-full p-3 md:p-4 relative shadow-purple-600 2xl:h-[30vh]">
       <div className="w-full flex items-center justify-center pt-[30px] flex-col gap-[20px] pb-[130px]">
@@ -27,7 +35,10 @@ const Footer = () => {
           producing quality work.
         </p>
 
-        <CustomButton textName="Contact Us" />
+        <CustomButton textName="Contact Us" handleAnything={handleClick} />
+
+        {/* Render modal conditionally */}
+        <ContactUs modal2Open={modal2Open} setModal2Open={setModal2Open} />
 
         <div className="flex gap-[15px] text-black mt-4">
           <Link
@@ -58,7 +69,8 @@ const Footer = () => {
       </div>
 
       <div className="z-30 absolute bottom-3 left-0 right-0 px-3 flex items-center justify-between w-full">
-        <p className="text-[0.9rem] text-gray-300">
+        {/* year of making */}
+        <p className="text-[0.9rem] text-white">
           ©
           {new Date().getFullYear() !== 2025
             ? 2025 - new Date().getFullYear()
@@ -66,7 +78,10 @@ const Footer = () => {
           All Rights Reserved
         </p>
 
-        <SlArrowUp className="p-2 rounded-full border border-gray-300 cursor-pointer text-[2rem] text-gray-300" />
+        {/* go to top */}
+        <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+          <SlArrowUp className="p-2 rounded-full border border-purple-600 cursor-pointer text-[2rem] text-purple-600 hover:bg-blue-400 hover:scale-110" />
+        </button>
       </div>
 
       <img
