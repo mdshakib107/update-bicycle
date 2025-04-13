@@ -4,7 +4,7 @@ import { Checkbox, Flex, Form, Input } from "antd";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useLoginMutation } from "../../redux/features/auth/authApi";
+import { useLoginMutation } from "../../redux/api/authApi";
 import { setUser, TUser } from "../../redux/features/auth/authSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import { verifyToken } from "../../utils/verifyToken";

@@ -18,7 +18,7 @@ const Hero = () => {
     >
       {/* header */}
       <header className="flex h-full lg:flex-row flex-col gap-[50px] lg:gap-0 justify-center items-center lg:mt-3">
-        <div className="px-8 mt-8 lg:mt-0 w-full lg:w-[50%]">
+        <div className="px-8 mt-8 lg:mt-0 w-full lg:w-[50%] py-4">
           <h1 className="text-[40px] lg:text-[60px] leading-[45px] lg:leading-[65px] font-[500]">
             Get your dream Bicycle within your home!
           </h1>

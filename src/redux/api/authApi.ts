@@ -1,4 +1,4 @@
-import { baseApi } from "../../api/baseApi";
+import { baseApi } from "./baseApi";
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -35,5 +35,9 @@ const authApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation, useChangePasswordMutation } = authApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useChangePasswordMutation,
+} = authApi;
 export default authApi;

@@ -2,14 +2,18 @@ import ItemsCard, { ItemData } from "@/components/shared/ItemsCard";
 import Loading from "@/components/shared/Loading";
 import { useGetAllProductsQuery } from "@/redux/api/productApi";
 import { RootState } from "@/redux/store";
+// import { useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
 import AllBicycleFilter from "./AllBicycleFilter";
 
 const AllBicycles = () => {
+  // const [page, setPage] = useState(1);
+  // const limit = 10;
+  // const { data, isLoading, isError } = useGetAllProductsQuery({ page, limit });
   const { data, isLoading, isError } = useGetAllProductsQuery(undefined);
-  console.log("AllBicycles data", data);
-  const products = data?.data;
+  // console.log("AllBicycles data", data);
+  const products = data?.data?.result;
 
   const filters = useSelector((state: RootState) => state.filter);
   if (isLoading) return <Loading />;
@@ -52,6 +56,17 @@ const AllBicycles = () => {
                 isPending={isLoading}
               />
             ))}
+            {/* Paginator */}
+            {/* <div className="flex justify-center mt-4">
+              <Pagination
+                align="end"
+                current={page}
+                total={filteredProducts?.meta?.total || 0} // Total products count
+                pageSize={limit}
+                onChange={(pageNumber: number) => setPage(pageNumber)} // Update page state
+                showSizeChanger={false}
+              />
+            </div> */}
           </div>
         </div>
         <div className="col-span-5 lg:col-span-1">

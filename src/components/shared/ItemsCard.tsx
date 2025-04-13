@@ -5,7 +5,7 @@ import cycle from "../../assets/images/img/bicycle.jpg";
 import { Card, Flex, Skeleton } from "antd";
 import { useState } from "react";
 import { FcMoneyTransfer } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { JSX } from "react/jsx-runtime";
 import CustomButton from "./CustomButton";
 
@@ -20,8 +20,8 @@ export interface ItemData {
   quantity: number;
   inStock: boolean;
   _id?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
 }
 
 export interface ItemsCardProps {
@@ -29,22 +29,12 @@ export interface ItemsCardProps {
   isPending: boolean;
 }
 
-// button for carf
-const actions: React.ReactNode[] = [
-  <CustomButton
-    textName={
-      <div className="flex gap-1 justify-content-center items-center">
-        <FcMoneyTransfer />
-        BuyNow
-      </div>
-    }
-    className="w-[90%] !py-2"
-  />,
-];
-
 const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   // loading state
   const [loading, _setLoading] = useState<boolean>(isPending);
+
+  // mavigation
+  const navigate = useNavigate();
 
   // destructure items
   const {
@@ -60,6 +50,22 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
     price,
     createdAt,
   } = data;
+
+  // button for card
+  const actions: React.ReactNode[] = [
+    <>
+      <CustomButton
+        handleAnything={() => navigate(`/checkout/${_id}`)}
+        textName={
+          <div className="flex gap-1 justify-content-center items-center">
+            <FcMoneyTransfer />
+            BuyNow
+          </div>
+        }
+        className="w-[90%] !py-2"
+      />
+    </>,
+  ];
 
   return (
     <Link to={`/bicycles/${_id}`}>
@@ -94,7 +100,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
               title={name}
               description={
                 <div className="space-y-2">
-                  <p className="mb-2 font-semibold">{description}</p>
+                  <p className="mb-2 min-h-20 font-semibold">{description}</p>
                   <p className="flex justify-between">
                     <span className="font-medium">Brand:</span>
                     <span className="font-serif">{brand}</span>

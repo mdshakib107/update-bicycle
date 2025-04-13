@@ -1,7 +1,7 @@
 import AllBicyclesLayout from "@/layout/AllBicycles/AllBicyclesLayout";
+import BicycleDetailsLayout from "@/layout/BicycleDetailsLayout/BicycleDetailsLayout";
 import ForgotPassword from "@/pages/authentication/ForgotPassword";
 import Register from "@/pages/authentication/register";
-import BicyclesDetailes from "@/pages/bicycleDetailes/bicyclesDetailes";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
@@ -10,9 +10,14 @@ import HomeLayout from "../layout/home/HomeLayout";
 import Sidebar from "../components/layout/sidebar";
 import Login from "../pages/authentication/Login";
 import Page404 from "../pages/shared/Page404";
+import Checkout from "../pages/checkout/Checkout";
+import AboutusLayout from "@/layout/about/AboutusLayout";
 import { routeGenerator } from "../utils/routesGenerator";
 import { adminPaths } from "./admin.routes";
 import { userPaths } from "./user.routes";
+import TermsAndCondition from "@/pages/terms/TermsAndCondition";
+import PrivacyPolicy from "@/pages/terms/PrivacyPolicy";
+import PolicyLayout from "@/layout/policy/PolicyLayout";
 
 const routes = createBrowserRouter([
   {
@@ -34,6 +39,10 @@ const routes = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/checkout/:id",
+    element: <Checkout/>,
   },
   {
     path: "/register",
