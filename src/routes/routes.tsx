@@ -5,7 +5,7 @@ import BicyclesDetailes from "@/pages/bicycleDetailes/bicyclesDetailes";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
-import Sidebar from "../components/layout/sidebar";
+//import Sidebar from "../components/layout/sidebar";
 import HomeLayout from "../layout/home/HomeLayout";
 import Sidebar from "../components/layout/sidebar";
 import Login from "../pages/authentication/Login";
