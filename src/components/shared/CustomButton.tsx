@@ -21,7 +21,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
       onClick={handleAnything}
       type={type} // the `type` prop here
       className={clsx(
-        "relative inline-flex items-center justify-center px-8 py-3.5 overflow-hidden font-mono dark:bg-slate-800 tracking-tighter text-white bg-blue-600 rounded-lg group",
+        "relative inline-flex items-center justify-center px-8 py-3.5 overflow-hidden font-mono dark:bg-slate-800 tracking-tighter text-white bg-blue-600 rounded-lg group hover:cursor-pointer",
         className
       )}
     >
