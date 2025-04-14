@@ -1,18 +1,12 @@
 import { RootState } from "@/redux/store";
 import { Checkbox, Input, Select, Slider } from "antd";
-import { useDispatch, useSelector } from "react-redux";
-import { setFilter } from "../../redux/features/filterSlice/filterSlice";
+import { useSelector } from "react-redux";
 
 const { Option } = Select;
 
-const AllBicycleFilter = () => {
-  const dispatch = useDispatch();
+const AllBicycleFilter = ({ handleChange }) => {
   const filters = useSelector((state: RootState) => state.filter);
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleChange = (key: string, value: any) => {
-    dispatch(setFilter({ [key]: value }));
-  };
+  // console.log(filters);
 
   return (
     <div className="p-6 bg-white shadow-md rounded-lg w-full">
@@ -35,7 +29,7 @@ const AllBicycleFilter = () => {
         <Slider
           range
           min={0}
-          max={100000}
+          max={10000}
           step={100}
           value={filters.priceRange}
           onChange={(value) => handleChange("priceRange", value)}

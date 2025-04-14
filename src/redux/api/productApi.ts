@@ -1,24 +1,18 @@
 import { ItemData } from "@/components/shared/ItemsCard";
-import baseApi from "./baseApi";
 import { ApiResponse, ApiResponseById } from "@/utils/types";
+import baseApi from "./baseApi";
 
 export const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Fetch all products (GET)
-    //comment when new api is integrated with pagination functionality
-    getAllProducts: builder.query<ApiResponse, void>({
-      query: () => "/products",
+    getAllProducts: builder.query<
+      ApiResponse,
+      { page?: number; limit?: number }
+    >({
+      query: ({ page = 1, limit = 10 }) =>
+        `/products?page=${page}&limit=${limit}`,
       providesTags: ["Products"],
     }),
-    //user when new api is integrated with pagination functionality
-    // getAllProducts: builder.query<
-    //   { meta: { total: number }; result: ItemData[] },
-    //   { page: number; limit: number }
-    // >({
-    //   query: ({ page, limit }) => `/products?page=${page}&limit=${limit}`,
-    //   providesTags: ["Products"],
-    // }),
-
     // Fetch a specific product by ID (GET)
     getProductById: builder.query<ApiResponseById, string>({
       query: (productId) => `/products/${productId}`,
