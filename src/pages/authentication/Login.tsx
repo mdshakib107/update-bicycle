@@ -8,6 +8,8 @@ import { useLoginMutation } from "../../redux/api/authApi";
 import { setUser, TUser } from "../../redux/features/auth/authSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import { verifyToken } from "../../utils/verifyToken";
+import { useEffect, useState } from "react";
+import Loading from "@/components/shared/Loading";
 
 const Login = () => {
   // useLogin mutation hook
@@ -19,8 +21,15 @@ const Login = () => {
   // useAppDispatch hook
   const dispatch = useAppDispatch();
 
+  // loading effect state
+  const [redirecting, setRedirecting] = useState(false);
+
   // onFinish function for submitting the form
-  const onFinish = async (values: { email: string; password: string; remember: boolean }) => {
+  const onFinish = async (values: {
+    email: string;
+    password: string;
+    remember: boolean;
+  }) => {
     // console.log("Received values of form: ", values);
 
     const toastId = toast.loading("Logging in...");
@@ -39,7 +48,7 @@ const Login = () => {
           setUser({
             user: user as TUser,
             token: res.token,
-          })
+          }),
         );
 
         // Persist token based on "remember me"
@@ -68,6 +77,38 @@ const Login = () => {
       return <Navigate to="/login" replace={true} />;
     }
   };
+
+  // Check if the user is already logged in when the component is mounted
+  useEffect(() => {
+    const token =
+      localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+
+    if (token) {
+      const user = verifyToken(token); // You can verify if the token is valid here
+      if (user) {
+        setRedirecting(true); // Trigger Loading state
+
+        // Delay the navigation by 1 second (1000 ms)
+        const timeout = setTimeout(() => {
+          toast.info("You are already logged in!")
+          // If the token is valid, redirect to home
+          navigate("/");
+        }, 1000);
+
+        // Optional: clear timeout if the component unmounts before it completes
+        return () => clearTimeout(timeout);
+      }
+    }
+  }, [navigate]); // Empty dependency array to run once when the component is mounted
+
+  // loading
+  if (redirecting) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="flex justify-center items-center h-screen">
