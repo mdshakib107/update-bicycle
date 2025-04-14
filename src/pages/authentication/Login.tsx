@@ -119,6 +119,7 @@ const Login = () => {
           {/* login button */}
           <Form.Item>
             <CustomButton
+              type="submit"
               className="w-full !py-1.5"
               textName={
                 isLoading ? (
