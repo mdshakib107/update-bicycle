@@ -5,11 +5,6 @@ import baseApi from "./baseApi";
 export const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Fetch all products (GET)
-    //comment when new api is integrated with pagination functionality
-    // getAllProducts: builder.query<ApiResponse, void>({
-    //   query: () => "/products",
-    //   providesTags: ["Products"],
-    // }),
     getAllProducts: builder.query<
       ApiResponse,
       { page?: number; limit?: number }

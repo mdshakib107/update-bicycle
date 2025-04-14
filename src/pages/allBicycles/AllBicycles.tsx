@@ -20,7 +20,6 @@ const AllBicycles = () => {
   const { data, isLoading, isError } = useGetAllProductsQuery({ page, limit });
   const meta = data?.data?.meta;
   const products = data?.data?.result;
-  console.log("AllBicycles data", products);
 
   const handleFilterChange = (key: string, value: any) => {
     dispatch(setFilter({ [key]: value }));
@@ -64,7 +63,6 @@ const AllBicycles = () => {
       })
     : products;
 
-  console.log(filteredProducts, "filteredProducts");
   return (
     <div className="w-full">
       {/* Filter Button on Mobile */}
