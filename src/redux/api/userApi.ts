@@ -48,7 +48,6 @@ export const userApi = baseApi.injectEndpoints({
   }),
 });
 
-
 export const {
   useGetAllUsersQuery,
   useGetUserByIdQuery,

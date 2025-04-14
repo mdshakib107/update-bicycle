@@ -77,10 +77,6 @@ const routes = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/checkout/:id",
-    element: <Checkout/>,
-  },
-  {
     path: "/register",
     element: <Register />,
   },

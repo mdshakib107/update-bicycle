@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { useChangePasswordMutation } from "../../../redux/api/authApi";
 
-const UpdatePassword = () => {
+const updatePassword = () => {
   const [changePassword, { isLoading }] = useChangePasswordMutation();
 
   const onFinish = async (values: {
@@ -86,4 +86,4 @@ const UpdatePassword = () => {
   );
 };
 
-export default UpdatePassword;
+export default updatePassword;

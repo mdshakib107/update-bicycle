@@ -5,6 +5,8 @@ import { SlArrowUp } from "react-icons/sl";
 import logo from "../../assets/images/logo/logo.png";
 import CustomButton from "./CustomButton";
 import { Link } from "react-router-dom";
+import ContactUs from "../modals/ContactUs";
+import { useState } from "react";
 
 const Footer = () => {
   // modal open close state
@@ -75,7 +77,7 @@ const Footer = () => {
           {new Date().getFullYear() !== 2025
             ? 2025 - new Date().getFullYear()
             : new Date().getFullYear()}{" "}
-          All Rights Reserved
+          All Rights Reserved by Bicycle
         </p>
 
         {/* go to top */}
