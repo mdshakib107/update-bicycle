@@ -1,11 +1,8 @@
-// react icons
-import { useState } from "react";
+
 import { BsInstagram, BsLinkedin, BsTwitter } from "react-icons/bs";
 import { CgFacebook } from "react-icons/cg";
 import { SlArrowUp } from "react-icons/sl";
-import { Link } from "react-router-dom";
 import logo from "../../assets/images/logo/logo.png";
-import ContactUs from "../modals/ContactUs";
 import CustomButton from "./CustomButton";
 import { Link } from "react-router-dom";
 import ContactUs from "../modals/ContactUs";
