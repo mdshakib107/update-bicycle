@@ -11,7 +11,6 @@ const BicyclesDetailPage = () => {
   const { id } = useParams(); // Get the product ID from the URL parameters
   const { data, isLoading, error } = useGetProductByIdQuery(id!);
   const productData = data?.data;
-  // console.log(productData);
 
   if (isLoading) return <Skeleton active />;
   if (error) return <p className="text-red-500">Something went wrong!</p>;
