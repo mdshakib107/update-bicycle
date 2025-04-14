@@ -5,7 +5,6 @@ import Register from "@/pages/authentication/register";
 import { createBrowserRouter } from "react-router-dom";
 import App from "../App";
 import ProtectedRoute from "../components/layout/ProtectedRoute";
-import Sidebar from "../components/layout/sidebar";
 import HomeLayout from "../layout/home/HomeLayout";
 import Login from "../pages/authentication/Login";
 import Page404 from "../pages/shared/Page404";
@@ -18,6 +17,7 @@ import TermsAndCondition from "@/pages/terms/TermsAndCondition";
 import PrivacyPolicy from "@/pages/terms/PrivacyPolicy";
 import PolicyLayout from "@/layout/policy/PolicyLayout";
 import CheckoutLayout from "@/layout/checkout/CheckoutLayout";
+import DashboardLayout from "@/layout/Dashboard/DashboardLayout";
 
 const routes = createBrowserRouter([
   {
@@ -69,8 +69,8 @@ const routes = createBrowserRouter([
     ],
   },
   {
-    path: "/sidebar",
-    element: <Sidebar />,
+    path: "/dashboard",
+    element: <DashboardLayout />,
   },
   {
     path: "/login",
