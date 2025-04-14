@@ -1,33 +1,31 @@
-import UserDashboard from '../layout/Dashboard/user/UserDashboard';
-import ManageProfile from '../layout/Dashboard/user/Manage Profile/ManageProfile'
-import UpdatePassword from '../layout/Dashboard/user/UpdatePassword'
-import ViewOrders from '../layout/Dashboard/user/viewOrders'
+import ManageProfile from "../layout/Dashboard/user/manageProfile";
+import UpdatePassword from "../layout/Dashboard/user/UpdatePassword";
+import UserDashboard from "../layout/Dashboard/user/UserDashboard";
+import ViewOrders from "../layout/Dashboard/user/viewOrders";
 
 export const userPaths = [
-    {
-      name: 'Dashboard',
-      path: 'dashboard',
-      element: <UserDashboard />,
-    },
-    {
-      name: 'Manage Profile',
-      path: 'manage-profile',
-      element: <ManageProfile />,
-    },
-    {
-      name: 'Update Password',
-      path: 'update-password',
-      element: <UpdatePassword />,
-    },
+  {
+    name: "Dashboard",
+    path: "dashboard",
+    element: <UserDashboard />,
+  },
+  {
+    name: "Manage Profile",
+    path: "manage-profile",
+    element: <ManageProfile />,
+  },
+  {
+    name: "Update Password",
+    path: "update-password",
+    element: <UpdatePassword />,
+  },
+  {
+    name: "View Orders",
+    children: [
       {
-        name: 'View Orders',
-        children: [
-          {
-            path: 'view-order',
-           element: <ViewOrders/>,
-          },],
-      }
-
-
-
-]
+        path: "view-order",
+        element: <ViewOrders />,
+      },
+    ],
+  },
+];

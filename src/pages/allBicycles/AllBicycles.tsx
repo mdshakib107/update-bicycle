@@ -1,53 +1,82 @@
 import ItemsCard, { ItemData } from "@/components/shared/ItemsCard";
 import Loading from "@/components/shared/Loading";
 import { useGetAllProductsQuery } from "@/redux/api/productApi";
+import { setFilter } from "@/redux/features/filterSlice/filterSlice";
 import { RootState } from "@/redux/store";
-// import { useState } from "react";
-import { useSelector } from "react-redux";
+import { MenuOutlined } from "@ant-design/icons";
+import { Button, Drawer, Pagination } from "antd";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import AllBicycleFilter from "./AllBicycleFilter";
 
 const AllBicycles = () => {
-  // const [page, setPage] = useState(1);
-  // const limit = 10;
-  // const { data, isLoading, isError } = useGetAllProductsQuery({ page, limit });
-  const { data, isLoading, isError } = useGetAllProductsQuery(undefined);
-  // console.log("AllBicycles data", data);
+  const dispatch = useDispatch(); // Redux dispatch function
+  const [page, setPage] = useState(1);
+  const [limit] = useState(10);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [isFilterApplied, setIsFilterApplied] = useState(false);
+
+  const { data, isLoading, isError } = useGetAllProductsQuery({ page, limit });
+  const meta = data?.data?.meta;
   const products = data?.data?.result;
+  console.log("AllBicycles data", products);
+
+  const handleFilterChange = (key: string, value: any) => {
+    dispatch(setFilter({ [key]: value }));
+    setIsFilterApplied(true);
+  };
 
   const filters = useSelector((state: RootState) => state.filter);
   if (isLoading) return <Loading />;
   if (isError) return toast.error("Failed to load products");
 
-  const filteredProducts = products?.filter((product: ItemData) => {
-    const matchSearch =
-      !filters.search ||
-      product.name.toLowerCase().includes(filters.search.toLowerCase()) ||
-      product.brand.toLowerCase().includes(filters.search.toLowerCase());
+  const filteredProducts = isFilterApplied
+    ? products?.filter((product: ItemData) => {
+        const matchSearch =
+          !filters.search ||
+          product.name.toLowerCase().includes(filters.search.toLowerCase()) ||
+          product.brand.toLowerCase().includes(filters.search.toLowerCase());
 
-    const matchPrice =
-      product.price >= filters.priceRange[0] &&
-      product.price <= filters.priceRange[1];
+        const matchPrice =
+          product.price >= filters.priceRange[0] &&
+          product.price <= filters.priceRange[1];
 
-    const matchType =
-      !filters.type ||
-      product.type.toLowerCase() === filters.type.toLowerCase();
+        const matchType =
+          !filters.type ||
+          product.type.toLowerCase() === filters.type.toLowerCase();
 
-    const matchBrand =
-      !filters.brand ||
-      product.brand.toLowerCase() === filters.brand.toLowerCase();
+        const matchBrand =
+          !filters.brand ||
+          product.brand.toLowerCase() === filters.brand.toLowerCase();
 
-    const matchAvailability = !filters.availability || product.inStock;
+        const matchAvailability = filters.availability
+          ? product.inStock === true
+          : true;
 
-    const isMatched =
-      matchSearch && matchPrice && matchType && matchBrand && matchAvailability;
-    return isMatched;
-  });
+        return (
+          matchSearch &&
+          matchPrice &&
+          matchType &&
+          matchBrand &&
+          matchAvailability
+        );
+      })
+    : products;
 
+  console.log(filteredProducts, "filteredProducts");
   return (
     <div className="w-full">
-      <div className="grid grid-cols-5 gap-6 px-4 mt-10">
-        <div className="col-span-5 lg:col-span-4">
+      {/* Filter Button on Mobile */}
+      <div className="flex justify-end px-4 mt-4 lg:hidden">
+        <Button icon={<MenuOutlined />} onClick={() => setFilterOpen(true)}>
+          Filter
+        </Button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 px-4 mt-6">
+        {/* Products */}
+        <div className="lg:col-span-4 col-span-1">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredProducts?.map((product: ItemData) => (
               <ItemsCard
@@ -56,23 +85,39 @@ const AllBicycles = () => {
                 isPending={isLoading}
               />
             ))}
-            {/* Paginator */}
-            {/* <div className="flex justify-center mt-4">
-              <Pagination
-                align="end"
-                current={page}
-                total={filteredProducts?.meta?.total || 0} // Total products count
-                pageSize={limit}
-                onChange={(pageNumber: number) => setPage(pageNumber)} // Update page state
-                showSizeChanger={false}
-              />
-            </div> */}
           </div>
+
+          {/* Pagination */}
+          {meta?.totalPage && meta?.totalPage > 1 && (
+            <div className="mt-6 flex justify-center">
+              <Pagination
+                current={meta.page}
+                pageSize={meta.limit}
+                total={meta.total}
+                onChange={(p) => setPage(p)}
+                className="mt-6"
+              />
+            </div>
+          )}
         </div>
-        <div className="col-span-5 lg:col-span-1">
-          <AllBicycleFilter />
+
+        {/* Filter for large screens */}
+        <div className="hidden lg:block lg:col-span-1">
+          <AllBicycleFilter handleChange={handleFilterChange} />
         </div>
       </div>
+
+      {/* Drawer Filter for small screens */}
+      <Drawer
+        title="Filter"
+        placement="left"
+        onClose={() => setFilterOpen(false)}
+        open={filterOpen}
+      >
+        <AllBicycleFilter
+          handleChange={handleFilterChange} // Pass the handleFilterChange function to the filter component
+        />
+      </Drawer>
     </div>
   );
 };
