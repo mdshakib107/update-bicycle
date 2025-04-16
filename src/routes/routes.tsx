@@ -69,10 +69,6 @@ const routes = createBrowserRouter([
     ],
   },
   {
-    path: "/dashboard",
-    element: <DashboardLayout />,
-  },
-  {
     path: "/login",
     element: <Login />,
   },
@@ -85,26 +81,30 @@ const routes = createBrowserRouter([
     element: <ForgotPassword />,
   },
   {
-    path: "/admin",
-    element: (
-      <ProtectedRoute role="admin">
-        {" "}
-        <App />
-      </ProtectedRoute>
-    ),
+    path: "/dashboard",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "admin",
+        element: (
+          <ProtectedRoute role="admin">
+            <DashboardLayout />
+          </ProtectedRoute>
+        ),
 
-    children: routeGenerator(adminPaths),
-  },
-  {
-    path: "/user",
-    element: (
-      <ProtectedRoute role="customer">
-        {" "}
-        <App />{" "}
-      </ProtectedRoute>
-    ),
+        children: routeGenerator(adminPaths),
+      },
+      {
+        path: "user",
+        element: (
+          <ProtectedRoute role="customer">
+            <DashboardLayout />
+          </ProtectedRoute>
+        ),
 
-    children: routeGenerator(userPaths),
+        children: routeGenerator(userPaths),
+      },
+    ],
   },
 ]);
 
