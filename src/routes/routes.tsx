@@ -18,6 +18,8 @@ import PrivacyPolicy from "@/pages/terms/PrivacyPolicy";
 import PolicyLayout from "@/layout/policy/PolicyLayout";
 import CheckoutLayout from "@/layout/checkout/CheckoutLayout";
 import DashboardLayout from "@/layout/Dashboard/DashboardLayout";
+import AdminDashboard from "@/layout/Dashboard/admin/AdminDashboard";
+import UserDashboard from "@/layout/Dashboard/user/UserDashboard";
 
 const routes = createBrowserRouter([
   {
@@ -35,11 +37,11 @@ const routes = createBrowserRouter([
         element: <AllBicyclesLayout />,
       },
       {
-        path: "/about",
+        path: "about",
         element: <AboutusLayout />,
       },
       {
-        path: "/terms",
+        path: "terms",
         element: <PolicyLayout />,
         children: [
           {
@@ -53,7 +55,7 @@ const routes = createBrowserRouter([
         ],
       },
       {
-        path: "/checkout/:id",
+        path: "checkout/:id",
         element: <CheckoutLayout />,
         children: [
           {
@@ -88,17 +90,17 @@ const routes = createBrowserRouter([
         path: "admin",
         element: (
           <ProtectedRoute role="admin">
-            <DashboardLayout />
+            <AdminDashboard />
           </ProtectedRoute>
         ),
 
         children: routeGenerator(adminPaths),
       },
       {
-        path: "user",
+        path: "customer",
         element: (
           <ProtectedRoute role="customer">
-            <DashboardLayout />
+            <UserDashboard />
           </ProtectedRoute>
         ),
 

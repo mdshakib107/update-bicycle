@@ -1,19 +1,21 @@
 import Sidebar from "@/components/layout/sidebar";
 import Loading from "@/components/shared/Loading";
 import { verifyToken } from "@/utils/verifyToken";
+import { Layout } from "antd";
 import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
+// antd layout destructure
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const { Header, Content, Footer, Sider } = Layout;
+
 function DashboardLayout() {
-
-
   // navigation
   const navigate = useNavigate();
 
   // loading effect state
   const [redirecting, setRedirecting] = useState(false);
-
 
   // Check if the user is already logged in when the component is mounted
   useEffect(() => {
@@ -49,8 +51,28 @@ function DashboardLayout() {
 
   return (
     <>
-      <Sidebar />
-      <Outlet />
+      <Layout>
+        {/* responsive sidebar */}
+        <Sidebar />
+
+        <Layout>
+          {/* <Header style={{ padding: 0 }} /> */}
+          <Content style={{ margin: "24px 16px 0" }}>
+            <div
+              style={{
+                padding: 24,
+                minHeight: 360,
+              }}
+            >
+              {/* content */}
+              <Outlet />
+            </div>
+          </Content>
+          <Footer style={{ textAlign: "center" }}>
+            Bicycle ©{new Date().getFullYear()} - Created by Promise Squad
+          </Footer>
+        </Layout>
+      </Layout>
     </>
   );
 }
