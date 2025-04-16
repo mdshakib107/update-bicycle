@@ -2,14 +2,12 @@ import { useState } from "react";
 
 // react icons
 import { BsArrowRight } from "react-icons/bs";
-import { CgIfDesign } from "react-icons/cg";
 import { CiMenuFries } from "react-icons/ci";
-import { FaCubesStacked } from "react-icons/fa6";
 import { FiUser } from "react-icons/fi";
 import { GrUserAdmin } from "react-icons/gr";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { IoSettingsOutline } from "react-icons/io5";
-import { MdDashboardCustomize, MdKeyboardArrowDown } from "react-icons/md";
+import { MdKeyboardArrowDown } from "react-icons/md";
 import { TbLogout2 } from "react-icons/tb";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -52,6 +50,9 @@ const ResponsiveNavbar = () => {
       toast.error(`Something went wrong: ${error}`, { id: toastId });
     }
   };
+
+  // user role leading dashboard
+  const toDashboard = user ? `/dashboard/${user?.role}` : "/";
 
   // NavLink is active
   // NavLink is active
@@ -100,15 +101,21 @@ const ResponsiveNavbar = () => {
   const desktopNavLinks = (
     <ul className="items-center gap-[20px] text-[1rem]  md:flex hidden">
       <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize">
-        <NavLink to="/" className={activeLink}>home</NavLink>
+        <NavLink to="/" className={activeLink}>
+          home
+        </NavLink>
       </li>
 
       <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize">
-        <NavLink to="/AllBicycles" className={activeLink}>All Bicycle</NavLink>
+        <NavLink to="/AllBicycles" className={activeLink}>
+          All Bicycle
+        </NavLink>
       </li>
 
       <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize">
-        <NavLink to="/about" className={activeLink}>About Us</NavLink>
+        <NavLink to="/about" className={activeLink}>
+          About Us
+        </NavLink>
       </li>
 
       <li className="transition-all duration-500 cursor-pointer dark:text-[#abc2d3] hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] group relative">
@@ -135,15 +142,21 @@ const ResponsiveNavbar = () => {
   const mobileSidebarLinks = (
     <ul className="items-start gap-[20px] text-[1rem] flex flex-col">
       <li className="hover:text-[#3B9DF8] transition-all duration-300 capitalize cursor-pointer">
-        <NavLink to="/"  className={activeLink}>Home</NavLink>
+        <NavLink to="/" className={activeLink}>
+          Home
+        </NavLink>
       </li>
 
       <li className="hover:text-[#3B9DF8] transition-all duration-300 capitalize cursor-pointer">
-        <NavLink to="/AllBicycles"  className={activeLink}>All Bicycle</NavLink>
+        <NavLink to="/AllBicycles" className={activeLink}>
+          All Bicycle
+        </NavLink>
       </li>
 
       <li className="hover:text-[#3B9DF8] transition-all duration-300 capitalize cursor-pointer">
-        <NavLink to="/about"  className={activeLink}>About Us</NavLink>
+        <NavLink to="/about" className={activeLink}>
+          About Us
+        </NavLink>
       </li>
 
       {/* Terms Mobile Dropdown */}
@@ -207,14 +220,14 @@ const ResponsiveNavbar = () => {
               {user.role === "admin" ? "Admin" : "Customer"}
             </span>
             <NavLink
-              to="/dashboard"
+              to={toDashboard}
               className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50 ${activeLink}`}
             >
               <FiUser />
               View Profile
             </NavLink>
             <NavLink
-              to="/dashboard"
+              to={toDashboard}
               className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50 ${activeLink}`}
             >
               <IoSettingsOutline />
@@ -253,7 +266,7 @@ const ResponsiveNavbar = () => {
       <div className="flex space-x-4 ">
         <ul className="items-center gap-[20px] text-[1rem] text-[#424242] md:flex">
           <li className="transition-all duration-500 cursor-pointer hover:bg-[#d8e0e1] rounded-full capitalize">
-            <NavLink to={user ? "/dashboard" : "/"}>
+            <NavLink to={toDashboard}>
               {/* <MdDashboard className="h-20px w-20px" /> */}
               {/* logo */}
               <img

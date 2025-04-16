@@ -1,4 +1,4 @@
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, MenuProps } from 'antd';
 import { sidebarItemsGenerator } from '../../utils/sidebarItemsGenerator';
 import { adminPaths } from '../../routes/admin.routes';
 import { userPaths } from '../../routes/user.routes';
@@ -24,7 +24,7 @@ const Sidebar = () => {
     user = verifyToken(token) as TUser;
   }
 
-let sidebarItems: TSidebarItem[] = [];
+let sidebarItems: MenuProps["items"] | TSidebarItem[] = []; //
 
   switch (user?.role) {
     case userRole.ADMIN:
@@ -53,7 +53,7 @@ let sidebarItems: TSidebarItem[] = [];
           alignItems: 'center',
         }}
       >
-        <h1>Dashboard</h1>
+        <h1 className='font-semibold text-xl'>🚲 Bicycle</h1>
       </div>
       <Menu
         theme="dark"
