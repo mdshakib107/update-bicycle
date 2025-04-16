@@ -253,7 +253,7 @@ const ResponsiveNavbar = () => {
       <div className="flex space-x-4 ">
         <ul className="items-center gap-[20px] text-[1rem] text-[#424242] md:flex">
           <li className="transition-all duration-500 cursor-pointer hover:bg-[#d8e0e1] rounded-full capitalize">
-            <NavLink to="/dashboard">
+            <NavLink to={user ? "/dashboard" : "/"}>
               {/* <MdDashboard className="h-20px w-20px" /> */}
               {/* logo */}
               <img
