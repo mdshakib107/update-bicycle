@@ -4,7 +4,7 @@ import Products from "../layout/Dashboard/admin/products/prodsucts";
 export const adminPaths = [
   {
     name: "My Dashboard",
-    index: true,
+    path: "my-dashboard",
     element: <AdminDashboard />,
   },
   {

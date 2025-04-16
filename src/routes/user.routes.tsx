@@ -6,7 +6,7 @@ import ViewOrders from "../layout/Dashboard/user/viewOrders";
 export const userPaths = [
   {
     name: "My Dashboard",
-    index: true,
+    path: "my-dashboard",
     element: <UserDashboard />,
   },
   {
