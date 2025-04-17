@@ -6,6 +6,10 @@ export const baseApi = createApi({
     baseUrl: `${import.meta.env.VITE_SERVER}/api`,
     credentials: "include",
     prepareHeaders: (headers) => {
+      const token = localStorage.getItem("authToken");
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
       headers.set("Content-Type", "application/json");
       return headers;
     },
