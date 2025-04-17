@@ -63,12 +63,13 @@ function DashboardLayout() {
                 padding: 24,
                 minHeight: 360,
               }}
+              className=""
             >
               {/* content */}
               <Outlet />
             </div>
           </Content>
-          <Footer style={{ textAlign: "center" }}>
+          <Footer className="text-center hidden md:block">
             Bicycle ©{new Date().getFullYear()} - Created by Promise Squad
           </Footer>
         </Layout>

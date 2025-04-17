@@ -6,6 +6,7 @@ import { useAppSelector } from '../../redux/hooks';
 import { TUser, useCurrentToken } from '../../redux/features/auth/authSlice';
 import { verifyToken } from '../../utils/verifyToken';
 import { TSidebarItem } from '../../utils/types'; 
+import { Link } from 'react-router-dom';
 
 
 const { Sider } = Layout;
@@ -24,7 +25,7 @@ const Sidebar = () => {
     user = verifyToken(token) as TUser;
   }
 
-let sidebarItems: MenuProps["items"] | TSidebarItem[] = []; //
+let sidebarItems: MenuProps["items"] | TSidebarItem[] = []; // changed a little for resolving antd error
 
   switch (user?.role) {
     case userRole.ADMIN:
@@ -53,7 +54,7 @@ let sidebarItems: MenuProps["items"] | TSidebarItem[] = []; //
           alignItems: 'center',
         }}
       >
-        <h1 className='font-semibold text-xl'>🚲 Bicycle</h1>
+        <Link to={'/'} className='font-semibold text-xl'>🚲 Bicycle</Link>
       </div>
       <Menu
         theme="dark"

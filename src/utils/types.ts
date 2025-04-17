@@ -23,13 +23,11 @@ export type TUserPath = {
   }[];
 };
 
-export type TSidebarItem =
-  | {
-      key: string;
-      label: ReactNode;
-      children?: TSidebarItem[];
-    }
-  | undefined;
+export type TSidebarItem = {
+  key: string;
+  label: ReactNode;
+  children?: TSidebarItem[];
+};
 
 export type TResponse<T> = {
   data: T;
@@ -87,6 +85,5 @@ export interface ApiResponse {
 export interface ApiResponseById {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [x: string]: any;
-  data:  ItemData; // An array of your `ItemData` objects
-  
+  data: ItemData; // An array of your `ItemData` objects
 }

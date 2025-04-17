@@ -1,5 +1,6 @@
+import AddBicycle from "@/pages/dashboard/admin/products/AddBicycle";
 import AdminDashboard from "../layout/Dashboard/admin/AdminDashboard";
-import Products from "../layout/Dashboard/admin/products/prodsucts";
+import Products from "../pages/dashboard/admin/products/prodsucts";
 
 export const adminPaths = [
   {
@@ -11,21 +12,17 @@ export const adminPaths = [
     name: "Manage Users",
     children: [
       {
-        name: "",
-        path: "",
+        name: "All Products",
+        path: "all-products",
         element: <Products />,
+      },
+      {
+        name: "Add Bicycle",
+        path: "add-bicycle",
+        element: <AddBicycle/>,
       },
     ],
   },
-  //{
-  //   name: 'Orderd',
-  //   children: [
-  //     {
-  //       name: '',
-  //      path: '',
-  //  element: < />,
-  //    },],
-  // },
   // {
   //   name: 'Products',
   //  children: [
