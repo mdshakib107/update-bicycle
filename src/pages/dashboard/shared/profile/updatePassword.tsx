@@ -5,7 +5,7 @@ import { Flex, Form, Input } from "antd";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { useChangePasswordMutation } from "../../../redux/api/authApi";
+import { useChangePasswordMutation } from "../../../../redux/api/authApi";
 
 const updatePassword = () => {
   const [changePassword, { isLoading }] = useChangePasswordMutation();
@@ -47,7 +47,7 @@ const updatePassword = () => {
               { required: true, message: "Please input your old password!" },
             ]}
           >
-            <Input
+            <Input.Password
               prefix={<LockOutlined />}
               type="password"
               placeholder="Old Password"
@@ -58,13 +58,15 @@ const updatePassword = () => {
           <Form.Item
             name="newPassword"
             rules={[
-              { required: true, message: "Please input your new password!" },
+              { required: true, message: "Please enter a password" },
+              { min: 4, message: "Minimum 4 characters required" },
+              { max: 20, message: "Maximum 20 characters allowed" },
             ]}
           >
-            <Input
+            <Input.Password
               prefix={<LockOutlined />}
-              type="password"
-              placeholder="New Password"
+              type="password" 
+            placeholder="Enter new password" 
             />
           </Form.Item>
 
