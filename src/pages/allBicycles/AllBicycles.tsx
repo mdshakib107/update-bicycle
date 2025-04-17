@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ItemsCard, { ItemData } from "@/components/shared/ItemsCard";
 import Loading from "@/components/shared/Loading";
 import { useGetAllProductsQuery } from "@/redux/api/productApi";
@@ -13,7 +14,7 @@ import AllBicycleFilter from "./AllBicycleFilter";
 const AllBicycles = () => {
   const dispatch = useDispatch(); // Redux dispatch function
   const [page, setPage] = useState(1);
-  const [limit] = useState(10);
+  const [limit] = useState(9);
   const [filterOpen, setFilterOpen] = useState(false);
   const [isFilterApplied, setIsFilterApplied] = useState(false);
 
