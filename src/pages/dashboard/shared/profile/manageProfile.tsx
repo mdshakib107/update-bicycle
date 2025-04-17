@@ -7,9 +7,10 @@ import {
 } from "@/redux/api/userApi";
 import { useCurrentUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/hooks";
-import { Form, Input, Select, Typography, message } from "antd";
+import { Form, Input, Select, Typography } from "antd";
 import { useEffect } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
+import { toast } from "sonner";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -36,9 +37,9 @@ const ManageProfile = () => {
   const handleSubmit = async (values: any) => {
     try {
       await updateUser({ userId: userId!, updateData: values }).unwrap();
-      message.success("Profile updated successfully");
+      toast.success("Profile updated successfully");
     } catch (error: any) {
-      message.error(error?.data?.message || "Update failed");
+      toast.error(error?.data?.message || "Update failed");
     }
   };
 
@@ -60,7 +61,7 @@ const ManageProfile = () => {
 
   return (
     <div className="flex justify-center items-center w-full">
-      <div className="p-8 border rounded shadow-md border-blue-600 shadow-blue-600 w-full max-w-2xl">
+      <div className="p-8 border rounded shadow-md border-purple-600 shadow-purple-600 w-full max-w-2xl">
         <Title level={3} className="text-center mb-6">
           Update Account
         </Title>
