@@ -24,8 +24,9 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
   const relatedProducts = products
     ?.filter(
       (product: ItemData) =>
-        product.brand === brand ||
-        (product.type === type && product._id !== currentProductId) // Exclude the current product
+        product.brand === brand &&
+        product.type === type &&
+        product._id !== currentProductId // Exclude the current product
     )
     .slice(0, 4); // Show only 4 related products
 
