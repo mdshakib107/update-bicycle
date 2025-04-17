@@ -2,18 +2,35 @@
 
 import CustomButton from "@/components/shared/CustomButton";
 import { useCreateProductMutation } from "@/redux/api/productApi";
-import { Form, Input, InputNumber, Select, Checkbox } from "antd";
+import { Form, Input, InputNumber, Select, Checkbox, Typography } from "antd";
+import { useEffect } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
+import { toast } from "sonner";
 
 const { TextArea } = Input;
+const { Title } = Typography;
 
 const productTypes = ["Mountain", "Road", "Hybrid", "BMX", "Electric", "Fat Bikes"];
 
 const AddBicycle = () => {
+
   const [form] = Form.useForm();
+
+  // post bicycle
   const [createProduct, { isLoading: isSubmitting }] =
     useCreateProductMutation();
 
+  // watch inStock value
+  const inStock = Form.useWatch('inStock', form); 
+
+  // When inStock is false, set quantity to 0
+  useEffect(() => {
+    if (!inStock) {
+      form.setFieldsValue({ quantity: 0 });
+    }
+  }, [inStock, form]);
+
+  // handle submit
   const handleSubmit = async (values: any) => {
     try {
       // Prepare the form data to match the API structure
@@ -28,21 +45,30 @@ const AddBicycle = () => {
         inStock: values.inStock,
       };
 
-      console.log(productData)
+      // console.log(productData)
 
       // Create the product using the mutation
       await createProduct(productData).unwrap();
+
+      toast.success("Product creation successful")
 
       // Reset the form fields after success
       form.resetFields();
     } catch (error) {
       console.error("Failed to create product:", error);
+      toast.info("Failed to create product")
     }
   };
 
   return (
     <div className="flex justify-center items-center w-full">
       <div className="p-8 border rounded shadow-md border-purple-600 shadow-purple-600 w-full max-w-4xl">
+      <Title
+        level={2}
+        className="text-center mb-6 text-2xl sm:text-3xl md:text-4xl"
+      >
+        Add a Bicycle!
+      </Title>
         <Form
           form={form}
           layout="vertical"
@@ -127,6 +153,7 @@ const AddBicycle = () => {
                   min={0}
                   className="w-full!"
                   placeholder="Enter quantity"
+                  disabled={!inStock} // disable if not in stock
                 />
               </Form.Item>
 
@@ -144,7 +171,7 @@ const AddBicycle = () => {
           <Form.Item>
             <CustomButton
               type="submit"
-              className="w-full !py-1.5"
+              className="w-full !py-2"
               textName={
                 isSubmitting ? (
                   <TbFidgetSpinner className="animate-spin" />
