@@ -52,7 +52,7 @@ const ResponsiveNavbar = () => {
   };
 
   // user role leading dashboard
-  const toDashboard = user ? `/dashboard/${user?.role}` : "/";
+  const toDashboard = user ? `/dashboard/${user?.role}/my-dashboard` : "/";
 
   // NavLink is active
   // NavLink is active
