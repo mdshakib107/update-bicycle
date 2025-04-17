@@ -1,7 +1,7 @@
 import CustomerDashboardLandingpage from "@/pages/dashboard/customer/landing/CustomerDashboardLandingpage";
+import ViewOrders from "../pages/dashboard/customer/orders/viewOrders";
 import ManageProfile from "../pages/dashboard/shared/profile/manageProfile";
 import UpdatePassword from "../pages/dashboard/shared/profile/updatePassword";
-import ViewOrders from "../pages/dashboard/customer/orders/viewOrders";
 
 export const userPaths = [
   {

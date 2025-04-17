@@ -21,7 +21,7 @@ export const adminPaths = [
     element: <UpdatePassword />,
   },
   {
-    name: "Manage Users",
+    name: "Manage Products",
     children: [
       {
         name: "All Products",

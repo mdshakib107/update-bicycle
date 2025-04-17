@@ -12,7 +12,9 @@ export const userApi = baseApi.injectEndpoints({
     // Fetch a specific user by ID (GET)
     getUserById: builder.query<TUser, string>({
       query: (userId) => `/users/${userId}`,
-      providesTags: (_result, _error, userId) => [{ type: "Users", id: userId }],
+      providesTags: (_result, _error, userId) => [
+        { type: "Users", id: userId },
+      ],
     }),
 
     // Create a new admin user (POST)
@@ -26,7 +28,10 @@ export const userApi = baseApi.injectEndpoints({
     }),
 
     // Update user (PUT)
-    updateUser: builder.mutation<TUser, { userId: string; updateData: TUser }>({
+    updateUser: builder.mutation<
+      TUser,
+      { userId: string; updateData: Partial<TUser> }
+    >({
       query: ({ userId, updateData }) => ({
         url: `/users/${userId}`,
         method: "PUT",

@@ -1,5 +1,5 @@
 import { ItemData } from "@/components/shared/ItemsCard";
-import { useGetAllProductsQuery } from "@/redux/api/productApi";
+import { useGetAllProductsNoPageQuery } from "@/redux/api/productApi";
 import { Card, Col, Image, Row, Skeleton, Typography } from "antd";
 import { Link } from "react-router-dom";
 
@@ -17,16 +17,15 @@ const RelatedProducts: React.FC<RelatedProductsProps> = ({
   currentProductId,
 }) => {
   // Fetch all products
-  const { data, isLoading } = useGetAllProductsQuery();
+  const { data, isLoading } = useGetAllProductsNoPageQuery(undefined);
   const products = data?.data?.result;
   // console.log(products);
   // Filter products to find related ones with the same brand and type, excluding the current product
   const relatedProducts = products
     ?.filter(
       (product: ItemData) =>
-        product.brand === brand &&
-        product.type === type &&
-        product._id !== currentProductId // Exclude the current product
+        product.brand === brand ||
+        (product.type === type && product._id !== currentProductId) // Exclude the current product
     )
     .slice(0, 4); // Show only 4 related products
 
