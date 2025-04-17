@@ -3,7 +3,7 @@
 const products = () => {
     return (
       <div>
-        <h1> This is products component </h1>
+        <h1> This is all products component </h1>
       </div>
     );
   };
