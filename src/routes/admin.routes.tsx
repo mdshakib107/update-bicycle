@@ -1,6 +1,6 @@
 import AdminDashboardLandingpage from "@/pages/dashboard/admin/landing/AdminDashboardLandingpage";
 import AddBicycle from "@/pages/dashboard/admin/products/AddBicycle";
-import Products from "../pages/dashboard/admin/products/prodsucts";
+import AllProductsPage from "../pages/dashboard/admin/products/AllProductsPage";
 
 export const adminPaths = [
   {
@@ -14,7 +14,7 @@ export const adminPaths = [
       {
         name: "All Products",
         path: "all-products",
-        element: <Products />,
+        element: <AllProductsPage />,
       },
       {
         name: "Add Bicycle",

@@ -2,6 +2,7 @@
 
 import { ItemData } from "@/components/shared/ItemsCard";
 import { ReactNode } from "react";
+import { JSX } from "react/jsx-runtime";
 
 export type TRoute = {
   path: string;
@@ -73,6 +74,7 @@ export interface ApiResponse {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [x: string]: any;
   data: {
+    map?(arg0: (d: ItemData) => JSX.Element): import("react").ReactNode;
     meta: {
       page: number;
       limit: number;
