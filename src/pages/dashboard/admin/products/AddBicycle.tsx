@@ -1,22 +1,57 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import CustomButton from "@/components/shared/CustomButton";
+import { useCreateProductMutation } from "@/redux/api/productApi";
 import { Form, Input, InputNumber, Select, Checkbox } from "antd";
 import { TbFidgetSpinner } from "react-icons/tb";
 
 const { TextArea } = Input;
 
-const productTypes = ["Mountain", "Road", "Hybrid", "BMX", "Electric"];
+const productTypes = ["Mountain", "Road", "Hybrid", "BMX", "Electric", "Fat Bikes"];
 
-const AddBicycle = ({ isLoading = false }) => {
+const AddBicycle = () => {
   const [form] = Form.useForm();
+  const [createProduct, { isLoading: isSubmitting }] =
+    useCreateProductMutation();
+
+  const handleSubmit = async (values: any) => {
+    try {
+      // Prepare the form data to match the API structure
+      const productData = {
+        name: values.name,
+        Img: values.Img,
+        brand: values.brand,
+        price: values.price,
+        type: values.type,
+        description: values.description,
+        quantity: values.quantity,
+        inStock: values.inStock,
+      };
+
+      console.log(productData)
+
+      // Create the product using the mutation
+      await createProduct(productData).unwrap();
+
+      // Reset the form fields after success
+      form.resetFields();
+    } catch (error) {
+      console.error("Failed to create product:", error);
+    }
+  };
 
   return (
     <div className="flex justify-center items-center w-full">
       <div className="p-8 border rounded shadow-md border-purple-600 shadow-purple-600 w-full max-w-4xl">
-        <Form form={form} layout="vertical" name="createProduct">
+        <Form
+          form={form}
+          layout="vertical"
+          name="createProduct"
+          onFinish={handleSubmit}
+        >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* LEFT COLUMN */}
             <div>
-              {/* Name */}
               <Form.Item
                 label="Product Name"
                 name="name"
@@ -27,12 +62,14 @@ const AddBicycle = ({ isLoading = false }) => {
                 <Input placeholder="Enter product name" />
               </Form.Item>
 
-              {/* Image */}
-              <Form.Item label="Image URL" name="Img">
-                <Input placeholder="Enter image URL (optional)" />
+              <Form.Item
+                label="Image URL"
+                name="Img"
+                rules={[{ required: true, message: "Please enter a image url" }]}
+              >
+                <Input placeholder="Enter image URL" />
               </Form.Item>
 
-              {/* Brand */}
               <Form.Item
                 label="Brand"
                 name="brand"
@@ -41,7 +78,6 @@ const AddBicycle = ({ isLoading = false }) => {
                 <Input placeholder="Enter brand name" />
               </Form.Item>
 
-              {/* Price */}
               <Form.Item
                 label="Price"
                 name="price"
@@ -58,7 +94,6 @@ const AddBicycle = ({ isLoading = false }) => {
 
             {/* RIGHT COLUMN */}
             <div>
-              {/* Type */}
               <Form.Item
                 label="Type"
                 name="type"
@@ -73,7 +108,6 @@ const AddBicycle = ({ isLoading = false }) => {
                 </Select>
               </Form.Item>
 
-              {/* Description */}
               <Form.Item
                 label="Description"
                 name="description"
@@ -84,7 +118,6 @@ const AddBicycle = ({ isLoading = false }) => {
                 <TextArea rows={4} placeholder="Enter product description" />
               </Form.Item>
 
-              {/* Quantity */}
               <Form.Item
                 label="Quantity"
                 name="quantity"
@@ -97,7 +130,6 @@ const AddBicycle = ({ isLoading = false }) => {
                 />
               </Form.Item>
 
-              {/* In Stock */}
               <Form.Item
                 name="inStock"
                 valuePropName="checked"
@@ -114,7 +146,7 @@ const AddBicycle = ({ isLoading = false }) => {
               type="submit"
               className="w-full !py-1.5"
               textName={
-                isLoading ? (
+                isSubmitting ? (
                   <TbFidgetSpinner className="animate-spin" />
                 ) : (
                   "Create Product"
