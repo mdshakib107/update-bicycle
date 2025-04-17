@@ -1,4 +1,4 @@
-import UserDashboard from "../layout/Dashboard/user/UserDashboard";
+import CustomerDashboardLandingpage from "@/pages/dashboard/customer/landing/CustomerDashboardLandingpage";
 import ManageProfile from "../pages/dashboard/customer/manageProfile";
 import UpdatePassword from "../pages/dashboard/customer/updatePassword";
 import ViewOrders from "../pages/dashboard/customer/viewOrders";
@@ -7,7 +7,7 @@ export const userPaths = [
   {
     name: "My Dashboard",
     path: "my-dashboard",
-    element: <UserDashboard />,
+    element: <CustomerDashboardLandingpage />,
   },
   {
     name: "Manage Profile",

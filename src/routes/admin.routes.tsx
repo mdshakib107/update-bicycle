@@ -1,12 +1,12 @@
+import AdminDashboardLandingpage from "@/pages/dashboard/admin/landing/AdminDashboardLandingpage";
 import AddBicycle from "@/pages/dashboard/admin/products/AddBicycle";
-import AdminDashboard from "../layout/Dashboard/admin/AdminDashboard";
 import Products from "../pages/dashboard/admin/products/prodsucts";
 
 export const adminPaths = [
   {
     name: "My Dashboard",
     path: "my-dashboard",
-    element: <AdminDashboard />,
+    element: <AdminDashboardLandingpage />,
   },
   {
     name: "Manage Users",
@@ -19,7 +19,7 @@ export const adminPaths = [
       {
         name: "Add Bicycle",
         path: "add-bicycle",
-        element: <AddBicycle/>,
+        element: <AddBicycle />,
       },
     ],
   },

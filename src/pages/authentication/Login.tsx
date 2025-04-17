@@ -1,15 +1,15 @@
 import CustomButton from "@/components/shared/CustomButton";
+import Loading from "@/components/shared/Loading";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Checkbox, Flex, Form, Input } from "antd";
+import { useEffect, useState } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useLoginMutation } from "../../redux/api/authApi";
-import { setUser, TUser } from "../../redux/features/auth/authSlice";
+import { setUser, TUserFromToken } from "../../redux/features/auth/authSlice";
 import { useAppDispatch } from "../../redux/hooks";
 import { verifyToken } from "../../utils/verifyToken";
-import { useEffect, useState } from "react";
-import Loading from "@/components/shared/Loading";
 
 const Login = () => {
   // useLogin mutation hook
@@ -46,16 +46,18 @@ const Login = () => {
       if (user) {
         dispatch(
           setUser({
-            user: user as TUser,
-            token: res.token,
+            user: res?.data as TUserFromToken,
+            token: res?.token,
           }),
         );
 
         // Persist token based on "remember me"
         if (values.remember) {
           localStorage.setItem("authToken", res.token);
+          localStorage.setItem("userData", JSON.stringify(res.data))
         } else {
           sessionStorage.setItem("authToken", res.token);
+          sessionStorage.setItem("userData", JSON.stringify(res.data));
         }
 
         toast.success("Logged in successfully", {
@@ -90,7 +92,7 @@ const Login = () => {
 
         // Delay the navigation by 1 second (1000 ms)
         const timeout = setTimeout(() => {
-          toast.info("You are already logged in!")
+          toast.info("You are already logged in!");
           // If the token is valid, redirect to home
           navigate("/");
         }, 1000);

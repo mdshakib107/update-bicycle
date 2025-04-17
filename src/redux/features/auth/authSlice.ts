@@ -2,26 +2,30 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 
 // user type
-export type TUser = {
+export type TUserFromToken = {
   name?: string;
   email: string;
-  role?: string;
   password?: string;
   iat?: number;
   exp?: number;
+  _id?: string;
+  role?: "admin" | "customer";
+  status?: "active" | "inactive" | "banned";
+  needsPasswordChange?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 // auth state
 type TAuthState = {
-  user: null | TUser;
-  token?: null | object | string;
+  user: null | TUserFromToken;
+  token?: null | string;
 };
 
 const initialState: TAuthState = {
   user: null,
   token: null,
 };
-
 
 // auth slice
 const authSlice = createSlice({

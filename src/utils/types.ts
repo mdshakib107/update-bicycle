@@ -38,13 +38,15 @@ export type TResponse<T> = {
 //User type definition
 // This type is used to define the structure of a user object in the application. move it as a separate file if needed.
 export type TUser = {
-  _id: string; // MongoDB ObjectId
-  name: string;
-  email: string;
-  role: "customer" | "admin";
-  status: "active" | "inactive" | "banned"; // as UserStatus enum
-  needsPasswordChange: boolean;
-  passwordChangedAt?: string; // Optional field
+  data: {
+    _id: string; // MongoDB ObjectId
+    name: string;
+    email: string;
+    role: "customer" | "admin";
+    status: "active" | "inactive" | "banned"; // as UserStatus enum
+    needsPasswordChange: boolean;
+    passwordChangedAt?: string; // Optional field
+  };
 };
 
 // (Ordered Item)

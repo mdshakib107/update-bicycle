@@ -1,9 +1,8 @@
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
-import { setUser, TUser } from "./redux/features/auth/authSlice";
+import { setUser } from "./redux/features/auth/authSlice";
 import { useAppDispatch } from "./redux/hooks";
 import ScrollToTop from "./routes/ScrollToTop";
-import { verifyToken } from "./utils/verifyToken";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -12,12 +11,12 @@ function App() {
   useEffect(() => {
     const token =
       localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
+    const userData =
+      localStorage.getItem("userData") || sessionStorage.getItem("userData");
 
-    if (token) {
-      const user = verifyToken(token);
-      if (user) {
-        dispatch(setUser({ user: user as TUser, token }));
-      }
+    if (token && userData) {
+      const parsedUser = JSON.parse(userData);
+      dispatch(setUser({ user: parsedUser, token }));
     }
   }, [dispatch]);
 
