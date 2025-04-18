@@ -85,7 +85,7 @@ const AllProductsPage = () => {
   const products = data?.data?.result || [];
 
   return (
-    <div className="px-4 md:px-8 py-6">
+    <div className="px-4 md:px-8 py-6 border border-purple-600 shadow-purple-600 shadow-lg rounded">
       <Title
         level={2}
         className="text-center mb-6 text-2xl sm:text-3xl md:text-4xl"

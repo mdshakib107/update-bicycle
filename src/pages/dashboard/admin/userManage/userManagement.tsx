@@ -145,7 +145,7 @@ const UserManagement = () => {
   ];
 
   return (
-    <div className="p-4">
+    <div className="p-4  border border-purple-600 shadow-purple-600 shadow-lg rounded">
       <Table
         loading={isLoading}
         columns={columns}
