@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   useDeleteUserMutation,
   useGetAllUsersQuery,
@@ -35,8 +36,9 @@ const UserManagement = () => {
     try {
       await deleteUser(userId).unwrap();
       toast.success("User deleted");
-    } catch (err) {
+    } catch (err: any) {
       toast.error("Failed to delete user");
+      console.log(err)
     }
   };
 
