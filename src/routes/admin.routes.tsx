@@ -1,5 +1,6 @@
 import AdminDashboardLandingpage from "@/pages/dashboard/admin/landing/AdminDashboardLandingpage";
 import AddBicycle from "@/pages/dashboard/admin/products/AddBicycle";
+import UserManagement from "@/pages/dashboard/admin/userManage/userManagement";
 import AllProductsPage from "../pages/dashboard/admin/products/AllProductsPage";
 import ManageProfile from "../pages/dashboard/shared/profile/manageProfile";
 import UpdatePassword from "../pages/dashboard/shared/profile/updatePassword";
@@ -19,6 +20,11 @@ export const adminPaths = [
     name: "Update Password",
     path: "change-password",
     element: <UpdatePassword />,
+  },
+  {
+    name: "Manage Users",
+    path: "manage-users",
+    element: <UserManagement />,
   },
   {
     name: "Manage Products",

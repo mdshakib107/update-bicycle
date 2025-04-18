@@ -49,6 +49,18 @@ export type TUser = {
     passwordChangedAt?: string; // Optional field
   };
 };
+export interface TUser2 {
+  _id: string;
+  name: string;
+  email: string;
+  role: "admin" | "customer";
+  status: "active" | "inactive" | "banned";
+  needsPasswordChange: boolean;
+  passwordChangedAt?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  image?: string;
+}
 
 // (Ordered Item)
 export interface OrderedItem {
