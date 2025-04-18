@@ -49,7 +49,7 @@ const routes = createBrowserRouter([
             element: <TermsAndCondition />,
           },
           {
-            path: "policies",
+            path: "policies", 
             element: <PrivacyPolicy />,
           },
         ],
