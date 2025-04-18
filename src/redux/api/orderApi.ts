@@ -4,8 +4,11 @@ import baseApi from "./baseApi";
 export const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Fetch all orders (GET)
-    getAllOrders: builder.query<Order[], void>({
-      query: () => "/orders",
+    getAllOrders: builder.query<{data:Order[]}, {id?:string, limit?:number, page?:number }>({
+      query: (params) => ({
+        url: "/orders",
+        params,
+      }),
       providesTags: ["Orders"],
     }),
 
@@ -53,24 +56,3 @@ export const {
 } = orderApi;
 
 
-/*
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-
-
-export const orderApi = createApi({
-    reducerPath: "order",
-    baseQuery: fetchBaseQuery({ baseUrl:  import.meta.env.VITE_SERVER}),
-    // tagTypes: ["order"],
-    endpoints: (builder) => ({
-        addOrderApi: builder.mutation({
-            query: (body) => ({
-                url: `/api/create-order`,
-                method: "POST",
-                body
-            }),
-        })
-    })
-})
-
-export const { useAddOrderApiMutation } = orderApi;
-*/

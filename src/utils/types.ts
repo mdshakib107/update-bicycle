@@ -53,23 +53,35 @@ export interface TUser {
   };
 }
 
+
+
 // (Ordered Item)
 export interface OrderedItem {
-  productId: string;
-  productName: string;
-  quantity: number;
-  price: number;
+  product:{
+
+    name: string;
+    Img?: string;
+    brand: string;
+    price: number;
+    type: "Mountain" | "Road" | "Hybrid" | "BMX" | "Electric" | "Fat Bikes" ;
+    description: string;
+    quantity: number;
+    inStock: boolean;
+  }
 }
 
 // (Main Order Type)
 export interface Order {
-  id: string;
+
+  _id: string;
   products: OrderedItem[];
-  userId: string;
+  user: TUser2;
   totalPrice: number;
+  paymentStatus: "Paid" |"unpaid",
   status: "pending" | "shipped" | "delivered" | "cancelled";
   createdAt: string;
   updatedAt?: string;
+
 }
 
 // interface for get products api response

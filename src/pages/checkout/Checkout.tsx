@@ -3,7 +3,7 @@ import Loading from "../../components/shared/Loading";
 import useAxiosCommon from "../../hooks/useAxiosCommon";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import ResponsiveNavbar from "@/components/home/ResponsiveNavbar";
@@ -12,37 +12,45 @@ import CustomButton from "@/components/shared/CustomButton";
 const Checkout = () => {
   const axiosCommon = useAxiosCommon();
   const { id } = useParams();
-  const navigate = useNavigate();
   const [totalPrice, setTotalPrice] = useState(0);
-  const [userId, setUserId] = useState("67af6de7d85f7b98d6443998");
+  const [userId, setUserId] = useState("");
 
-  type TStatus =
-    | "PENDING"
-    | "PROCESSING"
-    | "ON THE WAY"
-    | "DELIVERED"
-    | "CANCELED";
 
-  type TOrderedItem = {
-    product: string;
-    quantity: number;
-    price: number;
-  };
+  useEffect(() => {
+    const localUser = localStorage.getItem("userData");
+    if (localUser) {
+      const user = JSON.parse(localUser);
+      setUserId(user?._id);
+    }
+  }, []);
 
-  type TOrder = {
-    products: TOrderedItem[];
-    user: string;
-    totalPrice: number;
-    isDeleted?: boolean;
-    status: TStatus;
-    paymentStatus: "UNPAID";
-  };
+  // type TStatus =
+  //   | "PENDING"
+  //   | "PROCESSING"
+  //   | "ON THE WAY"
+  //   | "DELIVERED"
+  //   | "CANCELED";
+
+  // type TOrderedItem = {
+  //   product: string;
+  //   quantity: number;
+  //   price: number;
+  // };
+
+  // type TOrder = {
+  //   products: TOrderedItem[];
+  //   user: string;
+  //   totalPrice: number;
+  //   isDeleted?: boolean;
+  //   status: TStatus;
+  //   paymentStatus: "UNPAID";
+  // };
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       quantity: 1,
@@ -85,7 +93,7 @@ const Checkout = () => {
     }
   }, [product, quantity]);
 
-  const onSubmit = async (formData: any) => {
+  const onSubmit = async (formData: { quantity: number }) => {
     // Prepare order data
     const orderData = {
       products: [
@@ -102,7 +110,7 @@ const Checkout = () => {
       paymentStatus: "UNPAID",
     };
 
-    // console.log(orderData);
+    console.log(orderData);
 
     const response = await axiosCommon.post(
       "/api/orders/create-order",
@@ -117,7 +125,6 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen container mx-auto space-y-6 sm:space-y-8 lg:space-y-12 sm:px-6 px-4 lg:px-8">
-
       {/* navbar */}
       <ResponsiveNavbar />
 
@@ -180,8 +187,10 @@ const Checkout = () => {
                   </div>
                 </div>
 
-                <CustomButton                
-                  textName="submitPlace Order"
+                <CustomButton
+                  textName={isSubmitting ? "Placing Order..." : "Place Order"}
+                  type="submit"
+                  disabled={isSubmitting}
                   className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
                 />
               </form>
