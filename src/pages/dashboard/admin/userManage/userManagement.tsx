@@ -6,7 +6,7 @@ import {
 import { TUser2 } from "@/utils/types";
 import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Popconfirm, Table, Tag } from "antd";
-import { toast } from "react-hot-toast";
+import { toast } from "sonner";
 
 const UserManagement = () => {
   const { data, isLoading, refetch } = useGetAllUsersQuery();
