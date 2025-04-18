@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Loading from "@/components/shared/Loading";
 import {
   useDeleteOrderMutation,
@@ -19,8 +20,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
@@ -34,23 +33,26 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Order } from "@/utils/types";
+import { Order, ShippingStatus } from "@/utils/types";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 const ManageOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  //   const [limit, setLimit] = useState(10);
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [selectedOrderId, setSelectedOrderId] = useState<string>("");
+  const [openStatusDialog, setOpenStatusDialog] = useState(false);
 
-  const { data, isLoading, isError } = useGetAllOrdersQuery({ page, limit });
+  const { data, isLoading, isError } = useGetAllOrdersQuery({ page, limit: 5 });
   const [deleteOrder] = useDeleteOrderMutation();
   const [updateOrder] = useUpdateOrderMutation();
   // console.log(data);
   const orderStatusOptions = [
     { label: "PENDING", value: "pending" },
     { label: "PROCESSING", value: "processing" },
-    { label: "ON THE WAY", value: "on-the-way" },
+    { label: "SHIPPED", value: "shipped" },
     { label: "DELIVERED", value: "delivered" },
     { label: "CANCELED", value: "canceled" },
   ];
@@ -61,24 +63,43 @@ const ManageOrders = () => {
   }, [data]);
 
   const handleDeleteOrder = async (orderId: string) => {
-    console.log(orderId);
+    // console.log(orderId);
 
     try {
-       const result = await deleteOrder(orderId)
-       if (result?.data.success) {
-        toast.success(result?.data?.message)
-       }
-       console.log(result.data);
-    } catch (err) {
-        console.log(err);
+      const result = await deleteOrder(orderId);
+      if (result?.data.success) {
+        toast.success(result?.data?.message);
+      }
+      //   console.log(result.data);
+    } catch (err: any) {
+      toast.error("Failed to delete order", err);
     }
-
   };
 
-  console.log(orders);
+  const hsndleUpdateOrder = async (orderId: string, status: ShippingStatus) => {
+    // console.log({ orderId, status });
+    if (selectedOrderId && selectedStatus) {
+      try {
+        const result = await updateOrder({
+          orderId: orderId,
+          updateData: { status },
+        });
+
+        if (result?.data?.success) {
+          toast.success(result?.data?.message);
+          setOpenStatusDialog(false);
+        }
+      } catch (err: any) {
+        //   console.error(err);
+        toast.error("Failed to update order", err);
+      }
+    }
+  };
+
+  //   console.log(orders);
 
   if (isLoading) return <Loading />;
-  if (orders.length < 1) {
+  if (orders?.length < 1) {
     return (
       <div>
         <h2 className="text-center font-bold text-3xl mb-14">
@@ -125,20 +146,20 @@ const ManageOrders = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="p-2">
-                    <DropdownMenuLabel>Shipping Status</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
                     <DropdownMenuGroup>
                       {orderStatusOptions.map((option) => (
                         <DropdownMenuItem
-                          key={option?.value}
+                          key={option?.label}
                           className="cursor-pointer"
+                          onClick={() => {
+                            setSelectedStatus(option?.label);
+                            setOpenStatusDialog(true);
+                            setSelectedOrderId(order?._id);
+                          }}
                         >
                           {option.label}
                         </DropdownMenuItem>
                       ))}
-                      <DropdownMenuItem className="cursor-pointer">
-                        Profile
-                      </DropdownMenuItem>
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -148,7 +169,6 @@ const ManageOrders = () => {
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button className="bg-purple-600">Delete</Button>
-
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
@@ -176,6 +196,50 @@ const ManageOrders = () => {
           ))}
         </TableBody>
       </Table>
+      <div className="flex justify-center mt-6 gap-4">
+        <Button
+          variant="outline"
+          disabled={page === 1}
+          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+        >
+          Previous
+        </Button>
+
+        <span className="flex items-center font-medium text-lg">
+          Page {page}
+        </span>
+
+        <Button
+          variant="outline"
+          disabled={orders.length < 5} // Disable if less than 5, assuming no more pages
+          onClick={() => setPage((prev) => prev + 1)}
+        >
+          Next
+        </Button>
+      </div>
+      <AlertDialog open={openStatusDialog} onOpenChange={setOpenStatusDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Confirm Status Update</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to change the status to{" "}
+              <span className="font-semibold text-purple-600">
+                {selectedStatus}
+              </span>
+              ?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-purple-600 hover:bg-purple-700"
+              onClick={() => hsndleUpdateOrder(selectedOrderId, selectedStatus)}
+            >
+              Confirm
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
