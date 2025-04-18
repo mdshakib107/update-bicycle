@@ -41,7 +41,7 @@ const ManageOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [page, setPage] = useState(1);
   //   const [limit, setLimit] = useState(10);
-  const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<ShippingStatus | string>("");
   const [selectedOrderId, setSelectedOrderId] = useState<string>("");
   const [openStatusDialog, setOpenStatusDialog] = useState(false);
 

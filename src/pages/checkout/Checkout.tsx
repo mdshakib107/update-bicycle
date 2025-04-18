@@ -14,6 +14,7 @@ const Checkout = () => {
   const { id } = useParams();
   const [totalPrice, setTotalPrice] = useState(0);
   const [userId, setUserId] = useState("");
+  
 
 
   useEffect(() => {
@@ -70,7 +71,7 @@ const Checkout = () => {
         }
 
         // return the featured Bicycles
-        return response.data.data;
+        return response.data.data; 
       } catch (error: any) {
         console.error("Error fetching featured bicycles:", error);
 
@@ -116,8 +117,10 @@ const Checkout = () => {
       "/api/orders/create-order",
       orderData
     );
+    console.log(response);
     window.location.replace(response.data.data.GatewayPageURL);
     console.log(response.data.data);
+
   };
 
   if (isPending) return <Loading />;
