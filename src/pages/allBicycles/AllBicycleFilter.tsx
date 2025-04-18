@@ -1,10 +1,11 @@
 import { RootState } from "@/redux/store";
+import { AllBicycleFilterProps } from "@/utils/types";
 import { Checkbox, Input, Select, Slider } from "antd";
 import { useSelector } from "react-redux";
 
 const { Option } = Select;
 
-const AllBicycleFilter = ({ handleChange }) => {
+const AllBicycleFilter = ({ handleChange }: AllBicycleFilterProps) => {
   const filters = useSelector((state: RootState) => state.filter);
   // console.log(filters);
 
