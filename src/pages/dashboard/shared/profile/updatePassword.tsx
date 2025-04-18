@@ -1,4 +1,3 @@
-// pages/ForgotPassword.tsx
 import CustomButton from "@/components/shared/CustomButton";
 import { LockOutlined } from "@ant-design/icons";
 import { Flex, Form, Input } from "antd";
@@ -7,19 +6,37 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { useChangePasswordMutation } from "../../../../redux/api/authApi";
 
-const updatePassword = () => {
+const UpdatePassword = () => {
+  const [form] = Form.useForm();
   const [changePassword, { isLoading }] = useChangePasswordMutation();
-
-  const onFinish = async (values: {
+  // 🛠️ Handle form submission
+  const handleSubmit = async (values: {
     oldPassword: string;
     newPassword: string;
+    confirmPassword: string;
   }) => {
     const toastId = toast.loading("Changing password...");
 
+    // frontend validation
+    if (values.newPassword !== values.confirmPassword) {
+      toast.error("Passwords do not match!", { id: toastId });
+      return;
+    }
+
     try {
-      await changePassword(values).unwrap();
+      const payload = {
+        oldPassword: values.oldPassword,
+        newPassword: values.newPassword,
+      };
+
+      const res = await changePassword(payload).unwrap();
       toast.success("Password changed successfully!", { id: toastId });
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
+      if (res?.token) {
+        localStorage.setItem("authToken", res.token);
+      }
+
+      form.resetFields();
     } catch (error: any) {
       toast.error(error?.data?.message || "Failed to change password", {
         id: toastId,
@@ -31,15 +48,17 @@ const updatePassword = () => {
     <div className="flex justify-center items-center h-screen">
       <div className="p-8 border rounded shadow-md border-purple-600 shadow-purple-600">
         <Form
-          name="forgot-password"
+          form={form}
+          name="change-password"
           style={{ maxWidth: 360 }}
-          onFinish={onFinish}
+          onFinish={handleSubmit}
         >
           <Form.Item>
             <Flex justify="start" align="center">
               <Link to="/login">🔙 Back</Link>
             </Flex>
           </Form.Item>
+
           <label>Old Password</label>
           <Form.Item
             name="oldPassword"
@@ -49,7 +68,6 @@ const updatePassword = () => {
           >
             <Input.Password
               prefix={<LockOutlined />}
-              type="password"
               placeholder="Old Password"
             />
           </Form.Item>
@@ -58,20 +76,40 @@ const updatePassword = () => {
           <Form.Item
             name="newPassword"
             rules={[
-              { required: true, message: "Please enter a password" },
+              { required: true, message: "Please enter a new password" },
               { min: 4, message: "Minimum 4 characters required" },
               { max: 20, message: "Maximum 20 characters allowed" },
             ]}
           >
             <Input.Password
               prefix={<LockOutlined />}
-              type="password" 
-            placeholder="Enter new password" 
+              placeholder="Enter new password"
             />
+          </Form.Item>
+
+          <label>Confirm New Password</label>
+          <Form.Item
+            name="confirmPassword"
+            dependencies={["newPassword"]}
+            hasFeedback
+            rules={[
+              { required: true, message: "Please confirm your new password!" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("newPassword") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error("Passwords do not match!"));
+                },
+              }),
+            ]}
+          >
+            <Input.Password placeholder="Confirm new password" />
           </Form.Item>
 
           <Form.Item>
             <CustomButton
+              type="submit"
               className="w-full !py-1.5"
               textName={
                 isLoading ? (
@@ -88,4 +126,4 @@ const updatePassword = () => {
   );
 };
 
-export default updatePassword;
+export default UpdatePassword;
