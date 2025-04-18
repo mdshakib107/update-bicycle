@@ -4,7 +4,7 @@ import {
   useGetAllUsersQuery,
   useUpdateUserMutation,
 } from "@/redux/api/userApi";
-import { TUser2 } from "@/utils/types";
+import { TUser } from "@/utils/types";
 import { DeleteOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Popconfirm, Table, Tag } from "antd";
 import { toast } from "sonner";
@@ -16,7 +16,7 @@ const UserManagement = () => {
   //   console.log("users", data?.data);
   const users = data?.data || [];
 
-  const handleMakeAdmin = async (user: TUser2) => {
+  const handleMakeAdmin = async (user: TUser["data"]) => {
     try {
       await updateUser({
         userId: user._id,
@@ -38,7 +38,7 @@ const UserManagement = () => {
       toast.success("User deleted");
     } catch (err: any) {
       toast.error("Failed to delete user");
-      console.log(err)
+      console.log(err);
     }
   };
 
@@ -152,7 +152,7 @@ const UserManagement = () => {
         dataSource={users}
         rowKey="_id"
         bordered
-        pagination={{ pageSize: 6 }}
+        pagination={{ pageSize: 5 }}
       />
     </div>
   );

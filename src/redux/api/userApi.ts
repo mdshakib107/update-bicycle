@@ -4,7 +4,10 @@ import baseApi from "./baseApi";
 export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Fetch all users (GET)
-    getAllUsers: builder.query<TUser[], void>({
+    getAllUsers: builder.query<
+      { success: boolean; message: string; statusCode: number; data: TUser[] },
+      void
+    >({
       query: () => "/users",
       providesTags: ["Users"],
     }),
@@ -30,7 +33,7 @@ export const userApi = baseApi.injectEndpoints({
     // Update user (PUT)
     updateUser: builder.mutation<
       TUser,
-      { userId: string; updateData: Partial<TUser> }
+      { userId: string; updateData: Partial<TUser["data"]> }
     >({
       query: ({ userId, updateData }) => ({
         url: `/users/${userId}`,

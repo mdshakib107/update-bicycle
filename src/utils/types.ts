@@ -38,28 +38,19 @@ export type TResponse<T> = {
 
 //User type definition
 // This type is used to define the structure of a user object in the application. move it as a separate file if needed.
-export type TUser = {
+export interface TUser {
   data: {
-    _id: string; // MongoDB ObjectId
+    _id: string;
     name: string;
     email: string;
-    role: "customer" | "admin";
-    status: "active" | "inactive" | "banned"; // as UserStatus enum
+    role: "admin" | "customer";
+    status: "active" | "inactive" | "banned";
     needsPasswordChange: boolean;
-    passwordChangedAt?: string; // Optional field
+    passwordChangedAt?: string;
+    createdAt?: string;
+    updatedAt?: string;
+    image?: string;
   };
-};
-export interface TUser2 {
-  _id: string;
-  name: string;
-  email: string;
-  role: "admin" | "customer";
-  status: "active" | "inactive" | "banned";
-  needsPasswordChange: boolean;
-  passwordChangedAt?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  image?: string;
 }
 
 // (Ordered Item)
@@ -102,4 +93,10 @@ export interface ApiResponseById {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [x: string]: any;
   data: ItemData; // An array of your `ItemData` objects
+}
+
+type FilterKey = "search" | "priceRange" | "type" | "brand" | "availability";
+
+export interface AllBicycleFilterProps {
+  handleChange: (key: FilterKey, value: string | number[] | boolean) => void;
 }
