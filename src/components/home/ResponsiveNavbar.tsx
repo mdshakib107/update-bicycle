@@ -227,7 +227,7 @@ const ResponsiveNavbar = () => {
               View Profile
             </NavLink>
             <NavLink
-              to={toDashboard}
+              to={`/dashboard/${user?.role}/manage-profile`}
               className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50 ${activeLink}`}
             >
               <IoSettingsOutline />
@@ -266,7 +266,7 @@ const ResponsiveNavbar = () => {
       <div className="flex space-x-4 ">
         <ul className="items-center gap-[20px] text-[1rem] text-[#424242] md:flex">
           <li className="transition-all duration-500 cursor-pointer hover:bg-[#d8e0e1] rounded-full capitalize">
-            <NavLink to={toDashboard}>
+            <NavLink to="/">
               {/* <MdDashboard className="h-20px w-20px" /> */}
               {/* logo */}
               <img

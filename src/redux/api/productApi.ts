@@ -13,6 +13,10 @@ export const productApi = baseApi.injectEndpoints({
         `/products?page=${page}&limit=${limit}`,
       providesTags: ["Products"],
     }),
+    getAllProductsNoPage: builder.query<ApiResponse, void>({
+      query: () => `/products`,
+      providesTags: ["Products"],
+    }),
     // Fetch a specific product by ID (GET)
     getProductById: builder.query<ApiResponseById, string>({
       query: (productId) => `/products/${productId}`,
@@ -61,6 +65,7 @@ export const productApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllProductsQuery,
+  useGetAllProductsNoPageQuery,
   useGetProductByIdQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
