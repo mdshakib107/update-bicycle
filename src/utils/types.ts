@@ -68,6 +68,9 @@ export interface OrderedItem {
     quantity: number;
     inStock: boolean;
   };
+  quantity?:number;
+  _id?: string;
+  price?: number;
 }
 
 // (Main Order Type)
