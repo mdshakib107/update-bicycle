@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Loading from "../../components/shared/Loading";
-import useAxiosCommon from "../../hooks/useAxiosCommon";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "sonner";
-import { useForm } from "react-hook-form";
 import ResponsiveNavbar from "@/components/home/ResponsiveNavbar";
 import CustomButton from "@/components/shared/CustomButton";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
+import Loading from "../../components/shared/Loading";
+import useAxiosCommon from "../../hooks/useAxiosCommon";
 
 const Checkout = () => {
   const axiosCommon = useAxiosCommon();
@@ -109,7 +109,7 @@ const Checkout = () => {
       orderData
     );
     window.location.replace(response.data.data.GatewayPageURL);
-    console.log(response.data.data);
+    // console.log(response.data.data);
   };
 
   if (isPending) return <Loading />;
@@ -117,7 +117,6 @@ const Checkout = () => {
 
   return (
     <div className="min-h-screen container mx-auto space-y-6 sm:space-y-8 lg:space-y-12 sm:px-6 px-4 lg:px-8">
-
       {/* navbar */}
       <ResponsiveNavbar />
 
@@ -180,7 +179,7 @@ const Checkout = () => {
                   </div>
                 </div>
 
-                <CustomButton                
+                <CustomButton
                   textName="submitPlace Order"
                   className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
                 />
