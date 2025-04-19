@@ -54,6 +54,7 @@ export interface TUser {
 }
 
 
+export type ShippingStatus = "PENDING" | "SHIPPED" | "DELIVERED" | "CANCELLED"
 
 // (Ordered Item)
 export interface OrderedItem {
@@ -78,7 +79,7 @@ export interface Order {
   user: TUser2;
   totalPrice: number;
   paymentStatus: "Paid" |"unpaid",
-  status: "pending" | "shipped" | "delivered" | "cancelled";
+  status: ShippingStatus;
   createdAt: string;
   updatedAt?: string;
 

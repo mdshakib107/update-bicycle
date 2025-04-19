@@ -32,9 +32,7 @@ export const orderApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: updateData,
       }),
-      invalidatesTags: (result, error, { orderId }) => [
-        { type: "Orders", id: orderId },
-      ],
+      invalidatesTags: ["Orders"]
     }),
 
     // Delete an order (DELETE)
