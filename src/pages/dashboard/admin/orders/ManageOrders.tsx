@@ -98,7 +98,7 @@ const ManageOrders = () => {
     }
   };
 
-  //   console.log(orders);
+    // console.log(orders);
 
   if (isLoading) return <Loading />;
   if (orders?.length < 1) {
@@ -123,16 +123,19 @@ const ManageOrders = () => {
         <TableCaption className="mt-8">
           A list of your recent Orders
         </TableCaption>
+        {/* header */}
         <TableHeader className="text-l">
           <TableRow>
             <TableHead>Customer Name</TableHead>
             <TableHead>Product Name</TableHead>
             <TableHead>Payment</TableHead>
             <TableHead>Update Shipping Status</TableHead>
+            <TableHead>Quantity</TableHead>
             <TableHead>Amount</TableHead>
-            <TableHead className="text-right">Delete</TableHead>
+            <TableHead className="text-center">Delete</TableHead>
           </TableRow>
         </TableHeader>
+        {/* body */}
         <TableBody>
           {orders?.map((order: Order) => (
             <TableRow key={order._id}>
@@ -167,6 +170,7 @@ const ManageOrders = () => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
+              <TableCell>{order?.products[0]?.quantity}</TableCell>
               <TableCell>{order?.totalPrice}</TableCell>
               <TableCell className="text-right">
                 <AlertDialog>

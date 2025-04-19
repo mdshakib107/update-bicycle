@@ -26,7 +26,7 @@ const Checkout = () => {
 
   useEffect(() => {   
 
-    if (!productData?.inStock) {
+    if (productData && productData?.inStock === false) {
       toast.info("Items is not available!");
 
       navigate("/");
@@ -131,10 +131,10 @@ const Checkout = () => {
       <div className="w-full min-h-[55vh] rounded-4xl shadow-purple-600 shadow-2xl my-10 p-10">
         {product && (
           <div className="w-full mx-auto">
-            {/* <img src={product.Img} alt="" className="hidden md:flex"/> */}
+            {/* <img src= alt="" className="hidden md:flex"/> */}
             <img
-              src="../../../src/assets/images/img/bicycle.jpg"
-              alt=""
+              src={product.Img? product.Img :"../../../src/assets/images/img/bicycle.jpg"}
+              alt={product?.name}
               className="hidden md:flex rounded-4xl"
             />
             <div className="w-full mx-auto p-6 bg-white rounded-4xl shadow-md">
