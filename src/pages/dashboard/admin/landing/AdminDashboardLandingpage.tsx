@@ -36,7 +36,7 @@ const AdminDashboardLandingpage = () => {
     <div className="flex justify-center items-center h-[calc(100vh-100px)] ">
       <Card
         className="w-full p-4! shadow-md! rounded border border-purple-600 shadow-purple-600"
-        bordered={false}
+        variant='borderless'
         title={
           <div className="flex items-center gap-4">
             <Avatar size={48} icon={<UserOutlined />} />

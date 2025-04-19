@@ -41,11 +41,11 @@ const ManageOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [page, setPage] = useState(1);
   //   const [limit, setLimit] = useState(10);
-  const [selectedStatus, setSelectedStatus] = useState<ShippingStatus | string>("");
-  const [selectedOrderId, setSelectedOrderId] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [selectedOrderId, setSelectedOrderId] = useState<ShippingStatus | string>("");
   const [openStatusDialog, setOpenStatusDialog] = useState(false);
 
-  const { data, isLoading, isError } = useGetAllOrdersQuery({ page, limit: 5 });
+  const { data, isLoading, isError, refetch } = useGetAllOrdersQuery({ page, limit: 5 });
   const [deleteOrder] = useDeleteOrderMutation();
   const [updateOrder] = useUpdateOrderMutation();
   // console.log(data);
@@ -57,7 +57,7 @@ const ManageOrders = () => {
     { label: "CANCELED", value: "canceled" },
   ];
   useEffect(() => {
-    if (data?.data) {
+    if (data?.data?.data) {
       setOrders(data.data.data);
     }
   }, [data]);
@@ -67,8 +67,10 @@ const ManageOrders = () => {
 
     try {
       const result = await deleteOrder(orderId);
-      if (result?.data.success) {
+      console.log("result",result)
+      if (result?.data?.success) {
         toast.success(result?.data?.message);
+        refetch();
       }
       //   console.log(result.data);
     } catch (err: any) {
@@ -76,7 +78,7 @@ const ManageOrders = () => {
     }
   };
 
-  const hsndleUpdateOrder = async (orderId: string, status: ShippingStatus) => {
+  const handleUpdateOrder = async (orderId: string, status: ShippingStatus) => {
     // console.log({ orderId, status });
     if (selectedOrderId && selectedStatus) {
       try {
@@ -84,7 +86,7 @@ const ManageOrders = () => {
           orderId: orderId,
           updateData: { status },
         });
-
+        console.log(result)
         if (result?.data?.success) {
           toast.success(result?.data?.message);
           setOpenStatusDialog(false);
@@ -116,6 +118,7 @@ const ManageOrders = () => {
         All of your Orders
       </h2>
 
+      {/* tables of lists */}
       <Table>
         <TableCaption className="mt-8">
           A list of your recent Orders
@@ -131,9 +134,9 @@ const ManageOrders = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders.map((order) => (
+          {orders?.map((order: Order) => (
             <TableRow key={order._id}>
-              <TableCell className="font-medium">{order.user.name}</TableCell>
+              <TableCell className="font-medium">{order?.user?.name || "User Not Found"}</TableCell>
               <TableCell className="font-medium">
                 {order.products[0].product.name}
               </TableCell>
@@ -196,6 +199,8 @@ const ManageOrders = () => {
           ))}
         </TableBody>
       </Table>
+
+      {/* pagination */}
       <div className="flex justify-center mt-6 gap-4">
         <Button
           variant="outline"
@@ -217,6 +222,8 @@ const ManageOrders = () => {
           Next
         </Button>
       </div>
+
+      {/* action buttons */}
       <AlertDialog open={openStatusDialog} onOpenChange={setOpenStatusDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -233,7 +240,7 @@ const ManageOrders = () => {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               className="bg-purple-600 hover:bg-purple-700"
-              onClick={() => hsndleUpdateOrder(selectedOrderId, selectedStatus)}
+              onClick={() => handleUpdateOrder(selectedOrderId, selectedStatus as ShippingStatus)}
             >
               Confirm
             </AlertDialogAction>
