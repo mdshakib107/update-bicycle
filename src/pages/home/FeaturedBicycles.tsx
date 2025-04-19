@@ -79,9 +79,19 @@ const FeaturedBicycles = () => {
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 px-4 sm:px-6 lg:px-8 mt-10"
         id="featured"
       >
-        {data?.map((d: ItemData) => (
-          <ItemsCard key={d._id} data={d} isPending={isPending} />
-        ))}
+        {data?.result
+          ?.sort((a: any, b: any) => {
+            // First, prioritize in-stock items
+            if (a.inStock !== b.inStock) {
+              return a.inStock ? -1 : 1; // in-stock (true) comes before out-of-stock (false)
+            }
+            // Then sort by price (high to low)
+            return b.price - a.price;
+          }) // high to low
+          ?.slice(0, 6) // just first 6 items from the response
+          ?.map((d: ItemData) => (
+            <ItemsCard key={d._id} data={d} isPending={isPending} />
+          ))}
       </div>
     </div>
   );

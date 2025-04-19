@@ -1,40 +1,122 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ItemsCard, { ItemData } from "@/components/shared/ItemsCard";
 import Loading from "@/components/shared/Loading";
-import { useGetAllProductsQuery } from "@/redux/api/baseApi";
-import { Link } from "react-router-dom";
+import { useGetAllProductsQuery } from "@/redux/api/productApi";
+import { setFilter } from "@/redux/features/filterSlice/filterSlice";
+import { RootState } from "@/redux/store";
+import { MenuOutlined } from "@ant-design/icons";
+import { Button, Drawer, Pagination } from "antd";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
+import AllBicycleFilter from "./AllBicycleFilter";
 
 const AllBicycles = () => {
-  const { data, isLoading, isError } = useGetAllProductsQuery(undefined);
-  // console.log(data?.data);
-  const products = data?.data;
+  const dispatch = useDispatch(); // Redux dispatch function
+  const [page, setPage] = useState(1);
+  const [limit] = useState(9);
+  const [filterOpen, setFilterOpen] = useState(false);
+  const [isFilterApplied, setIsFilterApplied] = useState(false);
+
+  const { data, isLoading, isError } = useGetAllProductsQuery({ page, limit });
+  const meta = data?.data?.meta;
+  const products = data?.data?.result;
+
+  const handleFilterChange = (key: string, value: any) => {
+    dispatch(setFilter({ [key]: value }));
+    setIsFilterApplied(true);
+  };
+
+  const filters = useSelector((state: RootState) => state.filter);
   if (isLoading) return <Loading />;
-  if (isError) return toast.error("Error fetching bicycles");
+  if (isError) return toast.error("Failed to load products");
+
+  const filteredProducts = isFilterApplied
+    ? products?.filter((product: ItemData) => {
+        const matchSearch =
+          !filters.search ||
+          product.name.toLowerCase().includes(filters.search.toLowerCase()) ||
+          product.brand.toLowerCase().includes(filters.search.toLowerCase());
+
+        const matchPrice =
+          product.price >= filters.priceRange[0] &&
+          product.price <= filters.priceRange[1];
+
+        const matchType =
+          !filters.type ||
+          product.type.toLowerCase() === filters.type.toLowerCase();
+
+        const matchBrand =
+          !filters.brand ||
+          product.brand.toLowerCase() === filters.brand.toLowerCase();
+
+        const matchAvailability = filters.availability
+          ? product.inStock === true
+          : true;
+
+        return (
+          matchSearch &&
+          matchPrice &&
+          matchType &&
+          matchBrand &&
+          matchAvailability
+        );
+      })
+    : products;
 
   return (
-    <div className=" w-full min-h-[45vh] sm:min-h-[55vh] lg:min-h-[60vh] rounded-4xl shadow-purple-600 shadow-2xl p-6 sm:p-8 md:p-12 lg:p-16">
-      {/* header */}
-      <header className="flex h-full flex-col gap-12 lg:gap-0 lg:flex-row justify-center items-center lg:mt-3">
-        <div className="px-6 sm:px-8 mt-8 lg:mt-0 w-full lg:w-[50%] space-y-6">
-          <h1 className="text-[32px] sm:text-[40px] lg:text-[60px] leading-[40px] sm:leading-[45px] lg:leading-[65px] font-[500] w-full text-center">
-            All Bicycles
-          </h1>
-
-          <p className="text-[16px] mt-2 w-full text-center">
-            <Link to="/">Home</Link> / All Bicycles
-          </p>
-        </div>
-      </header>
-
-      {/* grid */}
-      <div
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 px-4 sm:px-6 lg:px-8 mt-10"
-        id="featured"
-      >
-        {products?.map((product: ItemData) => (
-          <ItemsCard key={product._id} data={product} isPending={isLoading} />
-        ))}
+    <div className="w-full">
+      {/* Filter Button on Mobile */}
+      <div className="flex justify-end px-4 mt-4 lg:hidden">
+        <Button icon={<MenuOutlined />} onClick={() => setFilterOpen(true)}>
+          Filter
+        </Button>
       </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 px-4 mt-6">
+        {/* Products */}
+        <div className="lg:col-span-4 col-span-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProducts?.map((product: ItemData) => (
+              <ItemsCard
+                key={product._id}
+                data={product}
+                isPending={isLoading}
+              />
+            ))}
+          </div>
+
+          {/* Pagination */}
+          {meta?.totalPage && meta?.totalPage > 1 && (
+            <div className="mt-6 flex justify-center">
+              <Pagination
+                current={meta.page}
+                pageSize={meta.limit}
+                total={meta.total}
+                onChange={(p) => setPage(p)}
+                className="mt-6"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Filter for large screens */}
+        <div className="hidden lg:block lg:col-span-1">
+          <AllBicycleFilter handleChange={handleFilterChange} />
+        </div>
+      </div>
+
+      {/* Drawer Filter for small screens */}
+      <Drawer
+        title="Filter"
+        placement="left"
+        onClose={() => setFilterOpen(false)}
+        open={filterOpen}
+      >
+        <AllBicycleFilter
+          handleChange={handleFilterChange} // Pass the handleFilterChange function to the filter component
+        />
+      </Drawer>
     </div>
   );
 };
