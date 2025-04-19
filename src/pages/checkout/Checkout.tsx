@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ResponsiveNavbar from "@/components/home/ResponsiveNavbar";
 import CustomButton from "@/components/shared/CustomButton";
+import { useGetProductByIdQuery } from "@/redux/api/productApi";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -12,37 +13,38 @@ import useAxiosCommon from "../../hooks/useAxiosCommon";
 const Checkout = () => {
   const axiosCommon = useAxiosCommon();
   const { id } = useParams();
-  const navigate = useNavigate();
   const [totalPrice, setTotalPrice] = useState(0);
-  const [userId, setUserId] = useState("67af6de7d85f7b98d6443998");
+  const [userId, setUserId] = useState("");
 
-  type TStatus =
-    | "PENDING"
-    | "PROCESSING"
-    | "ON THE WAY"
-    | "DELIVERED"
-    | "CANCELED";
+  // navigation
+  const navigate = useNavigate();
 
-  type TOrderedItem = {
-    product: string;
-    quantity: number;
-    price: number;
-  };
+  // check data for stock
+  const { data, isLoading, isError } = useGetProductByIdQuery(id as string);
 
-  type TOrder = {
-    products: TOrderedItem[];
-    user: string;
-    totalPrice: number;
-    isDeleted?: boolean;
-    status: TStatus;
-    paymentStatus: "UNPAID";
-  };
+  const productData = data?.data;
+
+  useEffect(() => {
+    if (productData && productData?.inStock === false) {
+      toast.info("Items is not available!");
+
+      navigate("/");
+    }
+  }, [productData, navigate]);
+
+  useEffect(() => {
+    const localUser = localStorage.getItem("userData");
+    if (localUser) {
+      const user = JSON.parse(localUser);
+      setUserId(user?._id);
+    }
+  }, []);
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       quantity: 1,
@@ -85,7 +87,7 @@ const Checkout = () => {
     }
   }, [product, quantity]);
 
-  const onSubmit = async (formData: any) => {
+  const onSubmit = async (formData: { quantity: number }) => {
     // Prepare order data
     const orderData = {
       products: [
@@ -102,18 +104,23 @@ const Checkout = () => {
       paymentStatus: "UNPAID",
     };
 
-    // console.log(orderData);
+    console.log(orderData);
 
     const response = await axiosCommon.post(
       "/api/orders/create-order",
       orderData
     );
+    console.log(response);
     window.location.replace(response.data.data.GatewayPageURL);
     // console.log(response.data.data);
   };
 
   if (isPending) return <Loading />;
   // console.log(product);
+
+  if (isError) return toast.error("Something went wrong!");
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="min-h-screen container mx-auto space-y-6 sm:space-y-8 lg:space-y-12 sm:px-6 px-4 lg:px-8">
@@ -123,10 +130,14 @@ const Checkout = () => {
       <div className="w-full min-h-[55vh] rounded-4xl shadow-purple-600 shadow-2xl my-10 p-10">
         {product && (
           <div className="w-full mx-auto">
-            {/* <img src={product.Img} alt="" className="hidden md:flex"/> */}
+            {/* <img src= alt="" className="hidden md:flex"/> */}
             <img
-              src="../../../src/assets/images/img/bicycle.jpg"
-              alt=""
+              src={
+                product.Img
+                  ? product.Img
+                  : "../../../src/assets/images/img/bicycle.jpg"
+              }
+              alt={product?.name}
               className="hidden md:flex rounded-4xl"
             />
             <div className="w-full mx-auto p-6 bg-white rounded-4xl shadow-md">
@@ -171,16 +182,18 @@ const Checkout = () => {
                   <h4 className="text-lg font-semibold">Order Summary</h4>
                   <div className="flex justify-between mt-2">
                     <span>Subtotal ({quantity} items):</span>
-                    <span>Tk{totalPrice}</span>
+                    <span>{totalPrice} Taka</span>
                   </div>
                   <div className="border-t mt-2 pt-2 font-bold flex justify-between">
                     <span>Total:</span>
-                    <span>Tk{totalPrice}</span>
+                    <span>{totalPrice} Taka</span>
                   </div>
                 </div>
 
                 <CustomButton
-                  textName="submitPlace Order"
+                  textName={isSubmitting ? "Placing Order..." : "Place Order"}
+                  type="submit"
+                  disabled={isSubmitting}
                   className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
                 />
               </form>

@@ -30,7 +30,14 @@ const Slider: React.FC<ApiResponseWithIsPending> = ({ data, isPending }) => {
       {data?.result &&
         data?.result.map &&
         [...data.result] // shallow copy to safely sort
-          .sort((a, b) => b.price - a.price) // high to low sort
+          .sort((a, b) => {
+            // First, prioritize in-stock items
+            if (a.inStock !== b.inStock) {
+              return a.inStock ? -1 : 1; // in-stock (true) comes before out-of-stock (false)
+            }
+            // Then sort by price (high to low)
+            return b.price - a.price;
+          }) // high to low sort
           .slice(0, 6)
           .map((d: ItemData) => (
             <div key={d?._id} className="rounded-4xl">

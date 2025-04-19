@@ -20,6 +20,8 @@ import Page404 from "../pages/shared/Page404";
 import { routeGenerator } from "../utils/routesGenerator";
 import { adminPaths } from "./admin.routes";
 import { userPaths } from "./user.routes";
+import SuccessOrder from "@/pages/successOrder/SuccessOrder";
+import FailedOrder from "@/pages/failedOrder/FailedOrder";
 
 const routes = createBrowserRouter([
   {
@@ -41,6 +43,14 @@ const routes = createBrowserRouter([
         element: <AboutusLayout />,
       },
       {
+        path: "successfull-order",
+        element: <SuccessOrder/>
+      },
+      {
+        path: "failed-order",
+        element: <FailedOrder />,
+      },
+      {
         path: "terms",
         element: <PolicyLayout />,
         children: [
@@ -49,7 +59,7 @@ const routes = createBrowserRouter([
             element: <TermsAndCondition />,
           },
           {
-            path: "policies",
+            path: "policies", 
             element: <PrivacyPolicy />,
           },
         ],

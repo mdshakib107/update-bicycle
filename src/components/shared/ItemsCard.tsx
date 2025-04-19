@@ -39,16 +39,16 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   // destructure items
   const {
     brand,
-    description,
+    // description,
     inStock,
     name,
     quantity,
     Img,
     type,
-    updatedAt,
+    // updatedAt,
     _id,
     price,
-    createdAt,
+    // createdAt,
   } = data;
 
   // button for card

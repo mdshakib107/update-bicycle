@@ -1,11 +1,14 @@
-import { Order } from "@/utils/types";
+import { Order, OrderResponse } from "@/utils/types";
 import baseApi from "./baseApi";
 
 export const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Fetch all orders (GET)
-    getAllOrders: builder.query<Order[], void>({
-      query: () => "/orders",
+    getAllOrders: builder.query<OrderResponse, { page?: number; limit?: number, id?: string }>({
+      query: (params) => ({
+        url: "/orders",
+        params,
+      }),
       providesTags: ["Orders"],
     }),
 
@@ -21,7 +24,7 @@ export const orderApi = baseApi.injectEndpoints({
 
     // Update an order (PATCH)
     updateOrder: builder.mutation<
-      Order,
+      OrderResponse,
       { orderId: string; updateData: Partial<Order> }
     >({
       query: ({ orderId, updateData }) => ({
@@ -29,13 +32,11 @@ export const orderApi = baseApi.injectEndpoints({
         method: "PATCH",
         body: updateData,
       }),
-      invalidatesTags: (result, error, { orderId }) => [
-        { type: "Orders", id: orderId },
-      ],
+      invalidatesTags: ["Orders"],
     }),
 
     // Delete an order (DELETE)
-    deleteOrder: builder.mutation<void, string>({
+    deleteOrder: builder.mutation<OrderResponse, string>({
       query: (orderId) => ({
         url: `/orders/${orderId}`,
         method: "DELETE",
@@ -51,26 +52,3 @@ export const {
   useUpdateOrderMutation,
   useDeleteOrderMutation,
 } = orderApi;
-
-
-/*
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-
-
-export const orderApi = createApi({
-    reducerPath: "order",
-    baseQuery: fetchBaseQuery({ baseUrl:  import.meta.env.VITE_SERVER}),
-    // tagTypes: ["order"],
-    endpoints: (builder) => ({
-        addOrderApi: builder.mutation({
-            query: (body) => ({
-                url: `/api/create-order`,
-                method: "POST",
-                body
-            }),
-        })
-    })
-})
-
-export const { useAddOrderApiMutation } = orderApi;
-*/
