@@ -80,7 +80,14 @@ const FeaturedBicycles = () => {
         id="featured"
       >
         {data?.result
-          ?.sort((a: any, b: any) => b.price - a.price) // high to low
+          ?.sort((a: any, b: any) => {
+            // First, prioritize in-stock items
+            if (a.inStock !== b.inStock) {
+              return a.inStock ? -1 : 1; // in-stock (true) comes before out-of-stock (false)
+            }
+            // Then sort by price (high to low)
+            return b.price - a.price;
+          }) // high to low
           ?.slice(0, 6) // just first 6 items from the response
           ?.map((d: ItemData) => (
             <ItemsCard key={d._id} data={d} isPending={isPending} />
