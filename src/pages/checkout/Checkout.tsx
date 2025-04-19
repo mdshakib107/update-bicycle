@@ -105,15 +105,15 @@ const Checkout = () => {
       paymentStatus: "UNPAID",
     };
 
-    console.log(orderData);
+    // console.log(orderData);
 
     const response = await axiosCommon.post(
       "/api/orders/create-order",
       orderData,
     );
-    console.log(response);
+    // console.log(response);
     window.location.replace(response.data.data.GatewayPageURL);
-    console.log(response.data.data);
+    // console.log(response.data.data);
   };
 
   if (isPending) return <Loading />;

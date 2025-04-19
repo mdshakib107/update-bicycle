@@ -33,7 +33,7 @@ const Register = () => {
       email: values?.email,
       password: values?.password,
     };
-    console.log(userInfo);
+    // console.log(userInfo);
     if (values.password !== values.confirmPassword) {
       toast.error("Passwords do not match", { id: toastId });
       return;
@@ -54,7 +54,7 @@ const Register = () => {
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.log(error.data.stack);
+      // console.log(error.data.stack);
       toast.error(`${error?.data?.message || "Something went wrong!"}`, {
         id: toastId,
       });
