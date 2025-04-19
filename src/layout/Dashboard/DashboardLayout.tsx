@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 // antd layout destructure
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Footer } = Layout;
 
 function DashboardLayout() {
   // navigation

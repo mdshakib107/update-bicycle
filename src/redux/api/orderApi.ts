@@ -4,7 +4,7 @@ import baseApi from "./baseApi";
 export const orderApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     // Fetch all orders (GET)
-    getAllOrders: builder.query<OrderResponse, { page?: number; limit?: number }>({
+    getAllOrders: builder.query<OrderResponse, { page?: number; limit?: number, id?: string }>({
       query: (params) => ({
         url: "/orders",
         params,

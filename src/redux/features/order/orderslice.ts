@@ -1,11 +1,11 @@
-import baseApi from "@/redux/api/baseApi";
+// import baseApi from "@/redux/api/baseApi";
 
-const orderApi = baseApi.injectEndpoints({
-    endpoints: (builder) => {
-        getUserSpecificOrders: builder.query({
-            
-        })
-    }
-})
+// const orderApi = baseApi.injectEndpoints({
+//     endpoints: (builder) => {
+//         getUserSpecificOrders: builder.query({
+//             
+//         })
+//     }
+// })
 
-export const {getUserSpecificOrders} = orderApi;
+// export const {getUserSpecificOrders} = orderApi;
