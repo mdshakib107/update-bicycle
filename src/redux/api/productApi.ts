@@ -20,7 +20,7 @@ export const productApi = baseApi.injectEndpoints({
     // Fetch a specific product by ID (GET)
     getProductById: builder.query<ApiResponseById, string>({
       query: (productId) => `/products/${productId}`,
-      providesTags: (result, error, productId) => [
+      providesTags: (_result, _error, productId) => [
         { type: "Products", id: productId },
       ],
     }),
@@ -45,7 +45,7 @@ export const productApi = baseApi.injectEndpoints({
         method: "PUT",
         body: updateData,
       }),
-      invalidatesTags: (result, error, { productId }) => [
+      invalidatesTags: (_result, _error, { productId }) => [
         { type: "Products", id: productId },
       ],
     }),
@@ -56,7 +56,7 @@ export const productApi = baseApi.injectEndpoints({
         url: `/products/${productId}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, productId) => [
+      invalidatesTags: (_result, _error, productId) => [
         { type: "Products", id: productId },
       ],
     }),

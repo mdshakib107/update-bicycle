@@ -69,7 +69,7 @@ const ViewOrders = () => {
         </TableHeader>
         <TableBody>
           {orders.map((order) => (
-            <TableRow key={order.id}>
+            <TableRow key={order?._id}>
               <TableCell className="font-medium">
                 {order.products[0].product.name}
               </TableCell>
