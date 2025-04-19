@@ -1,6 +1,7 @@
 // types.ts
 
 import { ItemData } from "@/components/shared/ItemsCard";
+import { TUserFromToken } from "@/redux/features/auth/authSlice";
 import { ReactNode } from "react";
 import { JSX } from "react/jsx-runtime";
 
@@ -53,36 +54,45 @@ export interface TUser {
   };
 }
 
-
-export type ShippingStatus = "PENDING" | "SHIPPED" | "DELIVERED" | "CANCELLED"
+export type ShippingStatus = "PENDING" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
 
 // (Ordered Item)
 export interface OrderedItem {
-  product:{
-
+  product: {
     name: string;
     Img?: string;
     brand: string;
     price: number;
-    type: "Mountain" | "Road" | "Hybrid" | "BMX" | "Electric" | "Fat Bikes" ;
+    type: "Mountain" | "Road" | "Hybrid" | "BMX" | "Electric" | "Fat Bikes";
     description: string;
     quantity: number;
     inStock: boolean;
-  }
+  };
 }
 
 // (Main Order Type)
-export interface Order {
+export interface OrderResponse {
+  data: {
+    data: Order[]; 
+    totalOrders: number;
+    totalPages: number;
+    currentPage: number;
+  };
+  message: string;
+  success: boolean;
+  statusCode: number;
+}
 
+export interface Order {
   _id: string;
   products: OrderedItem[];
-  user: TUser2;
+  user: TUserFromToken | null;
   totalPrice: number;
-  paymentStatus: "Paid" |"unpaid",
+  isDeleted: boolean;
+  paymentStatus: 'UNPAID' | 'PAID';
   status: ShippingStatus;
   createdAt: string;
   updatedAt?: string;
-
 }
 
 // interface for get products api response

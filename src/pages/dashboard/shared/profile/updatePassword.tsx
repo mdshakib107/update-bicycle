@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import CustomButton from "@/components/shared/CustomButton";
 import { LockOutlined } from "@ant-design/icons";
 import { Flex, Form, Input } from "antd";
