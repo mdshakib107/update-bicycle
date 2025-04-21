@@ -64,6 +64,10 @@ const AllBicycles = () => {
       })
     : products;
 
+  // two arrays for filter
+  const brands = Array.from(new Set(products?.map((p) => p.brand) || []));
+  const types = Array.from(new Set(products?.map((p) => p.type) || []));
+
   return (
     <div className="w-full">
       {/* Filter Button on Mobile */}
@@ -90,9 +94,11 @@ const AllBicycles = () => {
                 <img
                   src="https://img.freepik.com/free-vector/abstract-empty-concrete-room-with-led-illumination_107791-18444.jpg?semt=ais_hybrid&w=740"
                   alt="vast emptiness"
-                  className="bg-fit w-full h-full relative" 
+                  className="bg-fit w-full h-full relative"
                 />
-                <p className="absolute text-5xl text-red-600 shadow-2xl">No bicycles found!</p>
+                <p className="absolute text-5xl text-red-600 shadow-2xl">
+                  No bicycles found!
+                </p>
               </div>
             )}
           </div>
@@ -106,7 +112,7 @@ const AllBicycles = () => {
                 total={meta.total}
                 onChange={(p) => setPage(p)}
                 className="mt-6"
-                disabled={filteredProducts?.length as number <= 0}
+                disabled={(filteredProducts?.length as number) <= 0}
               />
             </div>
           )}
@@ -114,7 +120,11 @@ const AllBicycles = () => {
 
         {/* Filter for large screens */}
         <div className="hidden lg:block lg:col-span-1">
-          <AllBicycleFilter handleChange={handleFilterChange} />
+          <AllBicycleFilter
+            handleChange={handleFilterChange}
+            brandOptions={brands}
+            typeOptions={types}
+          />
         </div>
       </div>
 
@@ -126,7 +136,9 @@ const AllBicycles = () => {
         open={filterOpen}
       >
         <AllBicycleFilter
-          handleChange={handleFilterChange} // Pass the handleFilterChange function to the filter component
+          handleChange={handleFilterChange}
+          brandOptions={brands}
+          typeOptions={types}
         />
       </Drawer>
     </div>
