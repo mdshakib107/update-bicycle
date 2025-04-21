@@ -77,13 +77,24 @@ const AllBicycles = () => {
         {/* Products */}
         <div className="lg:col-span-4 col-span-1">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProducts?.map((product: ItemData) => (
-              <ItemsCard
-                key={product._id}
-                data={product}
-                isPending={isLoading}
-              />
-            ))}
+            {filteredProducts && filteredProducts.length > 0 ? (
+              filteredProducts.map((product: ItemData) => (
+                <ItemsCard
+                  key={product._id}
+                  data={product}
+                  isPending={isLoading}
+                />
+              ))
+            ) : (
+              <div className="col-span-full text-center h-[60vh] text-gray-500 mt-10 flex justify-center items-center">
+                <img
+                  src="https://img.freepik.com/free-vector/abstract-empty-concrete-room-with-led-illumination_107791-18444.jpg?semt=ais_hybrid&w=740"
+                  alt="vast emptiness"
+                  className="bg-fit w-full h-full relative" 
+                />
+                <p className="absolute text-5xl text-red-600 shadow-2xl">No bicycles found!</p>
+              </div>
+            )}
           </div>
 
           {/* Pagination */}
@@ -95,6 +106,7 @@ const AllBicycles = () => {
                 total={meta.total}
                 onChange={(p) => setPage(p)}
                 className="mt-6"
+                disabled={filteredProducts?.length as number <= 0}
               />
             </div>
           )}
