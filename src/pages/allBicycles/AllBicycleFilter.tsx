@@ -30,7 +30,7 @@ const AllBicycleFilter = ({ handleChange }: AllBicycleFilterProps) => {
         <Slider
           range
           min={0}
-          max={10000}
+          max={500000}
           step={100}
           value={filters.priceRange}
           onChange={(value) => handleChange("priceRange", value)}

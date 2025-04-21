@@ -135,7 +135,7 @@ const Checkout = () => {
             <img
               src={product.Img? product.Img :"../../../src/assets/images/img/bicycle.jpg"}
               alt={product?.name}
-              className="hidden md:flex rounded-4xl"
+              className="hidden md:flex rounded-4xl justify-center items-center w-full max-h-[70vh] bg-cover"
             />
             <div className="w-full mx-auto p-6 bg-white rounded-4xl shadow-md">
               <h2 className="text-2xl font-bold mb-6">Checkout</h2>
