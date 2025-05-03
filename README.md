@@ -9,7 +9,7 @@ A Bicycle Store application featuring user-friendly functionalities, secure auth
 ## 🌐 Live URL: 
 [Bicycle Store](https://bicyclestore.netlify.app/)
 
-## Credentials:
+## 📌 Credentials:
 
 **Admin:**
  - email: mina@mail.com
