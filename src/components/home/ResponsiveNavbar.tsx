@@ -15,6 +15,7 @@ import logo from "../../assets/images/logo/logo.png";
 import { logout, useCurrentUser } from "../../redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import CustomButton from "../shared/CustomButton";
+import { useGetUserByIdQuery } from "@/redux/api/userApi";
 // import { MdDashboard } from "react-icons/md";
 
 const ResponsiveNavbar = () => {
@@ -30,7 +31,13 @@ const ResponsiveNavbar = () => {
 
   //* check if user is logged in
   const user = useAppSelector(useCurrentUser);
+  const userId = user?._id;
   //console.log(user)
+
+  //* Get user by id
+  const { data } = useGetUserByIdQuery(userId!, {
+    skip: !userId,
+  });
 
   //* login
   const handleLogin = () => {
@@ -201,7 +208,7 @@ const ResponsiveNavbar = () => {
         >
           <div className="relative">
             <img
-              src="https://i.ibb.co/qWzCvWm/avatar.gif"
+              src={data?.data?.image || "https://i.ibb.co/qWzCvWm/avatar.gif"}
               alt="avatar"
               className="w-[35px] h-[35px] rounded-full object-cover"
             />
@@ -209,7 +216,7 @@ const ResponsiveNavbar = () => {
           </div>
 
           <h1 className="text-[1rem] font-[400] text-gray-600 sm:block hidden">
-            {user.email}
+            {data?.data?.name || data?.data?.email}
           </h1>
 
           <div
