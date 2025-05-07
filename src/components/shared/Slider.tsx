@@ -42,12 +42,12 @@ const Slider: React.FC<ApiResponseWithIsPending> = ({ data, isPending }) => {
           .map((d: ItemData) => (
             <div key={d?._id} className="rounded-4xl">
               {/* description */}
-              <header className="flex min-h-[55vh] h-full lg:flex-row flex-col gap-[50px] lg:gap-0 justify-center items-center rounded-4xl">
+              <header className="flex lg:min-h-[55vh] h-full lg:flex-row flex-col gap-[50px] lg:gap-0 justify-center items-center rounded-4xl">
                 <div className="px-8 mt-8 sm:h-1/2  lg:mt-0 w-full lg:w-[50%] text-center">
                   <h1 className="text-[40px] lg:text-[60px] leading-[45px] lg:leading-[65px] font-[500]">
                     {d?.name}
                   </h1>
-                  <p className="text-[16px] mt-2">{d?.description}</p>
+                  <p className="text-[16px] mt-2">{d?.description?.length > 100 ? d?.description.slice(0, 90) + '...' : d?.description}</p>
                 </div>
 
                 {/* image */}
