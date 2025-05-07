@@ -1,13 +1,13 @@
 import CustomButton from "@/components/shared/CustomButton";
+import Loading from "@/components/shared/Loading";
+import { verifyToken } from "@/utils/verifyToken";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
+import { useEffect, useState } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useRegisterMutation } from "../../redux/api/authApi"; // Import register mutation
-import { useEffect, useState } from "react";
-import Loading from "@/components/shared/Loading";
-import { verifyToken } from "@/utils/verifyToken";
 
 const Register = () => {
   // useRegister mutation hook
