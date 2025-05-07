@@ -35,18 +35,18 @@ const Testimonial = () => {
   ];
 
   return (
-    <div className="w-full min-h-[55vh] rounded-4xl! shadow-purple-600 shadow-2xl">
+    <div className="w-full h-[85vh] xl:h-[60vh] rounded-4xl! shadow-purple-600 shadow-2xl">
       <Carousel
         autoplay
         autoplaySpeed={2000}
         arrows
         fade
-        className="min-w-full min-h-[55vh] bg-gradient-to-r from-blue-400 to-purple-600 rounded-4xl"
+        className="min-w-full h-[85vh] xl:h-[60vh] bg-gradient-to-r from-blue-400 to-purple-600 rounded-4xl"
       >
         {testimonials.map((testimonial, index) => (
           <section
             key={index}
-            className="relative isolate overflow-hidden bg-transparent px-6 py-24 sm:py-32 lg:px-8 rounded-4xl w-full min-h-[55vh]!"
+            className="relative isolate overflow-hidden bg-transparent px-6 py-24 sm:py-32 lg:px-8 rounded-4xl w-full h-[85vh] xl:h-[60vh]! "
           >
             <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,var(--color-indigo-100),white)] opacity-20"></div>
             <div className="absolute inset-y-0 right-1/2 -z-10 mr-16 w-[200%] origin-bottom-left skew-x-[-30deg] bg-white ring-1 shadow-xl shadow-indigo-600/10 ring-indigo-50 sm:mr-28 lg:mr-0 xl:mr-16 xl:origin-center"></div>
@@ -55,10 +55,10 @@ const Testimonial = () => {
               <img
                 src={testimonial.image}
                 alt="user"
-                className="mx-auto h-48 rounded-full object-cover"
+                className="mx-auto h-48 w-48 rounded-full object-cover"
               />
               <figure className="mt-10">
-                <blockquote className="text-xl font-semibold text-gray-900 sm:text-2xl">
+                <blockquote className="text-base md:text-xl lg:text-xl xl:text-2xl font-semibold text-gray-900 sm:text-2xl">
                   <p>“{testimonial.quote}”</p>
                 </blockquote>
                 <figcaption className="mt-10">
