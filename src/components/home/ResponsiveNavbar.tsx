@@ -22,22 +22,22 @@ const ResponsiveNavbar = () => {
   const [mobileAboutUsOpen, setMobileAboutUsOpen] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
-  // navigation
+  //* navigation
   const navigate = useNavigate();
 
-  // dispatch
+  //* dispatch
   const dispatch = useAppDispatch();
 
-  // check if user is logged in
+  //* check if user is logged in
   const user = useAppSelector(useCurrentUser);
   //console.log(user)
 
-  // login
+  //* login
   const handleLogin = () => {
     navigate("/login");
   };
 
-  // logout
+  //* logout
   const handleLogout = () => {
     const toastId = toast.loading("Loading...");
 
@@ -53,18 +53,18 @@ const ResponsiveNavbar = () => {
     }
   };
 
-  // user role leading dashboard
+  //* user role leading dashboard
   const toDashboard = user ? `/dashboard/${user?.role}/my-dashboard` : "/";
 
-  // NavLink is active
-  // NavLink is active
+
+  //* NavLink is active
   const activeLink = ({ isActive }: { isActive: boolean }) => {
     return isActive
       ? "text-[#3B9DF8] font-medium transition-all duration-300"
       : "text-[#424242] hover:text-[#3B9DF8] transition-all duration-300";
   };
 
-  // reusable menu block
+  //* reusable menu block
   const termsLinks = (
     <>
       <li className="flex items-center gap-[7px] hover:text-[#3B9DF8] transition-all duration-300">
@@ -140,7 +140,7 @@ const ResponsiveNavbar = () => {
     </ul>
   );
 
-  // mobile sidebar
+  //* mobile sidebar
   const mobileSidebarLinks = (
     <ul className="items-start gap-[20px] text-[1rem] flex flex-col">
       <li className="capitalize cursor-pointer">
@@ -189,7 +189,7 @@ const ResponsiveNavbar = () => {
     </ul>
   );
 
-  // user account login
+  //* user account login
   const accountDropdown = (
     <div className="flex items-center gap-[15px]">
       {!user ? (
