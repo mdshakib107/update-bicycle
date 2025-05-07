@@ -63,7 +63,7 @@ function DashboardLayout() {
                 padding: 24,
                 minHeight: 360,
               }}
-              // className="z-[-1]"
+              className="w-full"
             >
               {/* content */}
               <Outlet />

@@ -14,6 +14,7 @@ export type TUserFromToken = {
   needsPasswordChange?: boolean;
   createdAt?: string;
   updatedAt?: string;
+  image?: string;
 };
 
 // auth state
