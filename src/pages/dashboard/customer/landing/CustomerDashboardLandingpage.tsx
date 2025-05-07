@@ -39,14 +39,14 @@ const CustomerDashboardLandingpage = () => {
       <div className="justify-center flex items-center gap-2 relative  w-full z-10">
         <img
           src="https://i.ibb.co.com/G2xCfZf/interior-design-mountain-view.jpg"
-          alt={user?.name}
+          alt={data?.data?.name}
           className="w-full h-68 object-fit"
         />
         <img
           src={
-            user?.image || "https://i.ibb.co.com/Fz38g1t/human-celebrating.png"
+            data?.data?.image || "https://i.ibb.co.com/Fz38g1t/human-celebrating.png"
           }
-          alt={user?.name}
+          alt={data?.data?.name}
           width={100}
           height={100}
           className="rounded-full w-32 h-32 absolute -bottom-10 border-2 border-[#4F46E5] shadow-lg"
@@ -55,10 +55,17 @@ const CustomerDashboardLandingpage = () => {
 
       <Card
         className="w-full p-4! !rounded-none"
-        bordered={false}
+        variant="borderless"
         title={
           <div className="flex items-center gap-4">
-            <Avatar size={48} icon={<UserOutlined />} />
+            <Avatar
+              size={48}
+              icon={data?.data?.image || <UserOutlined />}
+              src={
+                data?.data?.image ||
+                "https://i.ibb.co.com/Fz38g1t/human-celebrating.png"
+              }
+            />
             <div>
               <h2 className="text-xl font-bold m-0">{data?.data?.name}</h2>
               <p className="text-sm text-gray-500 m-0">{data?.data?.email}</p>

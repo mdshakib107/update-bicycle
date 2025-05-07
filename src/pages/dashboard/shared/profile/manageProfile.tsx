@@ -7,18 +7,23 @@ import {
 } from "@/redux/api/userApi";
 import { useCurrentUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/hooks";
-import { Form, Input, Select, Typography } from "antd";
+import { 
+  Form,
+   Input, 
+  //  Select, 
+   Typography 
+} from "antd";
 import { useEffect } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { toast } from "sonner";
 
 const { Title } = Typography;
-const { Option } = Select;
+// const { Option } = Select;
 
 const ManageProfile = () => {
   const user = useAppSelector(useCurrentUser);
   const userId = user?._id;
-  const isAdmin = user?.role === "admin";
+  // const isAdmin = user?.role === "admin";
 
   const { data, isLoading, isError } = useGetUserByIdQuery(userId!, {
     skip: !userId,
@@ -29,8 +34,8 @@ const ManageProfile = () => {
 
   useEffect(() => {
     if (data?.data) {
-      const { name, email, role, status } = data.data;
-      form.setFieldsValue({ name, email, role, status });
+      const { name, email, image } = data.data;
+      form.setFieldsValue({ name, email, image });
     }
   }, [data, form]);
 
@@ -83,6 +88,14 @@ const ManageProfile = () => {
             <Input type="email" placeholder="Enter email" />
           </Form.Item>
 
+          <Form.Item
+            label="Image URL"
+            name="image"
+            rules={[{ required: true, message: "Please Give a valid image URL" }]}
+          >
+            <Input placeholder="Enter image URL" />
+          </Form.Item>
+
           {/* 
           <Form.Item
             label="Password"
@@ -96,7 +109,7 @@ const ManageProfile = () => {
             <Input.Password placeholder="Enter new password" />
           </Form.Item> */}
 
-          {isAdmin && (
+          {/* {isAdmin && (
             <>
               <Form.Item
                 label="Role"
@@ -121,7 +134,7 @@ const ManageProfile = () => {
                 </Select>
               </Form.Item>
             </>
-          )}
+          )} */}
 
           <Form.Item>
             <CustomButton

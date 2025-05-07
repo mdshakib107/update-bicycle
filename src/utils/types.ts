@@ -37,8 +37,7 @@ export type TResponse<T> = {
   message?: string;
 };
 
-//User type definition
-// This type is used to define the structure of a user object in the application. move it as a separate file if needed.
+//* User type definition
 export interface TUser {
   data: {
     _id: string;
