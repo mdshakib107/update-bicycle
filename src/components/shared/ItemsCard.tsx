@@ -2,7 +2,8 @@
 // import image
 import cycle from "../../assets/images/img/bicycle.jpg";
 
-import { Card, Flex, Skeleton } from "antd";
+import { FrownOutlined, MehOutlined, SmileOutlined } from "@ant-design/icons";
+import { Card, Flex, Skeleton, Rate } from "antd";
 import { useState } from "react";
 import { FcMoneyTransfer } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
@@ -22,6 +23,7 @@ export interface ItemData {
   _id?: string;
   createdAt?: string | Date;
   updatedAt?: string | Date;
+  rating?: number;
 }
 
 export interface ItemsCardProps {
@@ -40,18 +42,19 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   const {
     brand,
     // description,
-    inStock,
+    // inStock,
     name,
-    quantity,
+    // quantity,
     Img,
-    type,
+    // type,
     // updatedAt,
     _id,
     price,
+    rating,
     // createdAt,
   } = data;
 
-  // button for card
+  //* button for card
   const actions: React.ReactNode[] = [
     <>
       <CustomButton
@@ -70,6 +73,16 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
       />
     </>,
   ];
+
+  //* rating
+  const desc = ["terrible", "bad", "normal", "good", "wonderful"];
+  const customIcons: Record<number, React.ReactNode> = {
+    1: "😢",
+    2: <FrownOutlined />,
+    3: <MehOutlined />,
+    4: <SmileOutlined />,
+    5: "😁",
+  };
 
   return (
     <Link to={`/bicycles/${_id}`}>
@@ -112,21 +125,32 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
                     <span className="font-medium">Brand:</span>
                     <span className="font-serif">{brand}</span>
                   </p>
-                  <p className="flex justify-between">
+                  {/* <p className="flex justify-between">
                     <span className="font-medium">Type:</span>
                     <span className="font-serif">{type}</span>
-                  </p>
+                  </p> */}
                   <p className="flex justify-between">
                     <span className="font-medium">Price:</span>
                     <span className="font-serif">{price} ৳</span>
                   </p>
-                  <p className="flex justify-between">
+                  {/* <p className="flex justify-between">
                     <span className="font-medium">Quantity:</span>
                     <span className="font-serif">{quantity}</span>
-                  </p>
-                  <p className="flex justify-between">
+                  </p> */}
+                  {/* <p className="flex justify-between">
                     <span className="font-medium">In Stock:</span>
                     <span className="font-serif">{inStock ? "Yes" : "No"}</span>
+                  </p> */}
+                  <p className="flex justify-between">
+                    <span className="font-medium">Rating:</span>
+                    {/* <span className="font-serif">{rating}⭐</span> */}
+                    <Rate
+                      tooltips={desc}
+                      defaultValue={rating}
+                      character={({ index = 0 }) => customIcons[index + 1]}
+                      disabled 
+                    />
+                    {/* {rating ? <span>{desc[rating - 1]}</span> : null} */}
                   </p>
                 </div>
               }
