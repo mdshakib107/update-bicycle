@@ -16,7 +16,7 @@ const Hero = () => {
       {/* header */}
       <header className="flex h-full lg:flex-row flex-col-reverse gap-4 lg:gap-0 justify-center items-center ">
         <div className="px-8 mt-0  w-full lg:w-[60%] h-full py-4 lg:py-0 lg:h-80">
-          <div className="flex flex-col items-center justify-start text-center space-y-8">
+          <div className="flex flex-col items-center justify-start text-center space-y-6 lg:space-y-8 xl:space-y-12">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight transition-all duration-300 hover:scale-[1.02]">
               Discover Your Perfect Ride With Us!
             </h1>
