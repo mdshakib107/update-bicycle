@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import Loading from "../../components/shared/Loading";
-import useAxiosCommon from "../../hooks/useAxiosCommon";
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "sonner";
-import { useForm } from "react-hook-form";
 import ResponsiveNavbar from "@/components/home/ResponsiveNavbar";
 import CustomButton from "@/components/shared/CustomButton";
 import { useGetProductByIdQuery } from "@/redux/api/productApi";
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
+import Loading from "../../components/shared/Loading";
+import useAxiosCommon from "../../hooks/useAxiosCommon";
 
 const Checkout = () => {
   const axiosCommon = useAxiosCommon();
@@ -24,8 +24,7 @@ const Checkout = () => {
 
   const productData = data?.data;
 
-  useEffect(() => {   
-
+  useEffect(() => {
     if (productData && productData?.inStock === false) {
       toast.info("Items is not available!");
 
@@ -105,15 +104,15 @@ const Checkout = () => {
       paymentStatus: "UNPAID",
     };
 
-    console.log(orderData);
+    // console.log(orderData);
 
     const response = await axiosCommon.post(
       "/api/orders/create-order",
-      orderData,
+      orderData
     );
-    console.log(response);
+    // console.log(response);
     window.location.replace(response.data.data.GatewayPageURL);
-    console.log(response.data.data);
+    // console.log(response.data.data);
   };
 
   if (isPending) return <Loading />;
@@ -133,9 +132,13 @@ const Checkout = () => {
           <div className="w-full mx-auto">
             {/* <img src= alt="" className="hidden md:flex"/> */}
             <img
-              src={product.Img? product.Img :"../../../src/assets/images/img/bicycle.jpg"}
+              src={
+                product.Img
+                  ? product.Img
+                  : "../../../src/assets/images/img/bicycle.jpg"
+              }
               alt={product?.name}
-              className="hidden md:flex rounded-4xl"
+              className="hidden md:flex rounded-4xl justify-center items-center w-full max-h-[70vh] bg-cover"
             />
             <div className="w-full mx-auto p-6 bg-white rounded-4xl shadow-md">
               <h2 className="text-2xl font-bold mb-6">Checkout</h2>

@@ -1,13 +1,13 @@
 import CustomButton from "@/components/shared/CustomButton";
+import Loading from "@/components/shared/Loading";
+import { verifyToken } from "@/utils/verifyToken";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
+import { useEffect, useState } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useRegisterMutation } from "../../redux/api/authApi"; // Import register mutation
-import { useEffect, useState } from "react";
-import Loading from "@/components/shared/Loading";
-import { verifyToken } from "@/utils/verifyToken";
 
 const Register = () => {
   // useRegister mutation hook
@@ -33,7 +33,7 @@ const Register = () => {
       email: values?.email,
       password: values?.password,
     };
-    console.log(userInfo);
+    // console.log(userInfo);
     if (values.password !== values.confirmPassword) {
       toast.error("Passwords do not match", { id: toastId });
       return;
@@ -54,7 +54,7 @@ const Register = () => {
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      console.log(error.data.stack);
+      // console.log(error.data.stack);
       toast.error(`${error?.data?.message || "Something went wrong!"}`, {
         id: toastId,
       });
@@ -95,7 +95,7 @@ const Register = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="p-8 border rounded shadow-md border-purple-600 shadow-purple-600">
+      <div className="p-8 border rounded shadow-md border-purple-600 shadow-purple-600 relative">
         <Form
           name="register"
           initialValues={{ remember: true }}
@@ -181,6 +181,28 @@ const Register = () => {
             </p>
           </Form.Item>
         </Form>
+        
+        {/* back to terms page */}
+        <Link
+          to={"/"}
+          className="absolute left-24 bottom-2 flex justify-center items-center gap-1 p-3 rounded-4xl text-purple-600  hover:text-blue-600"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+            />
+          </svg>
+          <p className="text-base">Home</p>
+        </Link>
       </div>
     </div>
   );
