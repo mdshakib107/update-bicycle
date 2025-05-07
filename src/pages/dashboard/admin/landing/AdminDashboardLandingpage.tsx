@@ -33,7 +33,7 @@ const AdminDashboardLandingpage = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-[calc(100vh-100px)] w-full overflow-y-hidden ">//
+    <div className="flex flex-col justify-center items-center w-full">//
       {/* Cover image + Avatar */}
       <div className="justify-center flex items-center gap-2 relative  w-full z-10">
         <img

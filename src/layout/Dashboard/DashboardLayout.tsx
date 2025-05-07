@@ -67,14 +67,18 @@ function DashboardLayout() {
         {/* responsive sidebar */}
         <Sidebar />
 
-        <Layout>
+        {/* Right side layout with internal scroll */}
+        <Layout className="h-screen overflow-hidden">
           {/* <Header style={{ padding: 0 }} /> */}
           <div className="pl-10 m-0">
             <Breadcrumb style={{ margin: "16px 0" }}>
               <Breadcrumb.Item>{breadcrumb}</Breadcrumb.Item>
             </Breadcrumb>
           </div>
-          <Content style={{ margin: "24px 16px 0" }}>
+
+          {/* Scrollable Content */}
+          {/* <Content style={{ margin: "24px 16px 0" }}> */}
+          <Content className="overflow-y-auto px-6 py-4" style={{ flex: 1 }}>
             <div
               style={{
                 padding: 24,

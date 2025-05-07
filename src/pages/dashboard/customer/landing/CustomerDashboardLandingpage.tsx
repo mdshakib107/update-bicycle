@@ -34,9 +34,27 @@ const CustomerDashboardLandingpage = () => {
   }
 
   return (
-    <div className="flex justify-center items-center h-[calc(100vh-100px)] ">
+    <div className="flex flex-col justify-center items-center w-full">
+      {/* Cover image + Avatar */}
+      <div className="justify-center flex items-center gap-2 relative  w-full z-10">
+        <img
+          src="https://i.ibb.co.com/G2xCfZf/interior-design-mountain-view.jpg"
+          alt={user?.name}
+          className="w-full h-68 object-fit"
+        />
+        <img
+          src={
+            user?.image || "https://i.ibb.co.com/Fz38g1t/human-celebrating.png"
+          }
+          alt={user?.name}
+          width={100}
+          height={100}
+          className="rounded-full w-32 h-32 absolute -bottom-10 border-2 border-[#4F46E5] shadow-lg"
+        />
+      </div>
+
       <Card
-        className="w-full p-4! shadow-md! rounded border border-purple-600 shadow-purple-600"
+        className="w-full p-4! !rounded-none"
         bordered={false}
         title={
           <div className="flex items-center gap-4">
