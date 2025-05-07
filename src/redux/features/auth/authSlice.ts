@@ -15,6 +15,16 @@ export type TUserFromToken = {
   createdAt?: string;
   updatedAt?: string;
   image?: string;
+  address?: string;
+  phone?: string;
+  bloodGroup?: string;
+  emergencyContact?: string;
+  gender?: "male" | "female";
+  dateOfBirth?: Date;
+  country?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
 };
 
 //* auth state

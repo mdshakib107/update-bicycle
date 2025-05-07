@@ -5,12 +5,18 @@ import AllProductsPage from "../pages/dashboard/admin/products/AllProductsPage";
 import ManageProfile from "../pages/dashboard/shared/profile/manageProfile";
 import UpdatePassword from "../pages/dashboard/shared/profile/updatePassword";
 import ManageOrders from "../pages/dashboard/admin/orders/ManageOrders.js"
+import AdminProfile from "@/pages/dashboard/admin/profile/AdminProfile.js";
 
 export const adminPaths = [
   {
     name: "My Dashboard",
     path: "my-dashboard",
     element: <AdminDashboardLandingpage />,
+  },
+  {
+    name: "Profile",
+    path: "profile",
+    element: <AdminProfile />,
   },
   {
     name: "Manage Profile",

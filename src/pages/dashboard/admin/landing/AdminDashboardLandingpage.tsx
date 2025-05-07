@@ -2,8 +2,26 @@ import Loading from "@/components/shared/Loading";
 import { useGetUserByIdQuery } from "@/redux/api/userApi";
 import { useCurrentUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/hooks";
+import {
+  AlertOutlined,
+  CalendarOutlined,
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  CompassOutlined,
+  CrownOutlined,
+  EnvironmentOutlined,
+  FieldTimeOutlined,
+  GlobalOutlined,
+  HeartOutlined,
+  HomeOutlined,
+  LockOutlined,
+  MailOutlined,
+  NumberOutlined,
+  PhoneOutlined,
+  SyncOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { Avatar, Card, Descriptions, Tag } from "antd";
-import { UserOutlined } from "@ant-design/icons";
 
 const AdminDashboardLandingpage = () => {
   //* Get full user from Redux
@@ -15,7 +33,7 @@ const AdminDashboardLandingpage = () => {
     skip: !userId,
   });
 
-  const image = data?.data?.image;
+  // const { name, email, image, address, phone, bloodGroup, emergencyContact, gender, dateOfBirth, country, city, state, zipCode } = data;
 
   //* loading state
   if (isLoading) {
@@ -34,9 +52,10 @@ const AdminDashboardLandingpage = () => {
       </div>
     );
   }
-  
+
   return (
-    <div className="flex flex-col justify-center items-center w-full">//
+    <div className="flex flex-col justify-center items-center w-full">
+      //
       {/* Cover image + Avatar */}
       <div className="justify-center flex items-center gap-2 relative  w-full z-10">
         <img
@@ -46,7 +65,8 @@ const AdminDashboardLandingpage = () => {
         />
         <img
           src={
-            image || "https://i.ibb.co.com/Fz38g1t/human-celebrating.png"
+            data?.data?.image ||
+            "https://i.ibb.co.com/Fz38g1t/human-celebrating.png"
           }
           alt={data?.data?.name}
           width={100}
@@ -54,7 +74,6 @@ const AdminDashboardLandingpage = () => {
           className="rounded-full w-32 h-32 absolute -bottom-10 border-2 border-[#4F46E5] shadow-lg"
         />
       </div>
-
       <Card
         className="w-full p-4!"
         variant="borderless"
@@ -62,36 +81,84 @@ const AdminDashboardLandingpage = () => {
           <div className="flex items-center gap-4">
             <Avatar
               size={48}
-              icon={image || <UserOutlined />}
+              icon={data?.data?.image || <UserOutlined />}
               src={
-                image ||
+                data?.data?.image ||
                 "https://i.ibb.co.com/Fz38g1t/human-celebrating.png"
               }
             />
             <div>
               <h2 className="text-xl font-bold m-0">{data?.data?.name}</h2>
               <p className="text-sm text-gray-500 m-0">{data?.data?.email}</p>
+              {/* <p className="text-sm text-gray-500 m-0">{data?.data?.dateOfBirth ? new Date(data?.data?.dateOfBirth).toLocaleDateString() : ''}</p> */}
             </div>
           </div>
         }
       >
         <Descriptions
-          title="Profile Details"
+          title={
+            <div className="flex items-center gap-2 mb-4">
+              <UserOutlined className="text-2xl text-blue-600" />
+              <span className="text-2xl font-semibold text-gray-800">
+                Personal Information
+              </span>
+            </div>
+          }
           bordered
-          column={{ xs: 1, sm: 1, md: 1, lg: 1, xxl: 1, xl: 1 }}
+          column={{ xs: 1, sm: 2, md: 2, lg: 3, xxl: 4, xl: 3 }}
           className="mt-4"
+          labelStyle={{
+            fontWeight: 500,
+            color: "#4B5563",
+            backgroundColor: "#F9FAFB",
+            padding: "12px 16px",
+          }}
+          contentStyle={{
+            backgroundColor: "white",
+            padding: "12px 16px",
+          }}
         >
-          <Descriptions.Item label="Name">{data?.data?.name}</Descriptions.Item>
-          <Descriptions.Item label="Email">
-            {data?.data?.email}
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <UserOutlined /> Name
+              </div>
+            }
+          >
+            <span className="font-medium">{data?.data?.name}</span>
           </Descriptions.Item>
-          <Descriptions.Item label="Role">
-            <Tag color={data?.data?.role === "admin" ? "purple" : "blue"}>
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <MailOutlined /> Email
+              </div>
+            }
+          >
+            <span className="text-blue-600">{data?.data?.email}</span>
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <CrownOutlined /> Role
+              </div>
+            }
+          >
+            <Tag
+              color={data?.data?.role === "admin" ? "purple" : "blue"}
+              className="px-3 py-1 text-sm font-medium"
+            >
               {data?.data?.role.toUpperCase()}
             </Tag>
           </Descriptions.Item>
-          <Descriptions.Item label="Status">
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <CheckCircleOutlined /> Status
+              </div>
+            }
+          >
             <Tag
+              className="px-3 py-1 text-sm font-medium"
               color={
                 data?.data?.status === "active"
                   ? "green"
@@ -103,16 +170,159 @@ const AdminDashboardLandingpage = () => {
               {data?.data?.status}
             </Tag>
           </Descriptions.Item>
-          <Descriptions.Item label="Password Change Required">
-            <Tag color={data?.data?.needsPasswordChange ? "red" : "green"}>
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <LockOutlined /> Password Change
+              </div>
+            }
+          >
+            <Tag
+              color={data?.data?.needsPasswordChange ? "red" : "green"}
+              className="px-3 py-1 text-sm font-medium"
+            >
               {data?.data?.needsPasswordChange ? "Yes" : "No"}
             </Tag>
           </Descriptions.Item>
           {data?.data?.passwordChangedAt && (
-            <Descriptions.Item label="Last Password Change">
-              {new Date(data?.data?.passwordChangedAt).toLocaleString()}
+            <Descriptions.Item
+              label={
+                <div className="flex items-center gap-2">
+                  <ClockCircleOutlined /> Last Password Update
+                </div>
+              }
+            >
+              <span className="text-gray-600">
+                {new Date(data?.data?.passwordChangedAt).toLocaleString()}
+              </span>
             </Descriptions.Item>
           )}
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <HomeOutlined /> Address
+              </div>
+            }
+          >
+            <span className="text-gray-700">{data?.data?.address}</span>
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <PhoneOutlined /> Phone
+              </div>
+            }
+          >
+            <span className="text-gray-700">{data?.data?.phone}</span>
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <HeartOutlined /> Blood Group
+              </div>
+            }
+          >
+            <span className="font-medium text-red-600">
+              {data?.data?.bloodGroup}
+            </span>
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <AlertOutlined /> Emergency Contact
+              </div>
+            }
+          >
+            <span className="text-gray-700">
+              {data?.data?.emergencyContact}
+            </span>
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <UserOutlined /> Gender
+              </div>
+            }
+          >
+            <span className="capitalize text-gray-700">
+              {data?.data?.gender}
+            </span>
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <CalendarOutlined /> Date of Birth
+              </div>
+            }
+          >
+            <span className="text-gray-700">
+              {data?.data?.dateOfBirth
+                ? new Date(data?.data?.dateOfBirth).toLocaleDateString()
+                : ""}
+            </span>
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <GlobalOutlined /> Country
+              </div>
+            }
+          >
+            <span className="text-gray-700">{data?.data?.country}</span>
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <EnvironmentOutlined /> City
+              </div>
+            }
+          >
+            <span className="text-gray-700">{data?.data?.city}</span>
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <CompassOutlined /> State
+              </div>
+            }
+          >
+            <span className="text-gray-700">{data?.data?.state}</span>
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <NumberOutlined /> Zip Code
+              </div>
+            }
+          >
+            <span className="text-gray-700">{data?.data?.zipCode}</span>
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <FieldTimeOutlined /> Created At
+              </div>
+            }
+          >
+            <span className="text-gray-600">
+              {data?.data?.createdAt
+                ? new Date(data?.data?.createdAt).toLocaleDateString()
+                : ""}
+            </span>
+          </Descriptions.Item>
+          <Descriptions.Item
+            label={
+              <div className="flex items-center gap-2">
+                <SyncOutlined /> Updated At
+              </div>
+            }
+          >
+            <span className="text-gray-600">
+              {data?.data?.updatedAt
+                ? new Date(data?.data?.updatedAt).toLocaleDateString()
+                : ""}
+            </span>
+          </Descriptions.Item>
         </Descriptions>
       </Card>
     </div>

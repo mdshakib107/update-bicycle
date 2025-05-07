@@ -3,19 +3,39 @@ import { useGetUserByIdQuery } from "@/redux/api/userApi";
 import { useCurrentUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/hooks";
 import { Avatar, Card, Descriptions, Tag } from "antd";
-import { UserOutlined, MailOutlined, CrownOutlined, CheckCircleOutlined, LockOutlined, PhoneOutlined, HeartOutlined, AlertOutlined, CalendarOutlined, GlobalOutlined, CompassOutlined, EnvironmentOutlined, NumberOutlined, FieldTimeOutlined, HomeOutlined, ClockCircleOutlined, SyncOutlined } from '@ant-design/icons';
+import {
+  AlertOutlined,
+  CalendarOutlined,
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  CompassOutlined,
+  CrownOutlined,
+  EnvironmentOutlined,
+  FieldTimeOutlined,
+  GlobalOutlined,
+  HeartOutlined,
+  HomeOutlined,
+  LockOutlined,
+  MailOutlined,
+  NumberOutlined,
+  PhoneOutlined,
+  SyncOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
-const CustomerDashboardLandingpage = () => {
-
-  // Get full user from Redux
+const AdminProfile = () => {
+  //* Get full user from Redux
   const user = useAppSelector(useCurrentUser);
   const userId = user?._id;
 
+  //* Get user by id
   const { data, isLoading, isError } = useGetUserByIdQuery(userId!, {
     skip: !userId,
   });
 
-  // loading state
+  // const { name, email, image, address, phone, bloodGroup, emergencyContact, gender, dateOfBirth, country, city, state, zipCode } = data;
+
+  //* loading state
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -24,7 +44,7 @@ const CustomerDashboardLandingpage = () => {
     );
   }
 
-  // error state
+  //* error state
   if (isError || !data) {
     return (
       <div className="flex justify-center items-center h-full">
@@ -32,9 +52,9 @@ const CustomerDashboardLandingpage = () => {
       </div>
     );
   }
-
+  
   return (
-    <div className="flex flex-col justify-center items-center w-full">
+    <div className="flex flex-col justify-center items-center w-full">//
       {/* Cover image + Avatar */}
       <div className="justify-center flex items-center gap-2 relative  w-full z-10">
         <img
@@ -54,7 +74,7 @@ const CustomerDashboardLandingpage = () => {
       </div>
 
       <Card
-        className="w-full p-4! !rounded-none"
+        className="w-full p-4!"
         variant="borderless"
         title={
           <div className="flex items-center gap-4">
@@ -223,4 +243,4 @@ const CustomerDashboardLandingpage = () => {
   );
 };
 
-export default CustomerDashboardLandingpage;
+export default AdminProfile;

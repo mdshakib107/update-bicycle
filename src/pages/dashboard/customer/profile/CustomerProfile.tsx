@@ -3,9 +3,27 @@ import { useGetUserByIdQuery } from "@/redux/api/userApi";
 import { useCurrentUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/hooks";
 import { Avatar, Card, Descriptions, Tag } from "antd";
-import { UserOutlined, MailOutlined, CrownOutlined, CheckCircleOutlined, LockOutlined, PhoneOutlined, HeartOutlined, AlertOutlined, CalendarOutlined, GlobalOutlined, CompassOutlined, EnvironmentOutlined, NumberOutlined, FieldTimeOutlined, HomeOutlined, ClockCircleOutlined, SyncOutlined } from '@ant-design/icons';
+import {
+  AlertOutlined,
+  CalendarOutlined,
+  CheckCircleOutlined,
+  ClockCircleOutlined,
+  CompassOutlined,
+  CrownOutlined,
+  EnvironmentOutlined,
+  FieldTimeOutlined,
+  GlobalOutlined,
+  HeartOutlined,
+  HomeOutlined,
+  LockOutlined,
+  MailOutlined,
+  NumberOutlined,
+  PhoneOutlined,
+  SyncOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 
-const CustomerDashboardLandingpage = () => {
+const CustomerProfile = () => {
 
   // Get full user from Redux
   const user = useAppSelector(useCurrentUser);
@@ -223,4 +241,4 @@ const CustomerDashboardLandingpage = () => {
   );
 };
 
-export default CustomerDashboardLandingpage;
+export default CustomerProfile;
