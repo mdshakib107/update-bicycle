@@ -141,7 +141,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
                     <span className="font-medium">In Stock:</span>
                     <span className="font-serif">{inStock ? "Yes" : "No"}</span>
                   </p> */}
-                  <p className="flex justify-between">
+                  <div className="flex justify-between">
                     <span className="font-medium">Rating:</span>
                     {/* <span className="font-serif">{rating}⭐</span> */}
                     <Rate
@@ -151,7 +151,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
                       disabled 
                     />
                     {/* {rating ? <span>{desc[rating - 1]}</span> : null} */}
-                  </p>
+                  </div>
                 </div>
               }
             />
