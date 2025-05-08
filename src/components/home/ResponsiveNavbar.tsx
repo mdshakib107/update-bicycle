@@ -16,6 +16,7 @@ import { logout, useCurrentUser } from "../../redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import CustomButton from "../shared/CustomButton";
 import { useGetUserByIdQuery } from "@/redux/api/userApi";
+import { LayoutDashboard } from "lucide-react";
 // import { MdDashboard } from "react-icons/md";
 
 const ResponsiveNavbar = () => {
@@ -238,8 +239,15 @@ const ResponsiveNavbar = () => {
               to={toDashboard}
               className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50 ${activeLink}`}
             >
+              <LayoutDashboard />
+              Dashboard
+            </NavLink>
+            <NavLink
+              to={`/dashboard/${user?.role}/profile`}
+              className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50 ${activeLink}`}
+            >
               <FiUser />
-              View Profile
+              Profile
             </NavLink>
             <NavLink
               to={`/dashboard/${user?.role}/manage-profile`}
