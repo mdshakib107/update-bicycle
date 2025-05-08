@@ -22,6 +22,7 @@ import {
   SyncOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import ProfileHeader from "@/components/shared/ProfileHeader";
 
 const AdminProfile = () => {
   //* Get full user from Redux
@@ -56,23 +57,7 @@ const AdminProfile = () => {
   return (
     <div className="flex flex-col justify-center items-center w-full min-h-screen">
       {/* Cover image + Avatar */}
-      <div className="justify-center flex items-center gap-2 relative w-full z-1">
-        <img
-          src="https://i.ibb.co.com/G2xCfZf/interior-design-mountain-view.jpg"
-          alt={data?.data?.name}
-          className="w-full h-60 md:h-96 object-fit"
-        />
-        <img
-          src={
-            data?.data?.image ||
-            "https://i.ibb.co.com/Fz38g1t/human-celebrating.png"
-          }
-          alt={data?.data?.name}
-          width={100}
-          height={100}
-          className="rounded-full w-32 h-32 absolute left-1/2 transform -translate-x-1/2 -bottom-10 border-4 border-white shadow-md"
-        />
-      </div>
+      <ProfileHeader data={data}/>
 
       <Card
         className="w-full !rounded-none"
