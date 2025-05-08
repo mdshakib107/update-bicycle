@@ -5,6 +5,7 @@ import { useGetAllProductsQuery } from "@/redux/api/productApi";
 import { useGetAllUsersQuery, useGetUserByIdQuery } from "@/redux/api/userApi";
 import { useCurrentUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/hooks";
+import { Progress, ProgressProps, Steps } from "antd";
 import {
   Boxes,
   DollarSign,
@@ -47,6 +48,13 @@ interface ProductData {
   date: string;
   count: number;
 }
+
+//* cards colors
+const conicColors: ProgressProps["strokeColor"] = {
+  "0%": "#87d068",
+  "50%": "#ffe58f",
+  "100%": "#ffccc7",
+};
 
 const AdminDashboardLandingpage = () => {
   //* Get full user from Redux
@@ -319,6 +327,56 @@ const AdminDashboardLandingpage = () => {
 
   return (
     <div className="px-6 space-y-6 w-full h-screen">
+      {/* Information Progression History */}
+      <Card className="mb-6 w-full">
+        <CardHeader>
+          <CardTitle className="text-lg font-bold">
+            Information Progression History
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="space-y-6 w-full">
+            <Steps
+              type="navigation"
+              current={(() => {
+                let completedSteps = 0;
+                if (user?.name) completedSteps++;
+                if (user?.email) completedSteps++;
+                if (user?.phone) completedSteps++;
+                if (user?.address) completedSteps++;
+                if (user?.dateOfBirth) completedSteps++;
+                return completedSteps;
+              })()}
+              items={[
+                { title: "Basic Info", description: "Name & Email" },
+                { title: "Contact", description: "Phone" },
+                { title: "Address", description: "Location" },
+                { title: "Personal", description: "Birth Date" },
+                { title: "Complete", description: "All Set!" },
+              ]}
+              className="w-full [&_.ant-steps-item]:flex-1 [&_.ant-steps-item]:min-w-0 [&_.ant-steps-item-title]:whitespace-normal [&_.ant-steps-item-description]:whitespace-normal"
+            />
+            <Progress
+              percent={(() => {
+                const fields = [
+                  "name",
+                  "email",
+                  "phone",
+                  "address",
+                  "dateOfBirth",
+                ];
+                const completed = fields.filter(
+                  (field) => user?.[field as keyof typeof user],
+                ).length;
+                return Math.round((completed / fields.length) * 100);
+              })()}
+              status="active"
+              strokeColor={conicColors}
+            />
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
