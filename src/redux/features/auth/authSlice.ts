@@ -10,7 +10,7 @@ export type TUserFromToken = {
   exp?: number;
   _id?: string;
   role?: "admin" | "customer";
-  status?: "active" | "inactive" | "banned";
+  status?: "active" | "inactive";
   needsPasswordChange?: boolean;
   passwordChangedAt?: Date;
   createdAt?: Date;

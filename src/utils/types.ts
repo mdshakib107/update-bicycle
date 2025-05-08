@@ -44,7 +44,7 @@ export interface TUser {
     name: string;
     email: string;
     role: "admin" | "customer";
-    status: "active" | "inactive" | "banned";
+    status: "active" | "inactive";
     needsPasswordChange: boolean;
     passwordChangedAt?: Date;
     createdAt?: Date;
