@@ -53,7 +53,7 @@ const CustomerProfile = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center w-full">
+    <div className="flex flex-col items-center w-full h-screen">
       {/* Cover image + Avatar */}
       <ProfileHeader data={data}/>
 
