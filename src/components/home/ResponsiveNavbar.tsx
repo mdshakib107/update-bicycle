@@ -216,7 +216,7 @@ const ResponsiveNavbar = () => {
             <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute bottom-[0px] right-0 border-2 border-white"></div>
           </div>
 
-          <h1 className="text-[1rem] font-[400] text-gray-600 sm:block hidden">
+          <h1 className="text-[1rem] font-[400] text-white sm:block hidden">
             {data?.data?.name || data?.data?.email}
           </h1>
 
@@ -237,21 +237,21 @@ const ResponsiveNavbar = () => {
             </span>
             <NavLink
               to={toDashboard}
-              className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50 ${activeLink}`}
+              className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-black hover:bg-gray-50 ${activeLink}`}
             >
-              <LayoutDashboard />
+              <LayoutDashboard size={16} />
               Dashboard
             </NavLink>
             <NavLink
               to={`/dashboard/${user?.role}/profile`}
-              className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50 ${activeLink}`}
+              className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-black hover:bg-gray-50 ${activeLink}`}
             >
               <FiUser />
               Profile
             </NavLink>
             <NavLink
               to={`/dashboard/${user?.role}/manage-profile`}
-              className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50 ${activeLink}`}
+              className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-black hover:bg-gray-50 ${activeLink}`}
             >
               <IoSettingsOutline />
               Settings
@@ -272,7 +272,7 @@ const ResponsiveNavbar = () => {
           <IoIosArrowUp
             className={`${
               accountMenuOpen ? "rotate-0" : "rotate-[180deg]"
-            } transition-all duration-300 text-gray-600 sm:block hidden`}
+            } transition-all duration-300 text-white sm:block hidden`}
           />
         </div>
       )}
