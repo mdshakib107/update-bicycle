@@ -18,9 +18,8 @@ import {
   PhoneOutlined,
   RiseOutlined,
   ShoppingOutlined,
-  UserOutlined,
 } from "@ant-design/icons";
-import { Avatar, Descriptions, Tag } from "antd";
+import { Descriptions, Progress, ProgressProps, Steps } from "antd";
 import {
   Bar,
   BarChart,
@@ -32,6 +31,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+
+//* cards colors
+const conicColors: ProgressProps["strokeColor"] = {
+  "0%": "#87d068",
+  "50%": "#ffe58f",
+  "100%": "#ffccc7",
+};
 
 const CustomerDashboardLandingpage = () => {
   // Get full user from Redux
@@ -106,31 +112,59 @@ const CustomerDashboardLandingpage = () => {
   );
 
   return (
-    <div className="pt-20 px-6 space-y-6 w-full h-screen">
-      {/* User Profile Card */}
-      <Card className="mb-6">
-        <CardContent className="flex items-center gap-4 p-6">
-          <Avatar
-            size={64}
-            src={userDetails.image}
-            icon={<UserOutlined />}
-            className="bg-primary"
-          />
-          <div>
-            <h2 className="text-2xl font-bold">{userDetails.name}</h2>
-            <p className="text-muted-foreground">{userDetails.email}</p>
-            <div className="flex gap-2 mt-2">
-              <Tag color="blue">{userDetails.role}</Tag>
-              <Tag color={userDetails.status === "active" ? "green" : "red"}>
-                {userDetails.status}
-              </Tag>
-            </div>
+    <div className="px-6 space-y-6 w-full h-screen">
+      {/* Information Progression History */}
+      <Card className="mb-6 w-full">
+        <CardHeader>
+          <CardTitle className="text-lg font-bold">
+            Information Progression History
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <div className="space-y-6 w-full">
+            <Steps
+              type="navigation"
+              current={(() => {
+                let completedSteps = 0;
+                if (userDetails.name) completedSteps++;
+                if (userDetails.email) completedSteps++;
+                if (userDetails.phone) completedSteps++;
+                if (userDetails.address) completedSteps++;
+                if (userDetails.dateOfBirth) completedSteps++;
+                return completedSteps;
+              })()}
+              items={[
+                { title: "Basic Info", description: "Name & Email" },
+                { title: "Contact", description: "Phone" },
+                { title: "Address", description: "Location" },
+                { title: "Personal", description: "Birth Date" },
+                { title: "Complete", description: "All Set!" },
+              ]}
+              className="w-full [&_.ant-steps-item]:flex-1 [&_.ant-steps-item]:min-w-0 [&_.ant-steps-item-title]:whitespace-normal [&_.ant-steps-item-description]:whitespace-normal"
+            />
+            <Progress
+              percent={(() => {
+                const fields = [
+                  "name",
+                  "email",
+                  "phone",
+                  "address",
+                  "dateOfBirth",
+                ];
+                const completed = fields.filter(
+                  (field) => userDetails[field as keyof typeof userDetails],
+                ).length;
+                return Math.round((completed / fields.length) * 100);
+              })()}
+              status="active"
+              strokeColor={conicColors}
+            />
           </div>
         </CardContent>
       </Card>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Orders</CardTitle>

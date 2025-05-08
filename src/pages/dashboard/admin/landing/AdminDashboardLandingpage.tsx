@@ -318,7 +318,7 @@ const AdminDashboardLandingpage = () => {
   };
 
   return (
-    <div className="pt-20 px-6 space-y-6 w-full h-screen">
+    <div className="px-6 space-y-6 w-full h-screen">
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
