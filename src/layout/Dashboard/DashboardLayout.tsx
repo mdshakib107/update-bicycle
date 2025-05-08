@@ -21,13 +21,15 @@ function DashboardLayout() {
   const location = useLocation();
   // const breadcrumb = location.pathname.split('/').filter(Boolean).join(' > ');
   const breadcrumb = location.pathname
-  .split('/')
-  .filter(Boolean)
-  .map(segment => segment
-    .replace(/-/g, ' ') //? Replace dashes with spaces
-    .replace(/\b\w/g, char => char.toUpperCase()) //? Capitalize first letters
-  )
-  .join(' > ');
+    .split("/")
+    .filter(Boolean)
+    .map(
+      (segment) =>
+        segment
+          .replace(/-/g, " ") //? Replace dashes with spaces
+          .replace(/\b\w/g, (char) => char.toUpperCase()) //? Capitalize first letters
+    )
+    .join(" > ");
 
   //* Check if the user is already logged in when the component is mounted
   useEffect(() => {
@@ -63,33 +65,30 @@ function DashboardLayout() {
 
   return (
     <>
-      <Layout>
-        {/* responsive sidebar */}
+      <Layout className="min-h-screen">
+        {/* Responsive sidebar */}
         <Sidebar />
 
         {/* Right side layout with internal scroll */}
-        <Layout className="h-screen overflow-hidden">
-          {/* <Header style={{ padding: 0 }} /> */}
-          <div className="pl-10 m-0">
+        <Layout className="h-screen">
+          {/* Breadcrumb with sticky positioning */}
+          <div className="pl-10 m-0 sticky top-0 bg-white">
             <Breadcrumb style={{ margin: "16px 0" }}>
               <Breadcrumb.Item>{breadcrumb}</Breadcrumb.Item>
             </Breadcrumb>
           </div>
 
           {/* Scrollable Content */}
-          {/* <Content style={{ margin: "24px 16px 0" }}> */}
-          <Content className="overflow-y-auto px-6 py-4 h-[calc(80vh)] md:h-full" >
-            <div
-              style={{
-                padding: 24,
-                // minHeight: 360,
-              }}
-              className="w-full"
-            >
-              {/* content */}
+          <Content
+            className="overflow-y-auto px-6 py-4"
+            style={{ paddingTop: "72px" }}
+          >
+            <div style={{ padding: 24 }} className="w-full">
+              {/* Content goes here */}
               <Outlet />
             </div>
           </Content>
+
           <Footer className="text-center hidden md:block">
             Bicycle ©{new Date().getFullYear()} - Created by Promise Squad
           </Footer>

@@ -55,9 +55,9 @@ const AdminProfile = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center w-full min-h-screen">
+    <div className="flex flex-col justify-center items-center w-full">
       {/* Cover image + Avatar */}
-      <ProfileHeader data={data}/>
+      <ProfileHeader data={data} />
 
       <Card
         className="w-full !rounded-none"
@@ -81,27 +81,27 @@ const AdminProfile = () => {
       >
         <Descriptions
           title={
-            <div className="flex items-center gap-2 !overflow-y-auto !h-20 md:h-auto md:overflow-hidden">
-              <UserOutlined className="text-2xl text-blue-600" />
-              <span className="text-2xl font-semibold text-gray-800">
-                Personal Information
-              </span>
+            <div className="flex items-center gap-2 text-lg md:text-2xl font-semibold text-gray-800">
+              <UserOutlined className="text-blue-600" />
+              Personal Information
             </div>
           }
           bordered
-          column={{ xs: 1, sm: 2, md: 2, lg: 3, xxl: 4, xl: 3 }}
-          className="mt-4"
-          styles={{
-            label: {
-              fontWeight: 500,
-              color: "#4B5563",
-              backgroundColor: "#F9FAFB",
-              padding: "12px 16px",
-            },
-            content: {
-              backgroundColor: "white",
-              padding: "12px 16px",
-            },
+          column={{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 4 }}
+          className="mt-4 px-2 sm:px-4 md:px-6"
+          style={{
+            maxHeight: "calc(100vh - 72px)",
+            overflowY: "auto",
+            backgroundColor: "white",
+          }}
+          labelStyle={{
+            fontWeight: 500,
+            color: "#4B5563",
+            backgroundColor: "#F9FAFB",
+            padding: "12px 16px",
+          }}
+          contentStyle={{
+            padding: "12px 16px",
           }}
         >
           <Descriptions.Item
