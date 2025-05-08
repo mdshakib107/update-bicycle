@@ -3,7 +3,7 @@
 import cycle from "../../assets/images/img/bicycle.jpg";
 
 import { FrownOutlined, MehOutlined, SmileOutlined } from "@ant-design/icons";
-import { Card, Flex, Skeleton, Rate } from "antd";
+import { Card, Flex, Rate, Skeleton } from "antd";
 import { useState } from "react";
 import { FcMoneyTransfer } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
@@ -69,7 +69,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
             BuyNow
           </div>
         }
-        className="w-[90%] !py-2"
+        className="w-[90%] !py-1.5"
       />
     </>,
   ];
@@ -98,18 +98,29 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
         /> */}
 
         {loading ? (
-          <div className="w-full p-6">
-            <Skeleton active avatar paragraph={{ rows: 4 }} />
+          <div className="w-full p-4">
+            <Skeleton active avatar paragraph={{ rows: 3 }} />
           </div>
         ) : (
-          <Card 
-          loading={loading} actions={actions} style={{ minWidth: 200 }}
-          className="w-full"
+          <Card
+            loading={loading}
+            actions={actions}
+            style={{ minWidth: 200 }}
+            className="w-full"
+            bodyStyle={{ padding: "12px" }}
           >
             {!Img ? (
-              <img alt="Bicycle" src={cycle} className="mb-6 w-full" />
+              <img
+                alt="Bicycle"
+                src={cycle}
+                className="mb-3 w-full h-40 object-cover"
+              />
             ) : (
-              <img alt="Bicycle" src={Img} className="mb-6 w-full h-52" />
+              <img
+                alt="Bicycle"
+                src={Img}
+                className="mb-3 w-full h-40 object-cover"
+              />
             )}
 
             <Card.Meta
@@ -117,9 +128,13 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
               // avatar={
               //   <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=1" />
               // }
-              title={name}
+              title={
+                <h3 className="text-base font-medium mb-1 line-clamp-1">
+                  {name}
+                </h3>
+              }
               description={
-                <div className="space-y-2">
+                <div className="space-y-1.5 text-sm">
                   {/* <p className="mb-2 min-h-20 font-semibold">{description}</p> */}
                   <p className="flex justify-between">
                     <span className="font-medium">Brand:</span>
@@ -141,14 +156,14 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
                     <span className="font-medium">In Stock:</span>
                     <span className="font-serif">{inStock ? "Yes" : "No"}</span>
                   </p> */}
-                  <div className="flex justify-between">
+                  <div className="flex justify-between items-center">
                     <span className="font-medium">Rating:</span>
                     {/* <span className="font-serif">{rating}⭐</span> */}
                     <Rate
                       tooltips={desc}
                       defaultValue={rating}
                       character={({ index = 0 }) => customIcons[index + 1]}
-                      disabled 
+                      disabled
                     />
                     {/* {rating ? <span>{desc[rating - 1]}</span> : null} */}
                   </div>
