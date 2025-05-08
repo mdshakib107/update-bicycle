@@ -26,6 +26,7 @@ const ManageProfile = () => {
 
   const [updateUser, { isLoading: isSubmitting }] = useUpdateUserMutation();
   const [form] = Form.useForm();
+
   useEffect(() => {
     if (data?.data) {
       const {
@@ -127,7 +128,7 @@ const ManageProfile = () => {
                   name="image"
                   rules={[
                     {
-                      required: true,
+                      required: false,
                       message: "Please Give a valid image URL",
                     },
                   ]}
@@ -139,10 +140,10 @@ const ManageProfile = () => {
                   label="Address"
                   name="address"
                   rules={[
-                    { required: true, message: "Please enter your address" },
+                    { required: false, message: "Please enter your address" },
                   ]}
                 >
-                  <Input.TextArea placeholder="Enter address" rows={4} />
+                  <Input.TextArea placeholder="Enter address" rows={5} />
                 </Form.Item>
               </div>
 
@@ -152,7 +153,7 @@ const ManageProfile = () => {
                   name="dateOfBirth"
                   rules={[
                     {
-                      required: true,
+                      required: false,
                       message: "Please enter your date of birth",
                     },
                   ]}
@@ -170,7 +171,7 @@ const ManageProfile = () => {
                   label="Gender"
                   name="gender"
                   rules={[
-                    { required: true, message: "Please enter your gender" },
+                    { required: false, message: "Please enter your gender" },
                   ]}
                 >
                   <Select placeholder="Select gender">
@@ -184,7 +185,7 @@ const ManageProfile = () => {
                   name="phone"
                   rules={[
                     {
-                      required: true,
+                      required: false,
                       message: "Please enter your phone number",
                     },
                   ]}
@@ -197,7 +198,7 @@ const ManageProfile = () => {
                   name="bloodGroup"
                   rules={[
                     {
-                      required: true,
+                      required: false,
                       message: "Please enter your blood group",
                     },
                   ]}
@@ -210,7 +211,7 @@ const ManageProfile = () => {
                   name="emergencyContact"
                   rules={[
                     {
-                      required: true,
+                      required: false,
                       message: "Please enter your emergency contact",
                     },
                   ]}
@@ -224,7 +225,7 @@ const ManageProfile = () => {
                   label="Country"
                   name="country"
                   rules={[
-                    { required: true, message: "Please enter your country" },
+                    { required: false, message: "Please enter your country" },
                   ]}
                 >
                   <Input placeholder="Enter country" />
@@ -234,7 +235,7 @@ const ManageProfile = () => {
                   label="City"
                   name="city"
                   rules={[
-                    { required: true, message: "Please enter your city" },
+                    { required: false, message: "Please enter your city" },
                   ]}
                 >
                   <Input placeholder="Enter city" />
@@ -244,7 +245,7 @@ const ManageProfile = () => {
                   label="State"
                   name="state"
                   rules={[
-                    { required: true, message: "Please enter your state" },
+                    { required: false, message: "Please enter your state" },
                   ]}
                 >
                   <Input placeholder="Enter state" />
@@ -254,7 +255,7 @@ const ManageProfile = () => {
                   label="Zip Code"
                   name="zipCode"
                   rules={[
-                    { required: true, message: "Please enter your zip code" },
+                    { required: false, message: "Please enter your zip code" },
                   ]}
                 >
                   <Input placeholder="Enter zip code" />
