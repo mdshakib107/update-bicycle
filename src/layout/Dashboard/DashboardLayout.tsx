@@ -65,14 +65,14 @@ function DashboardLayout() {
 
   return (
     <>
-      <Layout className="min-h-screen">
+      <Layout className="min-h-screen flex flex-row">
         {/* Responsive sidebar */}
-        <Sidebar />
+          <Sidebar />
 
         {/* Right side layout with internal scroll */}
-        <Layout className="h-screen">
+        <Layout className="flex-1 flex flex-col h-screen  overflow-hidden">
           {/* Breadcrumb with sticky positioning */}
-          <div className="pl-10 m-0 sticky top-0 bg-white">
+          <div className="pl-6 m-0 sticky top-0 bg-white">
             <Breadcrumb style={{ margin: "16px 0" }}>
               <Breadcrumb.Item>{breadcrumb}</Breadcrumb.Item>
             </Breadcrumb>
@@ -80,10 +80,10 @@ function DashboardLayout() {
 
           {/* Scrollable Content */}
           <Content
-            className="overflow-y-auto px-6 py-4"
+            className="flex-1 overflow-y-auto  py-4"
             style={{ paddingTop: "72px" }}
           >
-            <div style={{ padding: 24 }} className="w-full">
+            <div className="w-full ">
               {/* Content goes here */}
               <Outlet />
             </div>

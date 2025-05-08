@@ -74,7 +74,7 @@ const Sidebar = () => {
       breakpoint="lg"
       collapsedWidth="0"
       style={{ height: "100vh", position: "sticky", top: "0", left: "0" }}
-      className="z-[1]"
+      className="z-[2]"
     >
       <div className="h-full flex flex-col">
         <div
