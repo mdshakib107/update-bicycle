@@ -7,7 +7,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 // antd layout destructure
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 const { Content, Footer } = Layout;
 
 function DashboardLayout() {
@@ -27,7 +27,7 @@ function DashboardLayout() {
       (segment) =>
         segment
           .replace(/-/g, " ") //? Replace dashes with spaces
-          .replace(/\b\w/g, (char) => char.toUpperCase()) //? Capitalize first letters
+          .replace(/\b\w/g, (char) => char.toUpperCase()), //? Capitalize first letters
     )
     .join(" > ");
 
@@ -67,15 +67,20 @@ function DashboardLayout() {
     <>
       <Layout className="min-h-screen flex flex-row">
         {/* Responsive sidebar */}
-          <Sidebar />
+        <Sidebar />
 
         {/* Right side layout with internal scroll */}
         <Layout className="flex-1 flex flex-col h-screen  overflow-hidden">
           {/* Breadcrumb with sticky positioning */}
           <div className="pl-6 m-0 sticky top-0">
-            <Breadcrumb style={{ margin: "16px 0" }}>
-              <Breadcrumb.Item>{breadcrumb}</Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb
+              items={[
+                {
+                  title: breadcrumb,
+                },
+              ]}
+              style={{ margin: "16px 0" }}
+            />
           </div>
 
           {/* Scrollable Content */}
