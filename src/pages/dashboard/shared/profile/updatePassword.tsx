@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CustomButton from "@/components/shared/CustomButton";
 import { LockOutlined } from "@ant-design/icons";
-import { Flex, Form, Input } from "antd";
+import { Form, Input } from "antd";
 import { TbFidgetSpinner } from "react-icons/tb";
-import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { useChangePasswordMutation } from "../../../../redux/api/authApi";
 
@@ -46,36 +45,38 @@ const UpdatePassword = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="p-8 border rounded shadow-md border-purple-600 shadow-purple-600">
+    <div className="flex justify-center items-center w-full bg-gray-50">
+      <div className="p-8  bg-white w-full max-w-md">
         <Form
           form={form}
           name="change-password"
           style={{ maxWidth: 360 }}
           onFinish={handleSubmit}
+          className="space-y-4 flex flex-col items-center w-full"
         >
-          <Form.Item>
-            <Flex justify="start" align="center">
-              <Link to="/login">🔙 Back</Link>
-            </Flex>
-          </Form.Item>
+          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
+            Update Password
+          </h2>
 
-          <label>Old Password</label>
+          <label className="text-gray-700 font-medium w-full">Old Password</label>
           <Form.Item
             name="oldPassword"
+            className="w-full"
             rules={[
               { required: true, message: "Please input your old password!" },
             ]}
           >
             <Input.Password
-              prefix={<LockOutlined />}
+              prefix={<LockOutlined className="text-gray-400" />}
               placeholder="Old Password"
+              className="py-2"
             />
           </Form.Item>
 
-          <label>New Password</label>
+          <label className="text-gray-700 font-medium w-full">New Password</label>
           <Form.Item
             name="newPassword"
+            className="w-full"
             rules={[
               { required: true, message: "Please enter a new password" },
               { min: 4, message: "Minimum 4 characters required" },
@@ -83,13 +84,17 @@ const UpdatePassword = () => {
             ]}
           >
             <Input.Password
-              prefix={<LockOutlined />}
+              prefix={<LockOutlined className="text-gray-400" />}
               placeholder="Enter new password"
+              className="py-2"
             />
           </Form.Item>
 
-          <label>Confirm New Password</label>
+          <label className="text-gray-700 font-medium w-full">
+            Confirm New Password
+          </label>
           <Form.Item
+            className="w-full"
             name="confirmPassword"
             dependencies={["newPassword"]}
             hasFeedback
@@ -105,13 +110,17 @@ const UpdatePassword = () => {
               }),
             ]}
           >
-            <Input.Password placeholder="Confirm new password" />
+            <Input.Password
+              prefix={<LockOutlined className="text-gray-400" />}
+              placeholder="Confirm new password"
+              className="py-2"
+            />
           </Form.Item>
 
           <Form.Item>
             <CustomButton
               type="submit"
-              className="w-full !py-1.5"
+              className="w-full !py-2.5 text-base font-medium"
               textName={
                 isLoading ? (
                   <TbFidgetSpinner className="animate-spin" />
@@ -122,6 +131,11 @@ const UpdatePassword = () => {
             />
           </Form.Item>
         </Form>
+
+        <div className="mt-4 text-center text-sm text-gray-500">
+          <p>Make sure your password is strong and unique</p>
+          <p className="mt-1">Minimum 4 characters, maximum 20 characters</p>
+        </div>
       </div>
     </div>
   );
