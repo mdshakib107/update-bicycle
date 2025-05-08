@@ -285,7 +285,7 @@ const ResponsiveNavbar = () => {
   );
 
   return (
-    <nav className="flex items-center justify-between w-full relative h-auto shadow-md p-4 bg-base-100 border-purple-600 shadow-purple-600 rounded-4xl">
+    <nav className="flex items-center justify-between w-full h-auto shadow-md p-4 bg-gradient-to-r from-blue-400 to-purple-600 border-purple-600 shadow-purple-600 rounded-4xl sticky top-0 z-50">
       <div className="flex space-x-4 ">
         <ul className="items-center gap-[20px] text-[1rem] text-[#424242] md:flex">
           <li className="transition-all duration-500 cursor-pointer hover:bg-[#d8e0e1] rounded-full capitalize">

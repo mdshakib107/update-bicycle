@@ -12,8 +12,9 @@ export type TUserFromToken = {
   role?: "admin" | "customer";
   status?: "active" | "inactive" | "banned";
   needsPasswordChange?: boolean;
-  createdAt?: string;
-  updatedAt?: string;
+  passwordChangedAt?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   image?: string;
   address?: string;
   phone?: string;

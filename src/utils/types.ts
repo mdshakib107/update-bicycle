@@ -46,9 +46,9 @@ export interface TUser {
     role: "admin" | "customer";
     status: "active" | "inactive" | "banned";
     needsPasswordChange: boolean;
-    passwordChangedAt?: string;
-    createdAt?: string;
-    updatedAt?: string;
+    passwordChangedAt?: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
     image?: string;
     address?: string;
     phone?: string;
@@ -63,7 +63,12 @@ export interface TUser {
   };
 }
 
-export type ShippingStatus = "PENDING" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+export type ShippingStatus =
+  | "PENDING"
+  | "PROCESSING"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "CANCELLED";
 
 // (Ordered Item)
 export interface OrderedItem {
@@ -77,15 +82,17 @@ export interface OrderedItem {
     quantity: number;
     inStock: boolean;
   };
-  quantity?:number;
+  quantity?: number;
   _id?: string;
   price?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 // (Main Order Type)
 export interface OrderResponse {
   data: {
-    data: Order[]; 
+    data: Order[];
     totalOrders: number;
     totalPages: number;
     currentPage: number;
@@ -101,7 +108,7 @@ export interface Order {
   user: TUserFromToken | null;
   totalPrice: number;
   isDeleted: boolean;
-  paymentStatus: 'UNPAID' | 'PAID';
+  paymentStatus: "UNPAID" | "PAID";
   status: ShippingStatus;
   createdAt: string;
   updatedAt?: string;

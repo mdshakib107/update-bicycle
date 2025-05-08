@@ -1,11 +1,12 @@
 import { TUser } from "@/utils/types";
 import baseApi from "./baseApi";
+import { TUserFromToken } from "../features/auth/authSlice";
 
 export const userApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     //* Fetch all users (GET)
     getAllUsers: builder.query<
-      { success: boolean; message: string; statusCode: number; data: TUser[] },
+      { success: boolean; message: string; statusCode: number; data: TUserFromToken[] },
       void
     >({
       query: () => "/users",

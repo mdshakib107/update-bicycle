@@ -26,7 +26,6 @@ const ManageProfile = () => {
 
   const [updateUser, { isLoading: isSubmitting }] = useUpdateUserMutation();
   const [form] = Form.useForm();
-
   useEffect(() => {
     if (data?.data) {
       const {
