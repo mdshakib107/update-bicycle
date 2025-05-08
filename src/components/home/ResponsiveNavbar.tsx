@@ -69,7 +69,13 @@ const ResponsiveNavbar = () => {
   const activeLink = ({ isActive }: { isActive: boolean }) => {
     return isActive
       ? "text-[#3B9DF8] font-medium transition-all duration-300"
-      : "text-[#424242] hover:text-[#3B9DF8] transition-all duration-300";
+      : "text-black hover:text-[#3B9DF8] transition-all duration-300";
+  };
+
+  const activeLinkForNavbar = ({ isActive }: { isActive: boolean }) => {
+    return isActive
+      ? "text-white font-medium transition-all duration-300"
+      : "text-black hover:text-white transition-all duration-300";
   };
 
   //* reusable menu block
@@ -110,28 +116,28 @@ const ResponsiveNavbar = () => {
   /* desktop nav links */
   const desktopNavLinks = (
     <ul className="items-center gap-[20px] text-[1rem]  md:flex hidden">
-      <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize">
-        <NavLink to="/" className={activeLink}>
+      <li className="transition-all duration-500 cursor-pointer hover:text-white capitalize">
+        <NavLink to="/" className={activeLinkForNavbar}>
           home
         </NavLink>
       </li>
 
-      <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize">
-        <NavLink to="/AllBicycles" className={activeLink}>
+      <li className="transition-all duration-500 cursor-pointer hover:text-white capitalize">
+        <NavLink to="/AllBicycles" className={activeLinkForNavbar}>
           All Bicycle
         </NavLink>
       </li>
 
-      <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize">
-        <NavLink to="/about" className={activeLink}>
+      <li className="transition-all duration-500 cursor-pointer hover:text-white capitalize">
+        <NavLink to="/about" className={activeLinkForNavbar}>
           About Us
         </NavLink>
       </li>
 
-      <li className="transition-all duration-500 cursor-pointer dark:text-[#abc2d3] hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] group relative">
+      <li className="transition-all duration-500 cursor-pointer dark:text-[#abc2d3] hover:text-white capitalize flex items-center gap-[3px] group relative">
         Terms & Conditions
-        <MdKeyboardArrowDown className="text-[1.5rem] text-black group-hover:text-[#3B9DF8] transition-all duration-500 group-hover:rotate-[180deg]" />
-        <article className="p-6 bg-white rounded-md boxShadow w-[200px] absolute top-[40px] z-[-1] dark:bg-slate-800 group-hover:translate-y-0 translate-y-[-20px] group-hover:opacity-100 opacity-0 group-hover:z-30 transition-all duration-300 shadow-purple-600 shadow-lg">
+        <MdKeyboardArrowDown className="text-[1.5rem] text-black group-hover:text-white transition-all duration-500 group-hover:rotate-[180deg]" />
+        <article className="p-6 bg-white rounded-md boxShadow w-[200px] absolute top-[40px] z-[-1] dark:bg-black group-hover:translate-y-0 translate-y-[-20px] group-hover:opacity-100 opacity-0 group-hover:z-30 transition-all duration-300 shadow-purple-600 shadow-lg">
           <div className="grid grid-cols-2">
             <ul className="flex flex-col gap-[7px] text-black">{termsLinks}</ul>
             {/* <div className="flex flex-col gap-[10px] dark:border-slate-700 border-l border-[#e5eaf2] pl-[30px]">
