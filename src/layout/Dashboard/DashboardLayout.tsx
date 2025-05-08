@@ -72,7 +72,7 @@ function DashboardLayout() {
         {/* Right side layout with internal scroll */}
         <Layout className="flex-1 flex flex-col h-screen  overflow-hidden">
           {/* Breadcrumb with sticky positioning */}
-          <div className="pl-6 m-0 sticky top-0 bg-white">
+          <div className="pl-6 m-0 sticky top-0">
             <Breadcrumb style={{ margin: "16px 0" }}>
               <Breadcrumb.Item>{breadcrumb}</Breadcrumb.Item>
             </Breadcrumb>
@@ -80,10 +80,10 @@ function DashboardLayout() {
 
           {/* Scrollable Content */}
           <Content
-            className="flex-1 overflow-y-auto  py-4"
-            style={{ paddingTop: "72px" }}
+            className="flex-1 overflow-y-auto"
+            // style={{ paddingTop: "72px" }}
           >
-            <div className="w-full ">
+            <div className="max-w-full">
               {/* Content goes here */}
               <Outlet />
             </div>

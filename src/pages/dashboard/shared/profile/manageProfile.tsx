@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CustomButton from "@/components/shared/CustomButton";
 import Loading from "@/components/shared/Loading";
+import ProfileHeader from "@/components/shared/ProfileHeader";
 import {
   useGetUserByIdQuery,
   useUpdateUserMutation,
@@ -89,191 +90,194 @@ const ManageProfile = () => {
   }
 
   return (
-    <div className="flex justify-center items-center w-full">
-      <div className="space-y-20 w-full">
-        <Title level={3} className="text-center mb-6">
-          Update Account
-        </Title>
+    <div className="flex flex-col w-full h-screen">
+      {/* Cover image + Avatar */}
+      <ProfileHeader data={data} />
 
-        {/* Cover image + Avatar */}
-        <div className="justify-center flex items-center gap-2 relative  w-full z-10">
-          <img
-            src="https://i.ibb.co.com/G2xCfZf/interior-design-mountain-view.jpg"
-            alt={data?.data?.name}
-            className="w-full h-96 object-fit"
-          />
-          <img
-            src={
-              data?.data?.image ||
-              "https://i.ibb.co.com/Fz38g1t/human-celebrating.png"
-            }
-            alt={data?.data?.name}
-            width={100}
-            height={100}
-            className="rounded-full w-32 h-32 absolute -bottom-10 border-2 border-[#4F46E5] shadow-lg"
-          />
+      <div className="flex justify-center items-center w-full mt-10 px-6">
+        <div className="space-y-20 w-full">
+          <Title level={3} className="text-center mb-6">
+            Update Account
+          </Title>
+
+          <Form form={form} layout="vertical" onFinish={handleSubmit}>
+            <div className="grid md:grid-cols-3 gap-4">
+              <div>
+                <Form.Item
+                  label="Full Name"
+                  name="name"
+                  rules={[
+                    { required: true, message: "Please enter your name" },
+                  ]}
+                >
+                  <Input placeholder="Enter name" />
+                </Form.Item>
+
+                <Form.Item
+                  label="Email Address"
+                  name="email"
+                  rules={[
+                    { required: true, message: "Please enter your email" },
+                  ]}
+                >
+                  <Input type="email" placeholder="Enter email" />
+                </Form.Item>
+
+                <Form.Item
+                  label="Image URL"
+                  name="image"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please Give a valid image URL",
+                    },
+                  ]}
+                >
+                  <Input placeholder="Enter image URL" />
+                </Form.Item>
+
+                <Form.Item
+                  label="Address"
+                  name="address"
+                  rules={[
+                    { required: true, message: "Please enter your address" },
+                  ]}
+                >
+                  <Input.TextArea placeholder="Enter address" rows={4} />
+                </Form.Item>
+              </div>
+
+              <div>
+                <Form.Item
+                  label="Date of Birth"
+                  name="dateOfBirth"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter your date of birth",
+                    },
+                  ]}
+                >
+                  <Input
+                    type="date"
+                    className="w-full"
+                    onChange={(e) => {
+                      form.setFieldValue("dateOfBirth", e.target.value);
+                    }}
+                  />
+                </Form.Item>
+
+                <Form.Item
+                  label="Gender"
+                  name="gender"
+                  rules={[
+                    { required: true, message: "Please enter your gender" },
+                  ]}
+                >
+                  <Select placeholder="Select gender">
+                    <Select.Option value="male">Male</Select.Option>
+                    <Select.Option value="female">Female</Select.Option>
+                  </Select>
+                </Form.Item>
+
+                <Form.Item
+                  label="Phone Number"
+                  name="phone"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter your phone number",
+                    },
+                  ]}
+                >
+                  <Input placeholder="Enter phone number" />
+                </Form.Item>
+
+                <Form.Item
+                  label="Blood Group"
+                  name="bloodGroup"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter your blood group",
+                    },
+                  ]}
+                >
+                  <Input placeholder="Enter blood group" />
+                </Form.Item>
+
+                <Form.Item
+                  label="Emergency Contact"
+                  name="emergencyContact"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Please enter your emergency contact",
+                    },
+                  ]}
+                >
+                  <Input placeholder="Enter emergency contact" />
+                </Form.Item>
+              </div>
+
+              <div>
+                <Form.Item
+                  label="Country"
+                  name="country"
+                  rules={[
+                    { required: true, message: "Please enter your country" },
+                  ]}
+                >
+                  <Input placeholder="Enter country" />
+                </Form.Item>
+
+                <Form.Item
+                  label="City"
+                  name="city"
+                  rules={[
+                    { required: true, message: "Please enter your city" },
+                  ]}
+                >
+                  <Input placeholder="Enter city" />
+                </Form.Item>
+
+                <Form.Item
+                  label="State"
+                  name="state"
+                  rules={[
+                    { required: true, message: "Please enter your state" },
+                  ]}
+                >
+                  <Input placeholder="Enter state" />
+                </Form.Item>
+
+                <Form.Item
+                  label="Zip Code"
+                  name="zipCode"
+                  rules={[
+                    { required: true, message: "Please enter your zip code" },
+                  ]}
+                >
+                  <Input placeholder="Enter zip code" />
+                </Form.Item>
+              </div>
+            </div>
+
+            <Form.Item>
+              <CustomButton
+                type="submit"
+                className="w-full"
+                textName={
+                  isSubmitting ? (
+                    <TbFidgetSpinner className="animate-spin" />
+                  ) : (
+                    "Update Profile"
+                  )
+                }
+              />
+            </Form.Item>
+          </Form>
         </div>
-
-        <Form form={form} layout="vertical" onFinish={handleSubmit}>
-          <div className="grid grid-cols-3 gap-4">
-            <div>
-              <Form.Item
-                label="Full Name"
-                name="name"
-                rules={[{ required: true, message: "Please enter your name" }]}
-              >
-                <Input placeholder="Enter name" />
-              </Form.Item>
-
-              <Form.Item
-                label="Email Address"
-                name="email"
-                rules={[{ required: true, message: "Please enter your email" }]}
-              >
-                <Input type="email" placeholder="Enter email" />
-              </Form.Item>
-
-              <Form.Item
-                label="Image URL"
-                name="image"
-                rules={[
-                  { required: true, message: "Please Give a valid image URL" },
-                ]}
-              >
-                <Input placeholder="Enter image URL" />
-              </Form.Item>
-
-              <Form.Item
-                label="Address"
-                name="address"
-                rules={[
-                  { required: true, message: "Please enter your address" },
-                ]}
-              >
-                <Input.TextArea placeholder="Enter address" rows={4} />
-              </Form.Item>
-            </div>
-
-            <div>
-              <Form.Item
-                label="Date of Birth"
-                name="dateOfBirth"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter your date of birth",
-                  },
-                ]}
-              >
-                <Input
-                  type="date"
-                  className="w-full"
-                  onChange={(e) => {
-                    form.setFieldValue("dateOfBirth", e.target.value);
-                  }}
-                />
-              </Form.Item>
-
-              <Form.Item
-                label="Gender"
-                name="gender"
-                rules={[
-                  { required: true, message: "Please enter your gender" },
-                ]}
-              >
-                <Select placeholder="Select gender">
-                  <Select.Option value="male">Male</Select.Option>
-                  <Select.Option value="female">Female</Select.Option>
-                </Select>
-              </Form.Item>
-
-              <Form.Item
-                label="Phone Number"
-                name="phone"
-                rules={[
-                  { required: true, message: "Please enter your phone number" },
-                ]}
-              >
-                <Input placeholder="Enter phone number" />
-              </Form.Item>
-
-              <Form.Item
-                label="Blood Group"
-                name="bloodGroup"
-                rules={[
-                  { required: true, message: "Please enter your blood group" },
-                ]}
-              >
-                <Input placeholder="Enter blood group" />
-              </Form.Item>
-
-              <Form.Item
-                label="Emergency Contact"
-                name="emergencyContact"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please enter your emergency contact",
-                  },
-                ]}
-              >
-                <Input placeholder="Enter emergency contact" />
-              </Form.Item>
-            </div>
-
-            <div>
-              <Form.Item
-                label="Country"
-                name="country"
-                rules={[
-                  { required: true, message: "Please enter your country" },
-                ]}
-              >
-                <Input placeholder="Enter country" />
-              </Form.Item>
-
-              <Form.Item
-                label="City"
-                name="city"
-                rules={[{ required: true, message: "Please enter your city" }]}
-              >
-                <Input placeholder="Enter city" />
-              </Form.Item>
-
-              <Form.Item
-                label="State"
-                name="state"
-                rules={[{ required: true, message: "Please enter your state" }]}
-              >
-                <Input placeholder="Enter state" />
-              </Form.Item>
-
-              <Form.Item
-                label="Zip Code"
-                name="zipCode"
-                rules={[
-                  { required: true, message: "Please enter your zip code" },
-                ]}
-              >
-                <Input placeholder="Enter zip code" />
-              </Form.Item>
-            </div>
-          </div>
-
-          <Form.Item>
-            <CustomButton
-              type="submit"
-              className="w-full"
-              textName={
-                isSubmitting ? (
-                  <TbFidgetSpinner className="animate-spin" />
-                ) : (
-                  "Update Profile"
-                )
-              }
-            />
-          </Form.Item>
-        </Form>
       </div>
     </div>
   );

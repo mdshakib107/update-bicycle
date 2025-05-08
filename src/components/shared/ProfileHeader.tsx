@@ -2,11 +2,11 @@ import { TUser } from "@/utils/types";
 
 const ProfileHeader = ({ data }: { data: TUser }) => {
   return (
-    <div className="justify-center flex items-center gap-2 relative w-full h-60 md:h-96 z-1">
+    <div className="justify-center flex items-center gap-2 relative w-full h-60 z-1">
       <img
         src="https://i.ibb.co.com/G2xCfZf/interior-design-mountain-view.jpg"
         alt={`${data?.data?.name} cover`}
-        className="w-full h-full object-fit"
+        className="w-full h-full object-center"
       />
       <img
         src={
