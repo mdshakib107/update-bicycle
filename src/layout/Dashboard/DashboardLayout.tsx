@@ -78,11 +78,11 @@ function DashboardLayout() {
 
           {/* Scrollable Content */}
           {/* <Content style={{ margin: "24px 16px 0" }}> */}
-          <Content className="overflow-y-auto px-6 py-4" style={{ flex: 1 }}>
+          <Content className="overflow-y-auto px-6 py-4 h-[calc(80vh)] md:h-full" >
             <div
               style={{
                 padding: 24,
-                minHeight: 360,
+                // minHeight: 360,
               }}
               className="w-full"
             >
