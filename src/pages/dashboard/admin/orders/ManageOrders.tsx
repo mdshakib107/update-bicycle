@@ -21,23 +21,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
   useDeleteOrderMutation,
   useGetAllOrdersQuery,
   useUpdateOrderMutation,
 } from "@/redux/api/orderApi";
 import { Order, ShippingStatus } from "@/utils/types";
+import { Table as AntTable } from "antd";
 import {
   CheckCircle,
   Clock,
+  CreditCard,
   Package,
   Trash2,
   Truck,
@@ -48,16 +41,23 @@ import { toast } from "sonner";
 
 const ManageOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
-  const [page, setPage] = useState(1);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 5,
+    total: 0,
+  });
   const [selectedStatus, setSelectedStatus] = useState<string>("");
   const [selectedOrderId, setSelectedOrderId] = useState<
     ShippingStatus | string
   >("");
   const [openStatusDialog, setOpenStatusDialog] = useState(false);
+  const [isTableLoading, setIsTableLoading] = useState(false);
+  const [openPaymentDialog, setOpenPaymentDialog] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
   const { data, isLoading, isError, refetch } = useGetAllOrdersQuery({
-    page,
-    limit: 5,
+    page: pagination.current,
+    limit: pagination.pageSize,
   });
   const [deleteOrder] = useDeleteOrderMutation();
   const [updateOrder] = useUpdateOrderMutation();
@@ -96,8 +96,13 @@ const ManageOrders = () => {
   ];
 
   useEffect(() => {
-    if (data?.data?.data) {
+    if (data?.data) {
       setOrders(data.data.data);
+      setPagination((prev) => ({
+        ...prev,
+        total: data.data.totalOrders || 0,
+      }));
+      setIsTableLoading(false);
     }
   }, [data]);
 
@@ -130,6 +135,23 @@ const ManageOrders = () => {
     }
   };
 
+  const handleUpdatePayment = async (orderId: string) => {
+    try {
+      const result = await updateOrder({
+        orderId: orderId,
+        updateData: { paymentStatus: "PAID" },
+      });
+      if (result?.data?.success) {
+        toast.success("Payment status updated successfully");
+        setOpenPaymentDialog(false);
+        refetch();
+      }
+    } catch (err: any) {
+      toast.error("Failed to update payment status");
+      console.log(err);
+    }
+  };
+
   const getStatusColor = (status: string) => {
     const option = orderStatusOptions.find(
       (opt) => opt.value === status.toLowerCase(),
@@ -142,6 +164,180 @@ const ManageOrders = () => {
       (opt) => opt.value === status.toLowerCase(),
     );
     return option?.icon || <Clock className="w-4 h-4" />;
+  };
+
+  const columns = [
+    {
+      title: "Customer Name",
+      dataIndex: ["user", "name"],
+      key: "customerName",
+      render: (text: string) => text || "User Not Found",
+    },
+    {
+      title: "Product Name",
+      dataIndex: ["products", "0", "product", "name"],
+      key: "productName",
+    },
+    {
+      title: "Payment",
+      dataIndex: "paymentStatus",
+      key: "paymentStatus",
+      render: (status: string, record: Order) =>
+        status === "PAID" ? (
+          <span className="px-2 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 flex items-center gap-1">
+            <CheckCircle className="w-4 h-4" />
+            {status}
+          </span>
+        ) : (
+          <AlertDialog
+            open={openPaymentDialog && selectedOrder?._id === record._id}
+            onOpenChange={setOpenPaymentDialog}
+          >
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 bg-yellow-100 text-yellow-800 hover:bg-yellow-200 border-0"
+                onClick={() => setSelectedOrder(record)}
+              >
+                <CreditCard className="w-4 h-4" />
+                {status}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle className="text-xl font-bold text-gray-900">
+                  Update Payment Status
+                </AlertDialogTitle>
+                <AlertDialogDescription className="space-y-3">
+                  <p>Are you sure you want to mark this order as paid?</p>
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <p className="font-medium">Order Details:</p>
+                    <p>Customer: {record?.user?.name}</p>
+                    <p>Product: {record.products[0].product.name}</p>
+                    <p>Amount: ${record?.totalPrice}</p>
+                  </div>
+                  <p className="text-yellow-600 font-medium">
+                    This action cannot be undone.
+                  </p>
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel className="hover:bg-gray-100">
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  className="bg-green-600 hover:bg-green-700"
+                  onClick={() => handleUpdatePayment(record._id)}
+                >
+                  Mark as Paid
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        ),
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status: string, record: Order) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="outline"
+              className={`flex items-center gap-2 ${getStatusColor(
+                status,
+              )} border-0`}
+            >
+              {getStatusIcon(status)}
+              {status}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-48 p-2">
+            <DropdownMenuGroup>
+              {orderStatusOptions.map((option) => (
+                <DropdownMenuItem
+                  key={option?.label}
+                  className={`flex items-center gap-2 cursor-pointer p-2 rounded-md hover:bg-gray-100 ${option.color}`}
+                  onClick={() => {
+                    setSelectedStatus(option?.label);
+                    setOpenStatusDialog(true);
+                    setSelectedOrderId(record?._id);
+                  }}
+                >
+                  {option.icon}
+                  {option.label}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
+    },
+    {
+      title: "Quantity",
+      dataIndex: ["products", "0", "quantity"],
+      key: "quantity",
+    },
+    {
+      title: "Amount",
+      dataIndex: "totalPrice",
+      key: "amount",
+      render: (price: number) => `$${price}`,
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_: any, record: Order) => (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button
+              variant="destructive"
+              size="sm"
+              className="flex items-center gap-2"
+            >
+              <Trash2 className="w-4 h-4" />
+              Delete
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-xl font-bold text-gray-900">
+                Delete Order
+              </AlertDialogTitle>
+              <AlertDialogDescription className="space-y-3">
+                <p>Are you sure you want to delete this order?</p>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <p className="font-medium">Order Details:</p>
+                  <p>Customer: {record?.user?.name}</p>
+                  <p>Product: {record.products[0].product.name}</p>
+                  <p>Amount: ${record?.totalPrice}</p>
+                </div>
+                <p className="text-red-600 font-medium">
+                  This action cannot be undone.
+                </p>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="hover:bg-gray-100">
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction
+                className="bg-red-600 hover:bg-red-700"
+                onClick={() => handleDeleteOrder(record._id)}
+              >
+                Delete Order
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      ),
+    },
+  ];
+
+  const handleTableChange = (pagination: any) => {
+    setIsTableLoading(true);
+    setPagination(pagination);
   };
 
   if (isLoading) return <Loading />;
@@ -163,151 +359,35 @@ const ManageOrders = () => {
           Order Management
         </h2>
 
-        <Table>
-          <TableCaption className="mt-8 text-gray-500">
-            A list of all orders and their current status
-          </TableCaption>
-          <TableHeader>
-            <TableRow className="bg-gray-50">
-              <TableHead className="font-semibold">Customer Name</TableHead>
-              <TableHead className="font-semibold">Product Name</TableHead>
-              <TableHead className="font-semibold">Payment</TableHead>
-              <TableHead className="font-semibold">Status</TableHead>
-              <TableHead className="font-semibold">Quantity</TableHead>
-              <TableHead className="font-semibold">Amount</TableHead>
-              <TableHead className="font-semibold text-center">
-                Actions
-              </TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {orders?.map((order: Order) => (
-              <TableRow key={order._id} className="hover:bg-gray-50">
-                <TableCell className="font-medium">
-                  {order?.user?.name || "User Not Found"}
-                </TableCell>
-                <TableCell className="font-medium">
-                  {order.products[0].product.name}
-                </TableCell>
-                <TableCell>
-                  <span
-                    className={`px-2 py-1 rounded-full text-sm font-medium ${
-                      order?.paymentStatus === "PAID"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                    }`}
-                  >
-                    {order?.paymentStatus}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={`flex items-center gap-2 ${getStatusColor(
-                          order?.status,
-                        )} border-0`}
-                      >
-                        {getStatusIcon(order?.status)}
-                        {order?.status}
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="w-48 p-2">
-                      <DropdownMenuGroup>
-                        {orderStatusOptions.map((option) => (
-                          <DropdownMenuItem
-                            key={option?.label}
-                            className={`flex items-center gap-2 cursor-pointer p-2 rounded-md hover:bg-gray-100 ${option.color}`}
-                            onClick={() => {
-                              setSelectedStatus(option?.label);
-                              setOpenStatusDialog(true);
-                              setSelectedOrderId(order?._id);
-                            }}
-                          >
-                            {option.icon}
-                            {option.label}
-                          </DropdownMenuItem>
-                        ))}
-                      </DropdownMenuGroup>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-                <TableCell>{order?.products[0]?.quantity}</TableCell>
-                <TableCell className="font-medium">
-                  ${order?.totalPrice}
-                </TableCell>
-                <TableCell className="text-center">
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        className="flex items-center gap-2"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                        Delete
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle className="text-xl font-bold text-gray-900">
-                          Delete Order
-                        </AlertDialogTitle>
-                        <AlertDialogDescription className="space-y-3">
-                          <p>Are you sure you want to delete this order?</p>
-                          <div className="bg-gray-50 p-4 rounded-lg">
-                            <p className="font-medium">Order Details:</p>
-                            <p>Customer: {order?.user?.name}</p>
-                            <p>Product: {order.products[0].product.name}</p>
-                            <p>Amount: ${order?.totalPrice}</p>
-                          </div>
-                          <p className="text-red-600 font-medium">
-                            This action cannot be undone.
-                          </p>
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel className="hover:bg-gray-100">
-                          Cancel
-                        </AlertDialogCancel>
-                        <AlertDialogAction
-                          className="bg-red-600 hover:bg-red-700"
-                          onClick={() => handleDeleteOrder(order._id)}
-                        >
-                          Delete Order
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-
-        <div className="flex justify-center mt-6 gap-4">
-          <Button
-            variant="outline"
-            disabled={page === 1}
-            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-            className="hover:bg-gray-100"
-          >
-            Previous
-          </Button>
-
-          <span className="flex items-center font-medium text-lg text-gray-700">
-            Page {page}
-          </span>
-
-          <Button
-            variant="outline"
-            disabled={orders.length < 5}
-            onClick={() => setPage((prev) => prev + 1)}
-            className="hover:bg-gray-100"
-          >
-            Next
-          </Button>
+        <div className="w-full overflow-x-auto">
+          {isTableLoading ? (
+            <div className="min-h-[400px] flex items-center justify-center">
+              <Loading />
+            </div>
+          ) : (
+            <AntTable
+              loading={isLoading}
+              columns={columns}
+              dataSource={orders}
+              rowKey="_id"
+              bordered
+              scroll={{ x: "max-content" }}
+              pagination={{
+                ...pagination,
+                showSizeChanger: true,
+                showTotal: (total) => `Total ${total} orders`,
+                className: "px-4",
+                responsive: true,
+                size: "default",
+                showQuickJumper: true,
+                position: ["bottomCenter"],
+              }}
+              onChange={handleTableChange}
+              className="rounded-lg"
+              size="middle"
+              tableLayout="auto"
+            />
+          )}
         </div>
       </Card>
 
