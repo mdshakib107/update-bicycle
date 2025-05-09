@@ -6,15 +6,12 @@ import { Progress } from "antd";
 import { useEffect, useState } from "react";
 
 const ViewOrders = () => {
-  // State for user ID and orders
   const [userId, setUserId] = useState("");
   const [orders, setOrders] = useState<Order[]>([]);
 
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const ordersPerPage = 5; //? orders per page
+  const ordersPerPage = 5;
 
-  // Get user ID from localStorage on component mount
   useEffect(() => {
     const localUser = localStorage.getItem("userData");
     if (localUser) {
@@ -23,20 +20,17 @@ const ViewOrders = () => {
     }
   }, []);
 
-  // Fetch orders data
   const { data, isLoading, isError } = useGetAllOrdersQuery(
     { id: userId },
-    { skip: !userId },
+    { skip: !userId }
   );
 
-  // Update orders state when data changes
   useEffect(() => {
     if (data?.data) {
       setOrders(data.data.data);
     }
   }, [data]);
 
-  // Format date to readable string
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -46,21 +40,17 @@ const ViewOrders = () => {
     });
   };
 
-  // Calculate pagination values
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
   const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
   const totalPages = Math.ceil(orders.length / ordersPerPage);
 
-  // Handle page change
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
 
-  // Loading state
   if (isLoading) return <Loading />;
 
-  // Empty state
   if (orders.length < 1) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -77,7 +67,6 @@ const ViewOrders = () => {
     );
   }
 
-  // Error state
   if (isError) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -93,7 +82,6 @@ const ViewOrders = () => {
     );
   }
 
-  // Get color classes for shipping status
   const getStatusColor = (status: string) => {
     switch (status) {
       case "DELIVERED":
@@ -111,26 +99,24 @@ const ViewOrders = () => {
     }
   };
 
-  // Get color classes for payment status
   const getPaymentStatusColor = (status: string) => {
     return status === "PAID"
       ? "bg-green-100 text-green-800"
       : "bg-yellow-100 text-yellow-800";
   };
 
-  // Calculate order statistics
   const totalSpent = orders.reduce((sum, order) => sum + order.totalPrice, 0);
   const averageOrderValue = totalSpent / orders.length;
   const pendingOrders = orders.filter(
-    (order) => order.status !== "DELIVERED",
+    (order) => order.status !== "DELIVERED"
   ).length;
 
   return (
     <div className="w-full flex flex-col justify-center gap-6 px-6">
       {/* Order Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="shadow-md border bg-gradient-to-r from-purple-500 to-indigo-600 text-white">
+          <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
           </CardHeader>
           <CardContent>
@@ -139,8 +125,8 @@ const ViewOrders = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="shadow-md border bg-gradient-to-r from-green-400 to-teal-500 text-white">
+          <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Total Spent</CardTitle>
           </CardHeader>
           <CardContent>
@@ -149,8 +135,8 @@ const ViewOrders = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="shadow-md border bg-gradient-to-r from-blue-500 to-cyan-500 text-white">
+          <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Average Order</CardTitle>
           </CardHeader>
           <CardContent>
@@ -161,8 +147,8 @@ const ViewOrders = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <Card className="shadow-md border bg-gradient-to-r from-yellow-500 to-orange-600 text-white">
+          <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">
               Pending Orders
             </CardTitle>
@@ -213,7 +199,7 @@ const ViewOrders = () => {
                     <div>
                       <span
                         className={`px-2 py-1 rounded-full text-sm ${getPaymentStatusColor(
-                          order.paymentStatus,
+                          order.paymentStatus
                         )}`}
                       >
                         {order.paymentStatus}
@@ -222,7 +208,7 @@ const ViewOrders = () => {
                     <div>
                       <span
                         className={`px-2 py-1 rounded-full text-sm ${getStatusColor(
-                          order.status,
+                          order.status
                         )}`}
                       >
                         {order.status}

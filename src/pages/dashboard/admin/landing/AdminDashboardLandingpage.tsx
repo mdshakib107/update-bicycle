@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import Loading from "@/components/shared/Loading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGetAllOrdersQuery } from "@/redux/api/orderApi";
@@ -69,12 +69,10 @@ const AdminDashboardLandingpage = () => {
   });
 
   //* Get all orders
-  const { data: ordersData, isLoading: ordersLoading } = useGetAllOrdersQuery(
-    {
-      page: 1,
-      limit: 1000,
-    },
-  );
+  const { data: ordersData, isLoading: ordersLoading } = useGetAllOrdersQuery({
+    page: 1,
+    limit: 1000,
+  });
 
   //* Get all products
   const { data: productsData, isLoading: productsLoading } =
@@ -86,7 +84,7 @@ const AdminDashboardLandingpage = () => {
   //* Calculate month-over-month changes
   const calculateMonthOverMonthChange = (
     currentValue: number,
-    previousValue: number,
+    previousValue: number
   ) => {
     if (previousValue === 0) return 0;
     return ((currentValue - previousValue) / previousValue) * 100;
@@ -187,31 +185,28 @@ const AdminDashboardLandingpage = () => {
   const totalRevenue =
     ordersData?.data?.data?.reduce(
       (sum, order) => sum + (order.totalPrice || 0),
-      0,
+      0
     ) || 0;
 
   //* Calculate month-over-month changes
   const ordersChange = calculateMonthOverMonthChange(
     currentMonthOrders.length,
-    previousMonthOrders.length,
+    previousMonthOrders.length
   );
 
   const revenueChange = calculateMonthOverMonthChange(
     currentMonthOrders.reduce((sum, order) => sum + (order.totalPrice || 0), 0),
-    previousMonthOrders.reduce(
-      (sum, order) => sum + (order.totalPrice || 0),
-      0,
-    ),
+    previousMonthOrders.reduce((sum, order) => sum + (order.totalPrice || 0), 0)
   );
 
   const usersChange = calculateMonthOverMonthChange(
     currentMonthUsers.length,
-    previousMonthUsers.length,
+    previousMonthUsers.length
   );
 
   const productsChange = calculateMonthOverMonthChange(
     currentMonthProducts.length,
-    previousMonthProducts.length,
+    previousMonthProducts.length
   );
 
   //* loading state
@@ -251,7 +246,6 @@ const AdminDashboardLandingpage = () => {
     },
   ];
 
-
   //* Prepare user growth data
   const userGrowthData: UserData[] =
     usersData?.data
@@ -272,7 +266,7 @@ const AdminDashboardLandingpage = () => {
         return acc;
       }, [])
       .sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
       ) || [];
 
   //* Prepare product growth data
@@ -295,7 +289,7 @@ const AdminDashboardLandingpage = () => {
         return acc;
       }, [])
       .sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
       ) || [];
 
   //* Revenue data for line chart
@@ -314,7 +308,7 @@ const AdminDashboardLandingpage = () => {
         return acc;
       }, [])
       .sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
       ) || [];
 
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
@@ -351,7 +345,7 @@ const AdminDashboardLandingpage = () => {
           return acc;
         }, [])
         .sort(
-          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
         ) || []
     );
   };
@@ -359,18 +353,18 @@ const AdminDashboardLandingpage = () => {
   const ordersTrendData = prepareTrendData(
     ordersData?.data?.data || [],
     "createdAt",
-    "totalPrice",
+    "totalPrice"
   );
-  const usersTrendData = prepareTrendData(
-    usersData?.data || [],
-    "createdAt",
-    "1",
-  );
-  const productsTrendData = prepareTrendData(
-    productsData?.data?.result || [],
-    "createdAt",
-    "1",
-  );
+  // const usersTrendData = prepareTrendData(
+  //   usersData?.data || [],
+  //   "createdAt",
+  //   "1",
+  // );
+  // const productsTrendData = prepareTrendData(
+  //   productsData?.data?.result || [],
+  //   "createdAt",
+  //   "1",
+  // );
 
   return (
     <div className="px-6 space-y-6 w-full h-screen">
@@ -413,7 +407,7 @@ const AdminDashboardLandingpage = () => {
                   "dateOfBirth",
                 ];
                 const completed = fields.filter(
-                  (field) => user?.[field as keyof typeof user],
+                  (field) => user?.[field as keyof typeof user]
                 ).length;
                 return Math.round((completed / fields.length) * 100);
               })()}

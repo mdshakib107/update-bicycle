@@ -1,142 +1,135 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import CustomButton from "@/components/shared/CustomButton";
+import { useChangePasswordMutation } from "@/redux/api/authApi";
 import { LockOutlined } from "@ant-design/icons";
-import { Form, Input } from "antd";
+import { Card, Form, Input, Typography } from "antd";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { toast } from "sonner";
-import { useChangePasswordMutation } from "../../../../redux/api/authApi";
+
+const { Title, Text } = Typography;
 
 const UpdatePassword = () => {
   const [form] = Form.useForm();
   const [changePassword, { isLoading }] = useChangePasswordMutation();
-  // 🛠️ Handle form submission
-  const handleSubmit = async (values: {
+
+  const onFinish = async (values: {
     oldPassword: string;
     newPassword: string;
     confirmPassword: string;
   }) => {
-    const toastId = toast.loading("Changing password...");
+    const toastId = toast.loading("Updating...");
 
-    // frontend validation
     if (values.newPassword !== values.confirmPassword) {
       toast.error("Passwords do not match!", { id: toastId });
       return;
     }
 
     try {
-      const payload = {
+      const res = await changePassword({
         oldPassword: values.oldPassword,
         newPassword: values.newPassword,
-      };
+      }).unwrap();
 
-      const res = await changePassword(payload).unwrap();
-      toast.success("Password changed successfully!", { id: toastId });
+      toast.success("Password changed!", { id: toastId });
 
       if (res?.token) {
         localStorage.setItem("authToken", res.token);
       }
 
       form.resetFields();
-    } catch (error: any) {
-      toast.error(error?.data?.message || "Failed to change password", {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Error updating password", {
         id: toastId,
       });
     }
   };
 
   return (
-    <div className="flex justify-center items-center w-full bg-gray-50">
-      <div className="p-8  bg-white w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      <Card
+        bordered={false}
+        className="w-full max-w-2xl shadow-md bg-white p-8 rounded-lg"
+      >
+        <Title level={3} className="text-center text-blue-700 mb-8">
+          Change Your Password
+        </Title>
+
         <Form
           form={form}
-          name="change-password"
-          style={{ maxWidth: 360 }}
-          onFinish={handleSubmit}
-          className="space-y-4 flex flex-col items-center w-full"
+          layout="vertical"
+          onFinish={onFinish}
+          className="space-y-6"
         >
-          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
-            Update Password
-          </h2>
-
-          <label className="text-gray-700 font-medium w-full">Old Password</label>
           <Form.Item
             name="oldPassword"
-            className="w-full"
-            rules={[
-              { required: true, message: "Please input your old password!" },
-            ]}
+            rules={[{ required: true, message: "Enter your current password" }]}
           >
             <Input.Password
-              prefix={<LockOutlined className="text-gray-400" />}
-              placeholder="Old Password"
-              className="py-2"
+              prefix={<LockOutlined />}
+              placeholder="Current password"
+              size="large"
             />
           </Form.Item>
 
-          <label className="text-gray-700 font-medium w-full">New Password</label>
-          <Form.Item
-            name="newPassword"
-            className="w-full"
-            rules={[
-              { required: true, message: "Please enter a new password" },
-              { min: 4, message: "Minimum 4 characters required" },
-              { max: 20, message: "Maximum 20 characters allowed" },
-            ]}
-          >
-            <Input.Password
-              prefix={<LockOutlined className="text-gray-400" />}
-              placeholder="Enter new password"
-              className="py-2"
-            />
-          </Form.Item>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Form.Item
+              name="newPassword"
+              rules={[
+                { required: true, message: "Enter new password" },
+                { min: 4, message: "At least 4 characters" },
+                { max: 20, message: "At most 20 characters" },
+              ]}
+            >
+              <Input.Password
+                prefix={<LockOutlined />}
+                placeholder="New password"
+                size="large"
+              />
+            </Form.Item>
 
-          <label className="text-gray-700 font-medium w-full">
-            Confirm New Password
-          </label>
-          <Form.Item
-            className="w-full"
-            name="confirmPassword"
-            dependencies={["newPassword"]}
-            hasFeedback
-            rules={[
-              { required: true, message: "Please confirm your new password!" },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue("newPassword") === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(new Error("Passwords do not match!"));
-                },
-              }),
-            ]}
-          >
-            <Input.Password
-              prefix={<LockOutlined className="text-gray-400" />}
-              placeholder="Confirm new password"
-              className="py-2"
-            />
-          </Form.Item>
+            <Form.Item
+              name="confirmPassword"
+              dependencies={["newPassword"]}
+              hasFeedback
+              rules={[
+                { required: true, message: "Confirm your password" },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("newPassword") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject(new Error("Passwords do not match!"));
+                  },
+                }),
+              ]}
+            >
+              <Input.Password
+                prefix={<LockOutlined />}
+                placeholder="Confirm new password"
+                size="large"
+              />
+            </Form.Item>
+          </div>
 
-          <Form.Item>
+          <Form.Item className="mt-6">
             <CustomButton
               type="submit"
-              className="w-full !py-2.5 text-base font-medium"
+              className="w-full !py-2 text-base font-semibold"
               textName={
                 isLoading ? (
                   <TbFidgetSpinner className="animate-spin" />
                 ) : (
-                  "Change Password"
+                  "Update Password"
                 )
               }
             />
           </Form.Item>
         </Form>
 
-        <div className="mt-4 text-center text-sm text-gray-500">
-          <p>Make sure your password is strong and unique</p>
-          <p className="mt-1">Minimum 4 characters, maximum 20 characters</p>
+        <div className="text-center mt-4 text-gray-500 text-sm">
+          <Text>Choose a strong and unique password for better security.</Text>
         </div>
-      </div>
+      </Card>
     </div>
   );
 };

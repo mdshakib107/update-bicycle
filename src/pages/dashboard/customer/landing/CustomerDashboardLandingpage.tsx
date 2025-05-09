@@ -19,7 +19,7 @@ import {
   RiseOutlined,
   ShoppingOutlined,
 } from "@ant-design/icons";
-import { Descriptions, Progress, ProgressProps, Steps } from "antd";
+import { Descriptions, Progress, Steps } from "antd";
 import {
   Bar,
   BarChart,
@@ -32,8 +32,9 @@ import {
   YAxis,
 } from "recharts";
 
-//* cards colors
-const conicColors: ProgressProps["strokeColor"] = {
+//\* cards colors
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const conicColors: any = {
   "0%": "#87d068",
   "50%": "#ffe58f",
   "100%": "#ffccc7",
@@ -48,7 +49,7 @@ const CustomerDashboardLandingpage = () => {
     userId!,
     {
       skip: !userId,
-    },
+    }
   );
 
   const { data: ordersData, isLoading: ordersLoading } = useGetAllOrdersQuery({
@@ -99,7 +100,7 @@ const CustomerDashboardLandingpage = () => {
     }, [])
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
-  // Prepare order status data
+  // Prepare order status data (not used in this code, but ready for charts)
   const orderStatusData = orders.reduce(
     (acc: { status: string; count: number }[], order) => {
       const existingStatus = acc.find((item) => item.status === order.status);
@@ -110,7 +111,7 @@ const CustomerDashboardLandingpage = () => {
       }
       return acc;
     },
-    [],
+    []
   );
 
   return (
@@ -142,7 +143,7 @@ const CustomerDashboardLandingpage = () => {
                 { title: "Personal", description: "Birth Date" },
                 { title: "Complete", description: "All Set!" },
               ]}
-              className="w-full [&_.ant-steps-item]:flex-1 [&_.ant-steps-item]:min-w-0 [&_.ant-steps-item-title]:whitespace-normal [&_.ant-steps-item-description]:whitespace-normal"
+              className="w-full [&*.ant-steps-item]:flex-1 [&*.ant-steps-item]:min-w-0 [&*.ant-steps-item-title]:whitespace-normal [&*.ant-steps-item-description]:whitespace-normal"
             />
             <Progress
               percent={(() => {
@@ -154,7 +155,7 @@ const CustomerDashboardLandingpage = () => {
                   "dateOfBirth",
                 ];
                 const completed = fields.filter(
-                  (field) => userDetails[field as keyof typeof userDetails],
+                  (field) => userDetails[field as keyof typeof userDetails]
                 ).length;
                 return Math.round((completed / fields.length) * 100);
               })()}
@@ -167,32 +168,32 @@ const CustomerDashboardLandingpage = () => {
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-        <Card>
+        <Card className="bg-gradient-to-r from-green-400 to-teal-400 text-white">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
-            <ShoppingOutlined className="h-4 w-4 text-muted-foreground" />
+            <ShoppingOutlined className="h-4 w-4 text-white" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalOrders}</div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-gradient-to-r from-blue-400 to-indigo-500 text-white">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Spent</CardTitle>
-            <DollarOutlined className="h-4 w-4 text-muted-foreground" />
+            <DollarOutlined className="h-4 w-4 text-white" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${totalSpent.toFixed(2)}</div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Average Order Value
             </CardTitle>
-            <RiseOutlined className="h-4 w-4 text-muted-foreground" />
+            <RiseOutlined className="h-4 w-4 text-white" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -201,10 +202,10 @@ const CustomerDashboardLandingpage = () => {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-gradient-to-r from-purple-400 to-pink-400 text-white">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Orders</CardTitle>
-            <InboxOutlined className="h-4 w-4 text-muted-foreground" />
+            <InboxOutlined className="h-4 w-4 text-white" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -213,28 +214,23 @@ const CustomerDashboardLandingpage = () => {
           </CardContent>
         </Card>
 
-        <Card className="bg-primary/5">
+        <Card className="bg-gradient-to-r from-red-400 to-pink-500 text-white">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
               Total Spending
             </CardTitle>
-            <DollarOutlined className="h-4 w-4 text-primary" />
+            <DollarOutlined className="h-4 w-4 text-white" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-primary">
-              ${totalSpent.toFixed(2)}
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              Across {totalOrders} orders
-            </p>
+            <div className="text-2xl font-bold">${totalSpent.toFixed(2)}</div>
+            <p className="text-xs mt-1">Across {totalOrders} orders</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Charts */}
-      <div className="grid gap-4 md:grid-cols-2">
-        {/* Order History Chart */}
-        <Card>
+      {/* Charts Section */}
+      <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2">
+        <Card className="shadow-lg">
           <CardHeader>
             <CardTitle>Order History</CardTitle>
           </CardHeader>
@@ -246,15 +242,14 @@ const CustomerDashboardLandingpage = () => {
                   <XAxis dataKey="date" />
                   <YAxis />
                   <Tooltip />
-                  <Line type="monotone" dataKey="amount" stroke="#8884d8" />
+                  <Line type="monotone" dataKey="amount" stroke="#56CCF2" />
                 </LineChart>
               </ResponsiveContainer>
             </div>
           </CardContent>
         </Card>
 
-        {/* Order Status Distribution */}
-        <Card>
+        <Card className="shadow-lg">
           <CardHeader>
             <CardTitle>Order Status Distribution</CardTitle>
           </CardHeader>
@@ -266,7 +261,7 @@ const CustomerDashboardLandingpage = () => {
                   <XAxis dataKey="status" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="count" fill="#8884d8" />
+                  <Bar dataKey="count" fill="#6FCF97" />
                 </BarChart>
               </ResponsiveContainer>
             </div>

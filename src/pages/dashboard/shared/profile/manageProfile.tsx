@@ -8,17 +8,17 @@ import {
 } from "@/redux/api/userApi";
 import { useCurrentUser } from "@/redux/features/auth/authSlice";
 import { useAppSelector } from "@/redux/hooks";
-import { Form, Input, Select, Typography } from "antd";
+import { Card, Divider, Form, Input, Select, Typography } from "antd";
 import { useEffect } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
 import { toast } from "sonner";
 
 const { Title } = Typography;
+const { Option } = Select;
 
 const ManageProfile = () => {
   const user = useAppSelector(useCurrentUser);
   const userId = user?._id;
-  // const isAdmin = user?.role === "admin";
 
   const { data, isLoading, isError } = useGetUserByIdQuery(userId!, {
     skip: !userId,
@@ -29,47 +29,22 @@ const ManageProfile = () => {
 
   useEffect(() => {
     if (data?.data) {
-      const {
-        name,
-        email,
-        image,
-        address,
-        phone,
-        bloodGroup,
-        emergencyContact,
-        gender,
-        dateOfBirth,
-        country,
-        city,
-        state,
-        zipCode,
-      } = data.data;
+      const user = data.data;
       form.setFieldsValue({
-        name,
-        email,
-        image,
-        address,
-        phone,
-        bloodGroup,
-        emergencyContact,
-        gender,
-        dateOfBirth: dateOfBirth
-          ? new Date(dateOfBirth).toISOString().split("T")[0]
-          : null,
-        country,
-        city,
-        state,
-        zipCode,
+        ...user,
+        dateOfBirth: user.dateOfBirth
+          ? new Date(user.dateOfBirth).toISOString().split("T")[0]
+          : undefined,
       });
     }
   }, [data, form]);
 
-  const handleSubmit = async (values: any) => {
+  const onProfileUpdate = async (values: any) => {
     try {
       await updateUser({ userId: userId!, updateData: values }).unwrap();
       toast.success("Profile updated successfully");
     } catch (error: any) {
-      toast.error(error?.data?.message || "Update failed");
+      toast.error(error?.data?.message || "Failed to update profile");
     }
   };
 
@@ -89,195 +64,113 @@ const ManageProfile = () => {
     );
   }
 
+  const sectionCard = (title: string, fields: React.ReactNode) => (
+    <Card
+      className="shadow-md"
+      title={<span className="font-semibold text-lg">{title}</span>}
+    >
+      {fields}
+    </Card>
+  );
+
   return (
-    <div className="flex flex-col w-full h-screen">
-      {/* Cover image + Avatar */}
+    <div className="min-h-screen w-[90%] mx-auto pb-16">
       <ProfileHeader data={data} />
+      <div className="mt-12 space-y-10">
+        <Title level={3} className="text-center text-blue-700">
+          Edit Your Profile
+        </Title>
 
-      <div className="flex justify-center items-center w-full mt-10 px-6">
-        <div className="space-y-20 w-full">
-          <Title level={3} className="text-center mb-6">
-            Update Account
-          </Title>
-
-          <Form form={form} layout="vertical" onFinish={handleSubmit}>
-            <div className="grid md:grid-cols-3 gap-4">
-              <div>
+        <Form layout="vertical" form={form} onFinish={onProfileUpdate}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Personal Info */}
+            {sectionCard(
+              "Personal Info",
+              <>
                 <Form.Item
-                  label="Full Name"
                   name="name"
-                  rules={[
-                    { required: true, message: "Please enter your name" },
-                  ]}
+                  label="Full Name"
+                  rules={[{ required: true }]}
                 >
-                  <Input placeholder="Enter name" />
+                  <Input placeholder="Enter your name" />
                 </Form.Item>
-
                 <Form.Item
-                  label="Email Address"
                   name="email"
-                  rules={[
-                    { required: true, message: "Please enter your email" },
-                  ]}
+                  label="Email"
+                  rules={[{ required: true }]}
                 >
-                  <Input type="email" placeholder="Enter email" />
+                  <Input type="email" placeholder="Enter your email" />
                 </Form.Item>
-
-                <Form.Item
-                  label="Image URL"
-                  name="image"
-                  rules={[
-                    {
-                      required: false,
-                      message: "Please Give a valid image URL",
-                    },
-                  ]}
-                >
-                  <Input placeholder="Enter image URL" />
-                </Form.Item>
-
-                <Form.Item
-                  label="Address"
-                  name="address"
-                  rules={[
-                    { required: false, message: "Please enter your address" },
-                  ]}
-                >
-                  <Input.TextArea placeholder="Enter address" rows={5} />
-                </Form.Item>
-              </div>
-
-              <div>
-                <Form.Item
-                  label="Date of Birth"
-                  name="dateOfBirth"
-                  rules={[
-                    {
-                      required: false,
-                      message: "Please enter your date of birth",
-                    },
-                  ]}
-                >
-                  <Input
-                    type="date"
-                    className="w-full"
-                    onChange={(e) => {
-                      form.setFieldValue("dateOfBirth", e.target.value);
-                    }}
-                  />
-                </Form.Item>
-
-                <Form.Item
-                  label="Gender"
-                  name="gender"
-                  rules={[
-                    { required: false, message: "Please enter your gender" },
-                  ]}
-                >
+                <Form.Item name="gender" label="Gender">
                   <Select placeholder="Select gender">
-                    <Select.Option value="male">Male</Select.Option>
-                    <Select.Option value="female">Female</Select.Option>
+                    <Option value="male">Male</Option>
+                    <Option value="female">Female</Option>
+                    <Option value="other">Other</Option>
                   </Select>
                 </Form.Item>
-
-                <Form.Item
-                  label="Phone Number"
-                  name="phone"
-                  rules={[
-                    {
-                      required: false,
-                      message: "Please enter your phone number",
-                    },
-                  ]}
-                >
-                  <Input placeholder="Enter phone number" />
+                <Form.Item name="dateOfBirth" label="Date of Birth">
+                  <Input type="date" />
                 </Form.Item>
+              </>
+            )}
 
-                <Form.Item
-                  label="Blood Group"
-                  name="bloodGroup"
-                  rules={[
-                    {
-                      required: false,
-                      message: "Please enter your blood group",
-                    },
-                  ]}
-                >
-                  <Input placeholder="Enter blood group" />
+            {/* Contact Info */}
+            {sectionCard(
+              "Contact Info",
+              <>
+                <Form.Item name="phone" label="Phone">
+                  <Input placeholder="Phone number" />
                 </Form.Item>
-
-                <Form.Item
-                  label="Emergency Contact"
-                  name="emergencyContact"
-                  rules={[
-                    {
-                      required: false,
-                      message: "Please enter your emergency contact",
-                    },
-                  ]}
-                >
-                  <Input placeholder="Enter emergency contact" />
+                <Form.Item name="emergencyContact" label="Emergency Contact">
+                  <Input placeholder="Emergency number" />
                 </Form.Item>
-              </div>
-
-              <div>
-                <Form.Item
-                  label="Country"
-                  name="country"
-                  rules={[
-                    { required: false, message: "Please enter your country" },
-                  ]}
-                >
-                  <Input placeholder="Enter country" />
+                <Form.Item name="image" label="Image URL">
+                  <Input placeholder="Link to profile image" />
                 </Form.Item>
-
-                <Form.Item
-                  label="City"
-                  name="city"
-                  rules={[
-                    { required: false, message: "Please enter your city" },
-                  ]}
-                >
-                  <Input placeholder="Enter city" />
+                <Form.Item name="bloodGroup" label="Blood Group">
+                  <Input placeholder="Your blood group" />
                 </Form.Item>
+              </>
+            )}
 
-                <Form.Item
-                  label="State"
-                  name="state"
-                  rules={[
-                    { required: false, message: "Please enter your state" },
-                  ]}
-                >
-                  <Input placeholder="Enter state" />
+            {/* Address Info */}
+            {sectionCard(
+              "Address Info",
+              <>
+                <Form.Item name="address" label="Street Address">
+                  <Input.TextArea rows={4} placeholder="Your address" />
                 </Form.Item>
-
-                <Form.Item
-                  label="Zip Code"
-                  name="zipCode"
-                  rules={[
-                    { required: false, message: "Please enter your zip code" },
-                  ]}
-                >
-                  <Input placeholder="Enter zip code" />
+                <Form.Item name="country" label="Country">
+                  <Input placeholder="Country name" />
                 </Form.Item>
-              </div>
-            </div>
+                <Form.Item name="city" label="City">
+                  <Input placeholder="City name" />
+                </Form.Item>
+                <Form.Item name="state" label="State">
+                  <Input placeholder="State name" />
+                </Form.Item>
+                <Form.Item name="zipCode" label="Zip Code">
+                  <Input placeholder="Postal code" />
+                </Form.Item>
+              </>
+            )}
+          </div>
 
-            <Form.Item>
-              <CustomButton
-                type="submit"
-                className="w-full"
-                textName={
-                  isSubmitting ? (
-                    <TbFidgetSpinner className="animate-spin" />
-                  ) : (
-                    "Update Profile"
-                  )
-                }
-              />
-            </Form.Item>
-          </Form>
-        </div>
+          <Divider />
+          <Form.Item className="mt-8 text-center">
+            <CustomButton
+              type="submit"
+              className="w-full md:w-1/2 lg:w-1/3 mx-auto block"
+              textName={
+                isSubmitting ? (
+                  <TbFidgetSpinner className="animate-spin text-xl" />
+                ) : (
+                  "Save Changes"
+                )
+              }
+            />
+          </Form.Item>
+        </Form>
       </div>
     </div>
   );

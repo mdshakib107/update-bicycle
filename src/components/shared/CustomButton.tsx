@@ -1,42 +1,39 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
 
-// Define types for the props
 interface CustomButtonProps {
-  textName: ReactNode; // Allow textName to be a ReactNode (string, element, etc.)
-  handleAnything?: (event: React.MouseEvent<HTMLButtonElement> | React.FormEvent<HTMLFormElement>) => void; // Supports both click and form submit events
-  className?: string; // Allow className to be passed as a prop
-  type?: "button" | "submit" | "reset"; // Button type, narrowed to valid values
-  disabled?: boolean
+  textName: ReactNode;
+  handleAnything?: (
+    event:
+      | React.MouseEvent<HTMLButtonElement>
+      | React.FormEvent<HTMLFormElement>
+  ) => void;
+  className?: string;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
-// custom button
 const CustomButton: React.FC<CustomButtonProps> = ({
   textName,
   handleAnything,
   className = "",
   disabled = false,
-  type = "button", // default value for 'type'
-  
+  type = "button",
 }) => {
   return (
     <button
       onClick={handleAnything}
-      type={type} // the `type` prop here
+      type={type}
       disabled={disabled}
       className={clsx(
-        "relative inline-flex items-center justify-center px-8 py-3.5 overflow-hidden font-mono dark:bg-slate-800 tracking-tighter text-white bg-blue-500 rounded-lg group hover:cursor-pointer  active:scale-95 active:shadow-inner",
+        "relative inline-flex items-center justify-center px-6 py-3 font-semibold rounded-md text-white transition duration-300 ease-in-out",
+        "bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-500",
+        "hover:from-indigo-600 hover:via-blue-600 hover:to-cyan-600",
+        "disabled:opacity-60 disabled:cursor-not-allowed",
         className
       )}
-      
     >
-      <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-primary rounded-full group-hover:w-full group-hover:h-56"></span>
-      <span className="absolute inset-0 w-full h-full -mt-1 rounded-lg opacity-90 bg-gradient-to-b from-transparent via-transparent to-purple-400"></span>
-      
-      {/* text name */}
-      <span className="relative text-text  dark:text-slate-200 group-hover:text-white">
-        {textName}
-      </span>
+      {textName}
     </button>
   );
 };
