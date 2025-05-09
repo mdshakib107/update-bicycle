@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Loading from "@/components/shared/Loading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGetAllOrdersQuery } from "@/redux/api/orderApi";
@@ -68,7 +69,10 @@ const AdminDashboardLandingpage = () => {
 
   //* Get all orders
   const { data: ordersData, isLoading: ordersLoading } = useGetAllOrdersQuery(
-    {},
+    {
+      page: 1,
+      limit: 1000,
+    },
   );
 
   //* Get all products
@@ -176,12 +180,14 @@ const AdminDashboardLandingpage = () => {
   } = getCurrentAndPreviousMonthData();
 
   //* Calculate statistics
-  const totalOrders = ordersData?.data?.data?.length || 0;
-  const totalProducts = productsData?.data?.result?.length || 0;
+  const totalOrders = ordersData?.data?.totalOrders || 0;
+  const totalProducts = productsData?.data?.meta?.total || 0;
   const totalUsers = usersData?.data?.length || 0;
   const totalRevenue =
-    ordersData?.data?.data?.reduce((sum, order) => sum + order.totalPrice, 0) ||
-    0;
+    ordersData?.data?.data?.reduce(
+      (sum, order) => sum + (order.totalPrice || 0),
+      0,
+    ) || 0;
 
   //* Calculate month-over-month changes
   const ordersChange = calculateMonthOverMonthChange(
@@ -190,8 +196,11 @@ const AdminDashboardLandingpage = () => {
   );
 
   const revenueChange = calculateMonthOverMonthChange(
-    currentMonthOrders.reduce((sum, order) => sum + order.totalPrice, 0),
-    previousMonthOrders.reduce((sum, order) => sum + order.totalPrice, 0),
+    currentMonthOrders.reduce((sum, order) => sum + (order.totalPrice || 0), 0),
+    previousMonthOrders.reduce(
+      (sum, order) => sum + (order.totalPrice || 0),
+      0,
+    ),
   );
 
   const usersChange = calculateMonthOverMonthChange(
@@ -240,6 +249,7 @@ const AdminDashboardLandingpage = () => {
           .length || 0,
     },
   ];
+  console.log(ordersData);
 
   //* Prepare user growth data
   const userGrowthData: UserData[] =
@@ -295,9 +305,9 @@ const AdminDashboardLandingpage = () => {
         const existingDate = acc.find((item) => item.date === date);
 
         if (existingDate) {
-          existingDate.revenue += order.totalPrice;
+          existingDate.revenue += order.totalPrice || 0;
         } else {
-          acc.push({ date, revenue: order.totalPrice });
+          acc.push({ date, revenue: order.totalPrice || 0 });
         }
 
         return acc;
@@ -324,6 +334,42 @@ const AdminDashboardLandingpage = () => {
       </div>
     );
   };
+
+  //* Prepare trend data for charts
+  const prepareTrendData = (data: any[], dateKey: string, valueKey: string) => {
+    return (
+      data
+        ?.reduce((acc: { date: string; value: number }[], item) => {
+          const date = new Date(item[dateKey]).toLocaleDateString();
+          const existingDate = acc.find((d) => d.date === date);
+          if (existingDate) {
+            existingDate.value += item[valueKey] || 0;
+          } else {
+            acc.push({ date, value: item[valueKey] || 0 });
+          }
+          return acc;
+        }, [])
+        .sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        ) || []
+    );
+  };
+
+  const ordersTrendData = prepareTrendData(
+    ordersData?.data?.data || [],
+    "createdAt",
+    "totalPrice",
+  );
+  const usersTrendData = prepareTrendData(
+    usersData?.data || [],
+    "createdAt",
+    "1",
+  );
+  const productsTrendData = prepareTrendData(
+    productsData?.data?.result || [],
+    "createdAt",
+    "1",
+  );
 
   return (
     <div className="px-6 space-y-6 w-full h-screen">
@@ -377,7 +423,8 @@ const AdminDashboardLandingpage = () => {
         </CardContent>
       </Card>
 
-      {/* Stats Cards */}
+      {/* Total Stats Cards */}
+      <h3 className="text-lg font-semibold mb-4">Total Statistics</h3>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -386,9 +433,9 @@ const AdminDashboardLandingpage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalOrders}</div>
-            <div className="text-xs text-muted-foreground">
+            {/* <div className="text-xs text-muted-foreground">
               {renderChangeIndicator(ordersChange)}
-            </div>
+            </div> */}
           </CardContent>
         </Card>
 
@@ -399,9 +446,9 @@ const AdminDashboardLandingpage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalUsers}</div>
-            <div className="text-xs text-muted-foreground">
+            {/* <div className="text-xs text-muted-foreground">
               {renderChangeIndicator(usersChange)}
-            </div>
+            </div> */}
           </CardContent>
         </Card>
 
@@ -414,9 +461,9 @@ const AdminDashboardLandingpage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalProducts}</div>
-            <div className="text-xs text-muted-foreground">
+            {/* <div className="text-xs text-muted-foreground">
               {renderChangeIndicator(productsChange)}
-            </div>
+            </div> */}
           </CardContent>
         </Card>
 
@@ -427,13 +474,202 @@ const AdminDashboardLandingpage = () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">${totalRevenue.toFixed(2)}</div>
-            <div className="text-xs text-muted-foreground">
+            {/* <div className="text-xs text-muted-foreground">
               {renderChangeIndicator(revenueChange)}
-            </div>
+            </div> */}
           </CardContent>
         </Card>
       </div>
 
+      {/* Current Month Stats */}
+      <div className="mt-6">
+        <h3 className="text-lg font-semibold mb-4">Current Month Statistics</h3>
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                This Month Orders
+              </CardTitle>
+              <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {currentMonthOrders.length}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {renderChangeIndicator(ordersChange)}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                This Month Users
+              </CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {currentMonthUsers.length}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {renderChangeIndicator(usersChange)}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                This Month Products
+              </CardTitle>
+              <Boxes className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                {currentMonthProducts.length}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {renderChangeIndicator(productsChange)}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                This Month Revenue
+              </CardTitle>
+              <DollarSign className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">
+                $
+                {currentMonthOrders
+                  .reduce((sum, order) => sum + (order.totalPrice || 0), 0)
+                  .toFixed(2)}
+              </div>
+              <div className="text-xs text-muted-foreground">
+                {renderChangeIndicator(revenueChange)}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      <h3 className="text-lg font-semibold mb-4">Graphs</h3>
+
+      {/* Trend Charts */}
+      <div className="grid gap-4 md:grid-cols-2">
+        {/* Orders Trend */}
+        <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Orders Trend</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={ordersTrendData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#8884d8"
+                    strokeWidth={2}
+                    dot={{ r: 4 }}
+                    activeDot={{ r: 6 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Users Trend */}
+        {/* <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Users Growth Trend</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={usersTrendData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#82ca9d"
+                    strokeWidth={2}
+                    dot={{ r: 4 }}
+                    activeDot={{ r: 6 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card> */}
+
+        {/* Products Trend */}
+        {/* <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Products Growth Trend</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={productsTrendData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke="#ffc658"
+                    strokeWidth={2}
+                    dot={{ r: 4 }}
+                    activeDot={{ r: 6 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card> */}
+
+        {/* Revenue Trend */}
+        <Card className="col-span-1">
+          <CardHeader>
+            <CardTitle>Revenue Trend</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={revenueData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line
+                    type="monotone"
+                    dataKey="revenue"
+                    stroke="#ff7300"
+                    strokeWidth={2}
+                    dot={{ r: 4 }}
+                    activeDot={{ r: 6 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
       {/* Charts */}
       <div className="grid gap-4 md:grid-cols-2">
         {/* Order Status Chart */}
@@ -470,26 +706,6 @@ const AdminDashboardLandingpage = () => {
                   </Pie>
                   <Tooltip />
                 </PieChart>
-              </ResponsiveContainer>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Revenue Trend Chart */}
-        <Card className="col-span-1">
-          <CardHeader>
-            <CardTitle>Revenue Trend</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[300px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={revenueData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="revenue" stroke="#8884d8" />
-                </LineChart>
               </ResponsiveContainer>
             </div>
           </CardContent>

@@ -106,6 +106,11 @@ const ManageOrders = () => {
     paidOrders: 0,
     unpaidOrders: 0,
     deliveredOrders: 0,
+    currentMonthOrders: 0,
+    currentMonthRevenue: 0,
+    currentMonthPaidOrders: 0,
+    currentMonthUnpaidOrders: 0,
+    currentMonthDeliveredOrders: 0,
   });
 
   const { data, isLoading, isError, refetch } = useGetAllOrdersQuery({
@@ -135,6 +140,19 @@ const ManageOrders = () => {
   useEffect(() => {
     if (statsData?.data?.data) {
       const allOrders = statsData.data.data;
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
+
+      // Filter current month orders
+      const currentMonthOrders = allOrders.filter((order) => {
+        const orderDate = new Date(order.createdAt);
+        return (
+          orderDate.getMonth() === currentMonth &&
+          orderDate.getFullYear() === currentYear
+        );
+      });
+
       setStats({
         totalOrders: statsData.data.totalOrders || 0,
         totalRevenue: allOrders.reduce(
@@ -147,6 +165,21 @@ const ManageOrders = () => {
           (order) => order.paymentStatus === "UNPAID",
         ).length,
         deliveredOrders: allOrders.filter(
+          (order) => order.status === "DELIVERED",
+        ).length,
+        // Current month stats
+        currentMonthOrders: currentMonthOrders.length,
+        currentMonthRevenue: currentMonthOrders.reduce(
+          (sum, order) => sum + (order.totalPrice || 0),
+          0,
+        ),
+        currentMonthPaidOrders: currentMonthOrders.filter(
+          (order) => order.paymentStatus === "PAID",
+        ).length,
+        currentMonthUnpaidOrders: currentMonthOrders.filter(
+          (order) => order.paymentStatus === "UNPAID",
+        ).length,
+        currentMonthDeliveredOrders: currentMonthOrders.filter(
           (order) => order.status === "DELIVERED",
         ).length,
       });
@@ -462,6 +495,60 @@ const ManageOrders = () => {
               className="bg-gradient-to-br from-amber-50 to-white !p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-amber-100"
               valueStyle={{ color: "#B45309", fontWeight: "bold" }}
             />
+          </div>
+
+          {/* Current Month Stats */}
+          <div className="mt-6">
+            <Title level={4} className="!mb-4">
+              Current Month Statistics
+            </Title>
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <Statistic
+                title={
+                  <span className="text-gray-600 text-base">
+                    This Month Orders
+                  </span>
+                }
+                value={stats.currentMonthOrders}
+                prefix={<ShoppingCart />}
+                className="bg-gradient-to-br from-purple-50 to-white !p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-purple-100"
+                valueStyle={{ color: "#6B46C1", fontWeight: "bold" }}
+              />
+              <Statistic
+                title={
+                  <span className="text-gray-600 text-base">
+                    This Month Revenue
+                  </span>
+                }
+                value={stats.currentMonthRevenue}
+                prefix={<DollarSign />}
+                precision={2}
+                className="bg-gradient-to-br from-green-50 to-white !p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-green-100"
+                valueStyle={{ color: "#059669", fontWeight: "bold" }}
+              />
+              <Statistic
+                title={
+                  <span className="text-gray-600 text-base">
+                    This Month Paid
+                  </span>
+                }
+                value={stats.currentMonthPaidOrders}
+                prefix={<PackageCheck />}
+                className="bg-gradient-to-br from-blue-50 to-white !p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-blue-100"
+                valueStyle={{ color: "#2563EB", fontWeight: "bold" }}
+              />
+              <Statistic
+                title={
+                  <span className="text-gray-600 text-base">
+                    This Month Unpaid
+                  </span>
+                }
+                value={stats.currentMonthUnpaidOrders}
+                prefix={<AlertCircle />}
+                className="bg-gradient-to-br from-red-50 to-white !p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-red-100"
+                valueStyle={{ color: "#DC2626", fontWeight: "bold" }}
+              />
+            </div>
           </div>
         </div>
 
