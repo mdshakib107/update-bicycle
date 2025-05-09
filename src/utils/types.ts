@@ -37,24 +37,38 @@ export type TResponse<T> = {
   message?: string;
 };
 
-//User type definition
-// This type is used to define the structure of a user object in the application. move it as a separate file if needed.
+//* User type definition
 export interface TUser {
   data: {
     _id: string;
     name: string;
     email: string;
     role: "admin" | "customer";
-    status: "active" | "inactive" | "banned";
+    status: "active" | "inactive";
     needsPasswordChange: boolean;
-    passwordChangedAt?: string;
-    createdAt?: string;
-    updatedAt?: string;
+    passwordChangedAt?: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
     image?: string;
+    address?: string;
+    phone?: string;
+    bloodGroup?: string;
+    emergencyContact?: string;
+    gender?: "male" | "female";
+    dateOfBirth?: Date;
+    country?: string;
+    city?: string;
+    state?: string;
+    zipCode?: string;
   };
 }
 
-export type ShippingStatus = "PENDING" | "PROCESSING" | "SHIPPED" | "DELIVERED" | "CANCELLED";
+export type ShippingStatus =
+  | "PENDING"
+  | "PROCESSING"
+  | "SHIPPED"
+  | "DELIVERED"
+  | "CANCELLED";
 
 // (Ordered Item)
 export interface OrderedItem {
@@ -68,15 +82,17 @@ export interface OrderedItem {
     quantity: number;
     inStock: boolean;
   };
-  quantity?:number;
+  quantity?: number;
   _id?: string;
   price?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 // (Main Order Type)
 export interface OrderResponse {
   data: {
-    data: Order[]; 
+    data: Order[];
     totalOrders: number;
     totalPages: number;
     currentPage: number;
@@ -92,7 +108,7 @@ export interface Order {
   user: TUserFromToken | null;
   totalPrice: number;
   isDeleted: boolean;
-  paymentStatus: 'UNPAID' | 'PAID';
+  paymentStatus: "UNPAID" | "PAID";
   status: ShippingStatus;
   createdAt: string;
   updatedAt?: string;

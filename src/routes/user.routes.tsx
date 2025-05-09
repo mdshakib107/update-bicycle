@@ -2,12 +2,18 @@ import CustomerDashboardLandingpage from "@/pages/dashboard/customer/landing/Cus
 import ViewOrders from "../pages/dashboard/customer/orders/viewOrders";
 import ManageProfile from "../pages/dashboard/shared/profile/manageProfile";
 import UpdatePassword from "../pages/dashboard/shared/profile/updatePassword";
+import CustomerProfile from "@/pages/dashboard/customer/profile/CustomerProfile";
 
 export const userPaths = [
   {
     name: "My Dashboard",
     path: "my-dashboard",
     element: <CustomerDashboardLandingpage />,
+  },
+  {
+    name: "Profile",
+    path: "profile",
+    element: <CustomerProfile />,
   },
   {
     name: "Manage Profile",

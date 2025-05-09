@@ -15,6 +15,8 @@ import logo from "../../assets/images/logo/logo.png";
 import { logout, useCurrentUser } from "../../redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import CustomButton from "../shared/CustomButton";
+import { useGetUserByIdQuery } from "@/redux/api/userApi";
+import { LayoutDashboard } from "lucide-react";
 // import { MdDashboard } from "react-icons/md";
 
 const ResponsiveNavbar = () => {
@@ -22,22 +24,28 @@ const ResponsiveNavbar = () => {
   const [mobileAboutUsOpen, setMobileAboutUsOpen] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
-  // navigation
+  //* navigation
   const navigate = useNavigate();
 
-  // dispatch
+  //* dispatch
   const dispatch = useAppDispatch();
 
-  // check if user is logged in
+  //* check if user is logged in
   const user = useAppSelector(useCurrentUser);
+  const userId = user?._id;
   //console.log(user)
 
-  // login
+  //* Get user by id
+  const { data } = useGetUserByIdQuery(userId!, {
+    skip: !userId,
+  });
+
+  //* login
   const handleLogin = () => {
     navigate("/login");
   };
 
-  // logout
+  //* logout
   const handleLogout = () => {
     const toastId = toast.loading("Loading...");
 
@@ -53,18 +61,24 @@ const ResponsiveNavbar = () => {
     }
   };
 
-  // user role leading dashboard
+  //* user role leading dashboard
   const toDashboard = user ? `/dashboard/${user?.role}/my-dashboard` : "/";
 
-  // NavLink is active
-  // NavLink is active
+
+  //* NavLink is active
   const activeLink = ({ isActive }: { isActive: boolean }) => {
     return isActive
       ? "text-[#3B9DF8] font-medium transition-all duration-300"
-      : "text-[#424242] hover:text-[#3B9DF8] transition-all duration-300";
+      : "text-black hover:text-[#3B9DF8] transition-all duration-300";
   };
 
-  // reusable menu block
+  const activeLinkForNavbar = ({ isActive }: { isActive: boolean }) => {
+    return isActive
+      ? "text-white font-medium transition-all duration-300"
+      : "text-black hover:text-white transition-all duration-300";
+  };
+
+  //* reusable menu block
   const termsLinks = (
     <>
       <li className="flex items-center gap-[7px] hover:text-[#3B9DF8] transition-all duration-300">
@@ -102,28 +116,28 @@ const ResponsiveNavbar = () => {
   /* desktop nav links */
   const desktopNavLinks = (
     <ul className="items-center gap-[20px] text-[1rem]  md:flex hidden">
-      <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize">
-        <NavLink to="/" className={activeLink}>
+      <li className="transition-all duration-500 cursor-pointer hover:text-white capitalize">
+        <NavLink to="/" className={activeLinkForNavbar}>
           home
         </NavLink>
       </li>
 
-      <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize">
-        <NavLink to="/AllBicycles" className={activeLink}>
+      <li className="transition-all duration-500 cursor-pointer hover:text-white capitalize">
+        <NavLink to="/AllBicycles" className={activeLinkForNavbar}>
           All Bicycle
         </NavLink>
       </li>
 
-      <li className="transition-all duration-500 cursor-pointer hover:text-[#3B9DF8] capitalize">
-        <NavLink to="/about" className={activeLink}>
+      <li className="transition-all duration-500 cursor-pointer hover:text-white capitalize">
+        <NavLink to="/about" className={activeLinkForNavbar}>
           About Us
         </NavLink>
       </li>
 
-      <li className="transition-all duration-500 cursor-pointer dark:text-[#abc2d3] hover:text-[#3B9DF8] capitalize flex items-center gap-[3px] group relative">
+      <li className="transition-all duration-500 cursor-pointer dark:text-[#abc2d3] hover:text-white capitalize flex items-center gap-[3px] group relative">
         Terms & Conditions
-        <MdKeyboardArrowDown className="text-[1.5rem] text-black group-hover:text-[#3B9DF8] transition-all duration-500 group-hover:rotate-[180deg]" />
-        <article className="p-6 bg-white rounded-md boxShadow w-[200px] absolute top-[40px] z-[-1] dark:bg-slate-800 group-hover:translate-y-0 translate-y-[-20px] group-hover:opacity-100 opacity-0 group-hover:z-30 transition-all duration-300 shadow-purple-600 shadow-lg">
+        <MdKeyboardArrowDown className="text-[1.5rem] text-black group-hover:text-white transition-all duration-500 group-hover:rotate-[180deg]" />
+        <article className="p-6 bg-white rounded-md boxShadow w-[200px] absolute top-[40px] z-[-1] dark:bg-black group-hover:translate-y-0 translate-y-[-20px] group-hover:opacity-100 opacity-0 group-hover:z-30 transition-all duration-300 shadow-purple-600 shadow-lg">
           <div className="grid grid-cols-2">
             <ul className="flex flex-col gap-[7px] text-black">{termsLinks}</ul>
             {/* <div className="flex flex-col gap-[10px] dark:border-slate-700 border-l border-[#e5eaf2] pl-[30px]">
@@ -140,7 +154,7 @@ const ResponsiveNavbar = () => {
     </ul>
   );
 
-  // mobile sidebar
+  //* mobile sidebar
   const mobileSidebarLinks = (
     <ul className="items-start gap-[20px] text-[1rem] flex flex-col">
       <li className="capitalize cursor-pointer">
@@ -189,7 +203,7 @@ const ResponsiveNavbar = () => {
     </ul>
   );
 
-  // user account login
+  //* user account login
   const accountDropdown = (
     <div className="flex items-center gap-[15px]">
       {!user ? (
@@ -201,15 +215,15 @@ const ResponsiveNavbar = () => {
         >
           <div className="relative">
             <img
-              src="https://i.ibb.co/qWzCvWm/avatar.gif"
+              src={data?.data?.image || "https://i.ibb.co/qWzCvWm/avatar.gif"}
               alt="avatar"
               className="w-[35px] h-[35px] rounded-full object-cover"
             />
             <div className="w-[10px] h-[10px] rounded-full bg-green-500 absolute bottom-[0px] right-0 border-2 border-white"></div>
           </div>
 
-          <h1 className="text-[1rem] font-[400] text-gray-600 sm:block hidden">
-            {user.email}
+          <h1 className="text-[1rem] font-[400] text-white sm:block hidden">
+            {data?.data?.name || data?.data?.email}
           </h1>
 
           <div
@@ -229,14 +243,21 @@ const ResponsiveNavbar = () => {
             </span>
             <NavLink
               to={toDashboard}
-              className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50 ${activeLink}`}
+              className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-black hover:bg-gray-50 ${activeLink}`}
+            >
+              <LayoutDashboard size={16} />
+              Dashboard
+            </NavLink>
+            <NavLink
+              to={`/dashboard/${user?.role}/profile`}
+              className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-black hover:bg-gray-50 ${activeLink}`}
             >
               <FiUser />
-              View Profile
+              Profile
             </NavLink>
             <NavLink
               to={`/dashboard/${user?.role}/manage-profile`}
-              className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-gray-600 hover:bg-gray-50 ${activeLink}`}
+              className={`flex items-center gap-[5px] rounded-md p-[8px] pr-[45px] py-[3px] text-[1rem] text-black hover:bg-gray-50 ${activeLink}`}
             >
               <IoSettingsOutline />
               Settings
@@ -257,7 +278,7 @@ const ResponsiveNavbar = () => {
           <IoIosArrowUp
             className={`${
               accountMenuOpen ? "rotate-0" : "rotate-[180deg]"
-            } transition-all duration-300 text-gray-600 sm:block hidden`}
+            } transition-all duration-300 text-white sm:block hidden`}
           />
         </div>
       )}
@@ -270,7 +291,7 @@ const ResponsiveNavbar = () => {
   );
 
   return (
-    <nav className="flex items-center justify-between w-full relative h-auto shadow-md p-4 bg-base-100 border-purple-600 shadow-purple-600 rounded-4xl">
+    <nav className="flex items-center justify-between w-full h-auto shadow-md p-4 bg-gradient-to-r from-blue-400 to-purple-600 border-purple-600 shadow-purple-600 rounded-4xl sticky top-0 z-50">
       <div className="flex space-x-4 ">
         <ul className="items-center gap-[20px] text-[1rem] text-[#424242] md:flex">
           <li className="transition-all duration-500 cursor-pointer hover:bg-[#d8e0e1] rounded-full capitalize">

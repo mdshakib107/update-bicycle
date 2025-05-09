@@ -2,7 +2,8 @@
 // import image
 import cycle from "../../assets/images/img/bicycle.jpg";
 
-import { Card, Flex, Skeleton } from "antd";
+import { FrownOutlined, MehOutlined, SmileOutlined } from "@ant-design/icons";
+import { Card, Flex, Rate, Skeleton } from "antd";
 import { useState } from "react";
 import { FcMoneyTransfer } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
@@ -11,17 +12,19 @@ import CustomButton from "./CustomButton";
 
 export interface ItemData {
   map?(arg0: (d: ItemData) => JSX.Element): import("react").ReactNode;
-  name: string;
+  name?: string;
   Img?: string;
-  brand: string;
-  price: number;
-  type: string;
-  description: string;
-  quantity: number;
-  inStock: boolean;
+  brand?: string;
+  price?: number;
+  type?: string;
+  description?: string;
+  quantity?: number;
+  inStock?: boolean;
   _id?: string;
   createdAt?: string | Date;
   updatedAt?: string | Date;
+  rating?: number;
+  isDeleted?: boolean;
 }
 
 export interface ItemsCardProps {
@@ -40,18 +43,20 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   const {
     brand,
     // description,
-    inStock,
+    // inStock,
     name,
-    quantity,
+    // quantity,
     Img,
-    type,
+    // type,
     // updatedAt,
     _id,
     price,
+    rating,
     // createdAt,
+    // isDeleted,
   } = data;
 
-  // button for card
+  //* button for card
   const actions: React.ReactNode[] = [
     <>
       <CustomButton
@@ -66,10 +71,20 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
             BuyNow
           </div>
         }
-        className="w-[90%] !py-2"
+        className="w-[90%] !py-1.5"
       />
     </>,
   ];
+
+  //* rating
+  const desc = ["terrible", "bad", "normal", "good", "wonderful"];
+  const customIcons: Record<number, React.ReactNode> = {
+    1: "😢",
+    2: <FrownOutlined />,
+    3: <MehOutlined />,
+    4: <SmileOutlined />,
+    5: "😁",
+  };
 
   return (
     <Link to={`/bicycles/${_id}`}>
@@ -85,18 +100,33 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
         /> */}
 
         {loading ? (
-          <div className="w-full p-6">
-            <Skeleton active avatar paragraph={{ rows: 4 }} />
+          <div className="w-full p-4">
+            <Skeleton active avatar paragraph={{ rows: 3 }} />
           </div>
         ) : (
-          <Card 
-          loading={loading} actions={actions} style={{ minWidth: 200 }}
-          className="w-full"
+          <Card
+            loading={loading}
+            actions={actions}
+            style={{ minWidth: 200 }}
+            className="w-full"
+            styles={{
+              body: {
+                padding: "12px",
+              },
+            }}
           >
             {!Img ? (
-              <img alt="Bicycle" src={cycle} className="mb-6 w-full" />
+              <img
+                alt="Bicycle"
+                src={cycle}
+                className="mb-3 w-full h-40 object-cover"
+              />
             ) : (
-              <img alt="Bicycle" src={Img} className="mb-6 w-full h-52" />
+              <img
+                alt="Bicycle"
+                src={Img}
+                className="mb-3 w-full h-40 object-cover"
+              />
             )}
 
             <Card.Meta
@@ -104,30 +134,45 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
               // avatar={
               //   <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=1" />
               // }
-              title={name}
+              title={
+                <h3 className="text-base font-medium mb-1 line-clamp-1">
+                  {name}
+                </h3>
+              }
               description={
-                <div className="space-y-2">
+                <div className="space-y-1.5 text-sm">
                   {/* <p className="mb-2 min-h-20 font-semibold">{description}</p> */}
                   <p className="flex justify-between">
                     <span className="font-medium">Brand:</span>
                     <span className="font-serif">{brand}</span>
                   </p>
-                  <p className="flex justify-between">
+                  {/* <p className="flex justify-between">
                     <span className="font-medium">Type:</span>
                     <span className="font-serif">{type}</span>
-                  </p>
+                  </p> */}
                   <p className="flex justify-between">
                     <span className="font-medium">Price:</span>
                     <span className="font-serif">{price} ৳</span>
                   </p>
-                  <p className="flex justify-between">
+                  {/* <p className="flex justify-between">
                     <span className="font-medium">Quantity:</span>
                     <span className="font-serif">{quantity}</span>
-                  </p>
-                  <p className="flex justify-between">
+                  </p> */}
+                  {/* <p className="flex justify-between">
                     <span className="font-medium">In Stock:</span>
                     <span className="font-serif">{inStock ? "Yes" : "No"}</span>
-                  </p>
+                  </p> */}
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Rating:</span>
+                    {/* <span className="font-serif">{rating}⭐</span> */}
+                    <Rate
+                      tooltips={desc}
+                      defaultValue={rating}
+                      character={({ index = 0 }) => customIcons[index + 1]}
+                      disabled
+                    />
+                    {/* {rating ? <span>{desc[rating - 1]}</span> : null} */}
+                  </div>
                 </div>
               }
             />

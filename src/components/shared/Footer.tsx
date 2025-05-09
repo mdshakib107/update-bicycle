@@ -1,12 +1,11 @@
-
+import { useState } from "react";
 import { BsInstagram, BsLinkedin, BsTwitter } from "react-icons/bs";
 import { CgFacebook } from "react-icons/cg";
 import { SlArrowUp } from "react-icons/sl";
-import logo from "../../assets/images/logo/logo.png";
-import CustomButton from "./CustomButton";
 import { Link } from "react-router-dom";
+import logo from "../../assets/images/logo/logo.png";
 import ContactUs from "../modals/ContactUs";
-import { useState } from "react";
+import CustomButton from "./CustomButton";
 
 const Footer = () => {
   // modal open close state

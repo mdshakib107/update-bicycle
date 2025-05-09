@@ -194,7 +194,7 @@ const Checkout = () => {
                   textName={isSubmitting ? "Placing Order..." : "Place Order"}
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+                  className="w-full"
                 />
               </form>
             </div>

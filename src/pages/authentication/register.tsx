@@ -1,25 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import CustomButton from "@/components/shared/CustomButton";
 import Loading from "@/components/shared/Loading";
 import { verifyToken } from "@/utils/verifyToken";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { Form, Input } from "antd";
 import { useEffect, useState } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useRegisterMutation } from "../../redux/api/authApi"; // Import register mutation
+import logo from "../../assets/images/logo/logo.png";
+import { useRegisterMutation } from "../../redux/api/authApi";
 
 const Register = () => {
-  // useRegister mutation hook
+  //* useRegister mutation hook
   const [register, { isLoading }] = useRegisterMutation();
 
-  // loading effect state
+  //* loading effect state
   const [redirecting, setRedirecting] = useState(false);
 
-  // navigation
+  //* navigation
   const navigate = useNavigate();
 
-  // onFinish function for submitting the form
+  //* onFinish function for submitting the form
   const onFinish = async (values: {
     name: string;
     email: string;
@@ -33,7 +35,7 @@ const Register = () => {
       email: values?.email,
       password: values?.password,
     };
-    // console.log(userInfo);
+
     if (values.password !== values.confirmPassword) {
       toast.error("Passwords do not match", { id: toastId });
       return;
@@ -48,43 +50,38 @@ const Register = () => {
           duration: 2000,
         });
 
-        navigate("/login"); // Navigate to login after registration
+        navigate("/login");
       } else {
         toast.error("Failed to verify Registration", { id: toastId });
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      // console.log(error.data.stack);
       toast.error(`${error?.data?.message || "Something went wrong!"}`, {
         id: toastId,
       });
     }
   };
 
-  // Check if the user is already logged in when the component is mounted
+  //* Check if the user is already logged in when the component is mounted
   useEffect(() => {
     const token =
       localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
 
     if (token) {
-      const user = verifyToken(token); // You can verify if the token is valid here
+      const user = verifyToken(token);
       if (user) {
-        setRedirecting(true); // Trigger Loading state
+        setRedirecting(true);
 
-        // Delay the navigation by 1 second (1000 ms)
         const timeout = setTimeout(() => {
           toast.info("You are already logged in!");
-          // If the token is valid, redirect to home
           navigate("/");
         }, 1000);
 
-        // Optional: clear timeout if the component unmounts before it completes
         return () => clearTimeout(timeout);
       }
     }
-  }, [navigate]); // Empty dependency array to run once when the component is mounted
+  }, [navigate]);
 
-  // loading
+  //* loading
   if (redirecting) {
     return (
       <div className="min-h-screen flex justify-center items-center">
@@ -94,98 +91,129 @@ const Register = () => {
   }
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="p-8 border rounded shadow-md border-purple-600 shadow-purple-600 relative">
-        <Form
-          name="register"
-          initialValues={{ remember: true }}
-          style={{ maxWidth: 360 }}
-          onFinish={onFinish}
-        >
-          {/* Name */}
-          <label>Name</label>
-          <Form.Item
-            name="name"
-            rules={[{ required: true, message: "Please input your Name!" }]}
-          >
-            <Input prefix={<UserOutlined />} type="text" placeholder="Name" />
-          </Form.Item>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-purple-50 p-4">
+      <div className="w-full max-w-md">
+        {/* Register Card */}
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition-all duration-300 hover:shadow-2xl">
+          {/* Header Section */}
+          <div className="bg-gradient-to-r from-blue-400 to-purple-600 p-8 text-center flex justify-around items-center">
+            <NavLink to="/">
+              <img
+                src={logo}
+                alt="logo"
+                className="w-[60px] border-2 border-purple-600 rounded-full"
+              />
+            </NavLink>
+            <div className="flex flex-col justify-center items-center gap-2">
+              <h1 className="text-3xl font-bold text-white mb-2">
+                Create Account
+              </h1>
+              <p className="text-purple-100">Join us and start your journey</p>
+            </div>
+          </div>
 
-          {/* Email */}
-          <label>Email</label>
-          <Form.Item
-            name="email"
-            rules={[
-              {
-                type: "email",
-                required: true,
-                message: "Please input your Email!",
-              },
-            ]}
-          >
-            <Input prefix={<UserOutlined />} type="email" placeholder="Email" />
-          </Form.Item>
-
-          {/* Password */}
-          <label>Password</label>
-          <Form.Item
-            name="password"
-            rules={[{ required: true, message: "Please input your Password!" }]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              type="password"
-              placeholder="Password"
-            />
-          </Form.Item>
-
-          {/* Confirm Password */}
-          <label>Confirm Password</label>
-          <Form.Item
-            name="confirmPassword"
-            rules={[
-              { required: true, message: "Please confirm your Password!" },
-            ]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              type="password"
-              placeholder="Confirm Password"
-            />
-          </Form.Item>
-
-          {/* Remember Me */}
-          {/* <Form.Item>
-            <Flex justify="space-between" align="center">
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>Remember me</Checkbox>
+          {/* Form Section */}
+          <div className="p-8">
+            <Form
+              name="register"
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              layout="vertical"
+              size="large"
+            >
+              {/* Name Field */}
+              <Form.Item
+                name="name"
+                rules={[{ required: true, message: "Please input your Name!" }]}
+              >
+                <Input
+                  prefix={<UserOutlined className="text-purple-500" />}
+                  placeholder="Full Name"
+                  className="rounded-lg hover:border-purple-500 focus:border-purple-500 transition-colors"
+                />
               </Form.Item>
-            </Flex>
-          </Form.Item> */}
 
-          {/* Register Button */}
-          <Form.Item>
-            <CustomButton
-              type="submit"
-              className="w-full !py-1.5"
-              textName={
-                isLoading ? (
-                  <TbFidgetSpinner className="animate-spin" />
-                ) : (
-                  "Register"
-                )
-              }
-            />
-            <p className="text-center mt-2">
-              Already have an account? <Link to="/login">Log in now!</Link>
-            </p>
-          </Form.Item>
-        </Form>
-        
-        {/* back to terms page */}
+              {/* Email Field */}
+              <Form.Item
+                name="email"
+                rules={[
+                  {
+                    type: "email",
+                    required: true,
+                    message: "Please input your Email!",
+                  },
+                ]}
+              >
+                <Input
+                  prefix={<MailOutlined className="text-purple-500" />}
+                  placeholder="Email"
+                  className="rounded-lg hover:border-purple-500 focus:border-purple-500 transition-colors"
+                />
+              </Form.Item>
+
+              {/* Password Field */}
+              <Form.Item
+                name="password"
+                rules={[
+                  { required: true, message: "Please input your Password!" },
+                ]}
+              >
+                <Input.Password
+                  prefix={<LockOutlined className="text-purple-500" />}
+                  placeholder="Password"
+                  className="rounded-lg hover:border-purple-500 focus:border-purple-500 transition-colors"
+                />
+              </Form.Item>
+
+              {/* Confirm Password Field */}
+              <Form.Item
+                name="confirmPassword"
+                rules={[
+                  { required: true, message: "Please confirm your Password!" },
+                ]}
+              >
+                <Input.Password
+                  prefix={<LockOutlined className="text-purple-500" />}
+                  placeholder="Confirm Password"
+                  className="rounded-lg hover:border-purple-500 focus:border-purple-500 transition-colors"
+                />
+              </Form.Item>
+
+              {/* Register Button */}
+              <Form.Item>
+                <CustomButton
+                  type="submit"
+                  className="w-full !py-2.5 !rounded-lg transition-colors !text-white !font-semibold !text-base"
+                  textName={
+                    isLoading ? (
+                      <TbFidgetSpinner className="animate-spin mx-auto" />
+                    ) : (
+                      "Create Account"
+                    )
+                  }
+                />
+              </Form.Item>
+
+              {/* Login Link */}
+              <div className="text-center mt-4">
+                <p className="text-gray-600">
+                  Already have an account?{" "}
+                  <Link
+                    to="/login"
+                    className="text-purple-600 hover:text-purple-800 font-semibold transition-colors"
+                  >
+                    Log in now!
+                  </Link>
+                </p>
+              </div>
+            </Form>
+          </div>
+        </div>
+
+        {/* Back to Home Link */}
         <Link
-          to={"/"}
-          className="absolute left-24 bottom-2 flex justify-center items-center gap-1 p-3 rounded-4xl text-purple-600  hover:text-blue-600"
+          to="/"
+          className="flex items-center justify-center gap-2 mt-6 text-purple-600 hover:text-purple-800 transition-colors"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -193,7 +221,7 @@ const Register = () => {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-6"
+            className="w-5 h-5"
           >
             <path
               strokeLinecap="round"
@@ -201,7 +229,7 @@ const Register = () => {
               d="m11.25 9-3 3m0 0 3 3m-3-3h7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
             />
           </svg>
-          <p className="text-base">Home</p>
+          <span className="font-medium">Back to Home</span>
         </Link>
       </div>
     </div>
