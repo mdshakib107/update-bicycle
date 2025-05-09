@@ -25,7 +25,6 @@ import {
 import ProfileHeader from "@/components/shared/ProfileHeader";
 
 const CustomerProfile = () => {
-
   // Get full user from Redux
   const user = useAppSelector(useCurrentUser);
   const userId = user?._id;
@@ -92,14 +91,16 @@ const CustomerProfile = () => {
             overflowY: "auto",
             backgroundColor: "white",
           }}
-          labelStyle={{
-            fontWeight: 500,
-            color: "#4B5563",
-            backgroundColor: "#F9FAFB",
-            padding: "12px 16px",
-          }}
-          contentStyle={{
-            padding: "12px 16px",
+          styles={{
+            label: {
+              fontWeight: 500,
+              color: "#4B5563",
+              backgroundColor: "#F9FAFB",
+              padding: "12px 16px",
+            },
+            content: {
+              padding: "12px 16px",
+            },
           }}
         >
           <Descriptions.Item

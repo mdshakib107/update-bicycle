@@ -109,7 +109,11 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
             actions={actions}
             style={{ minWidth: 200 }}
             className="w-full"
-            bodyStyle={{ padding: "12px" }}
+            styles={{
+              body: {
+                padding: "12px",
+              },
+            }}
           >
             {!Img ? (
               <img
