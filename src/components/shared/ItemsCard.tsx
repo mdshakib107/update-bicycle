@@ -24,6 +24,7 @@ export interface ItemData {
   createdAt?: string | Date;
   updatedAt?: string | Date;
   rating?: number;
+  isDeleted?: boolean;
 }
 
 export interface ItemsCardProps {
@@ -52,6 +53,7 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
     price,
     rating,
     // createdAt,
+    // isDeleted,
   } = data;
 
   //* button for card

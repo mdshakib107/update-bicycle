@@ -8,7 +8,14 @@ import {
 } from "@/redux/api/productApi";
 import { Card } from "@/components/ui/card"; // Added for consistent layout
 import { ItemData } from "@/components/shared/ItemsCard";
-import { Pagination, Table, Typography, Statistic, message, Modal } from "antd";
+import {
+  Pagination,
+  Table,
+  Typography,
+  Statistic,
+  Modal,
+  Popconfirm,
+} from "antd";
 import { ShoppingCart, CheckCircle, XCircle } from "lucide-react"; // Added icons to match style
 import { useState } from "react";
 import { toast } from "sonner";
@@ -43,23 +50,15 @@ const AllProductsPage = () => {
   const products = data?.data?.result || [];
 
   //* Confirm and delete
-  const handleDelete = (id: string) => {
-    Modal.confirm({
-      title: "Are you sure you want to delete this product?",
-      content: "This action cannot be undone.",
-      okText: "Yes, delete",
-      okType: "danger",
-      cancelText: "Cancel",
-      onOk: async () => {
-        try {
-          await deleteProduct(id).unwrap();
-          message.success("Product deleted successfully!");
-        } catch (err) {
-          console.error(err);
-          message.error("Failed to delete product.");
-        }
-      },
-    });
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteProduct(id).unwrap();
+      await refetch(); //? refetch product list
+      toast.success("Product deleted successfully!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to delete product.");
+    }
   };
 
   //* update product
@@ -150,7 +149,7 @@ const AllProductsPage = () => {
       key: "actions",
       render: (_: any, record: ItemData) => (
         <div className="flex gap-2">
-          {/* Edit Button (navigate to edit page, assumed) */}
+          {/* Edit Button */}
           <button
             onClick={() => {
               setSelectedProduct(record);
@@ -161,13 +160,33 @@ const AllProductsPage = () => {
             Edit
           </button>
 
-          {/* Delete Button */}
-          <button
-            onClick={() => handleDelete(record._id!)}
-            className="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition-all"
+          {/* Delete Button with Popconfirm */}
+          <Popconfirm
+            title="Delete Product"
+            description={
+              <div className="space-y-2">
+                <p>Are you sure you want to delete this product?</p>
+                <p className="text-red-500 font-medium">{record.name}</p>
+                <p className="text-gray-500 text-sm">
+                  This action cannot be undone.
+                </p>
+              </div>
+            }
+            onConfirm={() => handleDelete(record._id!)}
+            okText="Yes, Delete"
+            cancelText="No, Cancel"
+            okButtonProps={{
+              danger: true,
+              className: "bg-red-600 hover:bg-red-700",
+            }}
+            cancelButtonProps={{
+              className: "hover:bg-gray-100",
+            }}
           >
-            Delete
-          </button>
+            <button className="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition-all">
+              Delete
+            </button>
+          </Popconfirm>
         </div>
       ),
     },
