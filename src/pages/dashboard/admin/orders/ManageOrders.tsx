@@ -26,18 +26,64 @@ import {
   useUpdateOrderMutation,
 } from "@/redux/api/orderApi";
 import { Order, ShippingStatus } from "@/utils/types";
-import { Table as AntTable } from "antd";
+import { Table as AntTable, Space, Statistic, Typography } from "antd";
 import {
+  AlertCircle,
   CheckCircle,
   Clock,
   CreditCard,
+  DollarSign,
   Package,
+  PackageCheck,
+  ShoppingCart,
   Trash2,
   Truck,
   XCircle,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { toast } from "sonner";
+
+const { Title, Text } = Typography;
+
+interface OrderStatusOption {
+  label: string;
+  value: string;
+  icon: ReactNode;
+  color: string;
+}
+
+const orderStatusOptions: OrderStatusOption[] = [
+  {
+    label: "PENDING",
+    value: "pending",
+    icon: <Clock className="w-4 h-4" />,
+    color: "bg-yellow-100 text-yellow-800",
+  },
+  {
+    label: "PROCESSING",
+    value: "processing",
+    icon: <Package className="w-4 h-4" />,
+    color: "bg-blue-100 text-blue-800",
+  },
+  {
+    label: "SHIPPED",
+    value: "shipped",
+    icon: <Truck className="w-4 h-4" />,
+    color: "bg-purple-100 text-purple-800",
+  },
+  {
+    label: "DELIVERED",
+    value: "delivered",
+    icon: <CheckCircle className="w-4 h-4" />,
+    color: "bg-green-100 text-green-800",
+  },
+  {
+    label: "CANCELED",
+    value: "canceled",
+    icon: <XCircle className="w-4 h-4" />,
+    color: "bg-red-100 text-red-800",
+  },
+];
 
 const ManageOrders = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -54,46 +100,26 @@ const ManageOrders = () => {
   const [isTableLoading, setIsTableLoading] = useState(false);
   const [openPaymentDialog, setOpenPaymentDialog] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  const [stats, setStats] = useState({
+    totalOrders: 0,
+    totalRevenue: 0,
+    paidOrders: 0,
+    unpaidOrders: 0,
+    deliveredOrders: 0,
+  });
 
   const { data, isLoading, isError, refetch } = useGetAllOrdersQuery({
     page: pagination.current,
     limit: pagination.pageSize,
   });
+
+  const { data: statsData } = useGetAllOrdersQuery({
+    page: 1,
+    limit: 1000,
+  });
+
   const [deleteOrder] = useDeleteOrderMutation();
   const [updateOrder] = useUpdateOrderMutation();
-
-  const orderStatusOptions = [
-    {
-      label: "PENDING",
-      value: "pending",
-      icon: <Clock className="w-4 h-4" />,
-      color: "bg-yellow-100 text-yellow-800",
-    },
-    {
-      label: "PROCESSING",
-      value: "processing",
-      icon: <Package className="w-4 h-4" />,
-      color: "bg-blue-100 text-blue-800",
-    },
-    {
-      label: "SHIPPED",
-      value: "shipped",
-      icon: <Truck className="w-4 h-4" />,
-      color: "bg-purple-100 text-purple-800",
-    },
-    {
-      label: "DELIVERED",
-      value: "delivered",
-      icon: <CheckCircle className="w-4 h-4" />,
-      color: "bg-green-100 text-green-800",
-    },
-    {
-      label: "CANCELED",
-      value: "canceled",
-      icon: <XCircle className="w-4 h-4" />,
-      color: "bg-red-100 text-red-800",
-    },
-  ];
 
   useEffect(() => {
     if (data?.data) {
@@ -105,6 +131,27 @@ const ManageOrders = () => {
       setIsTableLoading(false);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (statsData?.data?.data) {
+      const allOrders = statsData.data.data;
+      setStats({
+        totalOrders: statsData.data.totalOrders || 0,
+        totalRevenue: allOrders.reduce(
+          (sum, order) => sum + (order.totalPrice || 0),
+          0,
+        ),
+        paidOrders: allOrders.filter((order) => order.paymentStatus === "PAID")
+          .length,
+        unpaidOrders: allOrders.filter(
+          (order) => order.paymentStatus === "UNPAID",
+        ).length,
+        deliveredOrders: allOrders.filter(
+          (order) => order.status === "DELIVERED",
+        ).length,
+      });
+    }
+  }, [statsData]);
 
   const handleDeleteOrder = async (orderId: string) => {
     try {
@@ -340,8 +387,8 @@ const ManageOrders = () => {
     setPagination(pagination);
   };
 
-  if (isLoading) return <Loading />;
-  if (orders?.length < 1) {
+  if (isLoading && !isTableLoading) return <Loading />;
+  if (orders?.length < 1 && !isTableLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <h2 className="text-center font-bold text-3xl text-gray-600">
@@ -354,19 +401,72 @@ const ManageOrders = () => {
 
   return (
     <div className="w-full p-6">
-      <Card className="p-6 border-0 shadow-lg">
-        <h2 className="text-center font-bold text-3xl mb-8 text-gray-800">
-          Order Management
-        </h2>
+      <div className="space-y-6">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div>
+            <Title level={2} className="!mb-1">
+              Order Management
+            </Title>
+            <Text type="secondary">Manage and monitor all orders</Text>
+          </div>
+          <Space size="large" className="flex-wrap">
+            <Statistic
+              title={
+                <span className="text-gray-600 text-base">Total Orders</span>
+              }
+              value={stats.totalOrders}
+              prefix={<ShoppingCart />}
+              className="bg-gradient-to-br from-purple-50 to-white !p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-purple-100 min-w-[200px]"
+              valueStyle={{ color: "#6B46C1", fontWeight: "bold" }}
+            />
+            <Statistic
+              title={
+                <span className="text-gray-600 text-base">Total Revenue</span>
+              }
+              value={stats.totalRevenue}
+              prefix={<DollarSign />}
+              precision={2}
+              className="bg-gradient-to-br from-green-50 to-white !p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-green-100 min-w-[200px]"
+              valueStyle={{ color: "#059669", fontWeight: "bold" }}
+            />
+            <Statistic
+              title={
+                <span className="text-gray-600 text-base">Paid Orders</span>
+              }
+              value={stats.paidOrders}
+              prefix={<PackageCheck />}
+              className="bg-gradient-to-br from-blue-50 to-white !p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-blue-100 min-w-[200px]"
+              valueStyle={{ color: "#2563EB", fontWeight: "bold" }}
+            />
+            <Statistic
+              title={
+                <span className="text-gray-600 text-base">Unpaid Orders</span>
+              }
+              value={stats.unpaidOrders}
+              prefix={<AlertCircle />}
+              className="bg-gradient-to-br from-red-50 to-white !p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-red-100 min-w-[200px]"
+              valueStyle={{ color: "#DC2626", fontWeight: "bold" }}
+            />
+            <Statistic
+              title={
+                <span className="text-gray-600 text-base">
+                  Delivered Orders
+                </span>
+              }
+              value={stats.deliveredOrders}
+              prefix={<Package />}
+              className="bg-gradient-to-br from-amber-50 to-white !p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-amber-100 min-w-[200px]"
+              valueStyle={{ color: "#B45309", fontWeight: "bold" }}
+            />
+          </Space>
+        </div>
 
-        <div className="w-full overflow-x-auto">
-          {isTableLoading ? (
-            <div className="min-h-[400px] flex items-center justify-center">
-              <Loading />
-            </div>
-          ) : (
+        {/* Table Section */}
+        <Card className="p-6 border-0 shadow-lg">
+          <div className="w-full overflow-x-auto">
             <AntTable
-              loading={isLoading}
+              loading={isTableLoading}
               columns={columns}
               dataSource={orders}
               rowKey="_id"
@@ -387,9 +487,9 @@ const ManageOrders = () => {
               size="middle"
               tableLayout="auto"
             />
-          )}
-        </div>
-      </Card>
+          </div>
+        </Card>
+      </div>
 
       <AlertDialog open={openStatusDialog} onOpenChange={setOpenStatusDialog}>
         <AlertDialogContent>
