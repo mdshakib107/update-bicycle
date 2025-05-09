@@ -53,6 +53,8 @@ const CustomerDashboardLandingpage = () => {
 
   const { data: ordersData, isLoading: ordersLoading } = useGetAllOrdersQuery({
     id: userId,
+    page: 1,
+    limit: 1000,
   });
 
   // loading state

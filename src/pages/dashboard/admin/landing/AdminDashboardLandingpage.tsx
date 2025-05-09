@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import Loading from "@/components/shared/Loading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -249,7 +250,7 @@ const AdminDashboardLandingpage = () => {
           .length || 0,
     },
   ];
-  console.log(ordersData);
+
 
   //* Prepare user growth data
   const userGrowthData: UserData[] =
