@@ -26,7 +26,7 @@ import {
   useUpdateOrderMutation,
 } from "@/redux/api/orderApi";
 import { Order, ShippingStatus } from "@/utils/types";
-import { Table as AntTable, Space, Statistic, Typography } from "antd";
+import { Table as AntTable, Statistic, Typography } from "antd";
 import {
   AlertCircle,
   CheckCircle,
@@ -403,21 +403,24 @@ const ManageOrders = () => {
     <div className="w-full p-6">
       <div className="space-y-6">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div>
+        <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
+          {/* Title Section */}
+          <div className="flex flex-col justify-center">
             <Title level={2} className="!mb-1">
               Order Management
             </Title>
             <Text type="secondary">Manage and monitor all orders</Text>
           </div>
-          <Space size="large" className="flex-wrap">
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             <Statistic
               title={
                 <span className="text-gray-600 text-base">Total Orders</span>
               }
               value={stats.totalOrders}
               prefix={<ShoppingCart />}
-              className="bg-gradient-to-br from-purple-50 to-white !p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-purple-100 min-w-[200px]"
+              className="bg-gradient-to-br from-purple-50 to-white !p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-purple-100"
               valueStyle={{ color: "#6B46C1", fontWeight: "bold" }}
             />
             <Statistic
@@ -427,7 +430,7 @@ const ManageOrders = () => {
               value={stats.totalRevenue}
               prefix={<DollarSign />}
               precision={2}
-              className="bg-gradient-to-br from-green-50 to-white !p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-green-100 min-w-[200px]"
+              className="bg-gradient-to-br from-green-50 to-white !p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-green-100"
               valueStyle={{ color: "#059669", fontWeight: "bold" }}
             />
             <Statistic
@@ -436,7 +439,7 @@ const ManageOrders = () => {
               }
               value={stats.paidOrders}
               prefix={<PackageCheck />}
-              className="bg-gradient-to-br from-blue-50 to-white !p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-blue-100 min-w-[200px]"
+              className="bg-gradient-to-br from-blue-50 to-white !p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-blue-100"
               valueStyle={{ color: "#2563EB", fontWeight: "bold" }}
             />
             <Statistic
@@ -445,7 +448,7 @@ const ManageOrders = () => {
               }
               value={stats.unpaidOrders}
               prefix={<AlertCircle />}
-              className="bg-gradient-to-br from-red-50 to-white !p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-red-100 min-w-[200px]"
+              className="bg-gradient-to-br from-red-50 to-white !p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-red-100"
               valueStyle={{ color: "#DC2626", fontWeight: "bold" }}
             />
             <Statistic
@@ -456,10 +459,10 @@ const ManageOrders = () => {
               }
               value={stats.deliveredOrders}
               prefix={<Package />}
-              className="bg-gradient-to-br from-amber-50 to-white !p-6 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-amber-100 min-w-[200px]"
+              className="bg-gradient-to-br from-amber-50 to-white !p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-amber-100"
               valueStyle={{ color: "#B45309", fontWeight: "bold" }}
             />
-          </Space>
+          </div>
         </div>
 
         {/* Table Section */}
