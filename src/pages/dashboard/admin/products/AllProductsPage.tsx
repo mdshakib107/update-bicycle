@@ -303,7 +303,7 @@ const AllProductsPage = () => {
               min={0}
               step={0.01}
               className="w-full px-3 py-2 border rounded"
-              value={selectedProduct?.price || ""}
+              value={selectedProduct?.price ?? ""}
               onChange={(e) =>
                 setSelectedProduct((prev) =>
                   prev ? { ...prev, price: parseFloat(e.target.value) } : prev,
@@ -317,32 +317,58 @@ const AllProductsPage = () => {
             <label className="text-sm text-gray-600">Quantity</label>
             <input
               type="number"
-              min={0}
+              min={selectedProduct?.inStock ? 1 : 0}
               className="w-full px-3 py-2 border rounded"
-              value={selectedProduct?.quantity || ""}
-              onChange={(e) =>
+              value={selectedProduct?.quantity ?? ""}
+              onChange={(e) => {
+                const value = parseInt(e.target.value);
                 setSelectedProduct((prev) =>
-                  prev ? { ...prev, quantity: parseInt(e.target.value) } : prev,
-                )
-              }
+                  prev ? { ...prev, quantity: value } : prev,
+                );
+              }}
+              disabled={!selectedProduct?.inStock}
             />
           </div>
 
-          {/* In Stock */}
+          {/* In Stock (Radio) */}
           <div>
             <label className="text-sm text-gray-600 block mb-1">In Stock</label>
-            <select
-              className="w-full px-3 py-2 border rounded"
-              value={selectedProduct?.inStock ? "yes" : "no"}
-              onChange={(e) =>
-                setSelectedProduct((prev) =>
-                  prev ? { ...prev, inStock: e.target.value === "yes" } : prev,
-                )
-              }
-            >
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
+            <div className="flex gap-4">
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="inStock"
+                  value="yes"
+                  checked={selectedProduct?.inStock === true}
+                  onChange={() =>
+                    setSelectedProduct((prev) =>
+                      prev
+                        ? {
+                            ...prev,
+                            inStock: true,
+                            quantity: prev.quantity === 0 ? 1 : prev.quantity, // ensure min 1
+                          }
+                        : prev,
+                    )
+                  }
+                />
+                Yes
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  type="radio"
+                  name="inStock"
+                  value="no"
+                  checked={selectedProduct?.inStock === false}
+                  onChange={() =>
+                    setSelectedProduct((prev) =>
+                      prev ? { ...prev, inStock: false, quantity: 1 } : prev,
+                    )
+                  }
+                />
+                No
+              </label>
+            </div>
           </div>
         </div>
       </Modal>
