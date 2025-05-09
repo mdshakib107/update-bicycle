@@ -17,7 +17,6 @@ import {
   Table,
   Typography,
 } from "antd";
-import { useForm } from "antd/es/form/Form";
 import { CheckCircle, ShoppingCart, XCircle } from "lucide-react"; //? Added icons to match style
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -40,19 +39,10 @@ const AllProductsPage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<ItemData | null>(null);
 
-  //* Create form instance
-  const [form] = useForm(); // Initialize form instance here
-
   const { data, isLoading, isError, refetch } = useGetAllProductsQuery({
     page,
     limit: pageSize,
   });
-
-  // Handle when a product is selected for editing
-  const handleEditProduct = (product: any) => {
-    setSelectedProduct(product);
-    setIsEditModalOpen(true);
-  };
 
   // Ensure modal opens only when product data is fetched
   useEffect(() => {
