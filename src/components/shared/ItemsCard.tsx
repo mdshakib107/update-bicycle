@@ -12,14 +12,14 @@ import CustomButton from "./CustomButton";
 
 export interface ItemData {
   map?(arg0: (d: ItemData) => JSX.Element): import("react").ReactNode;
-  name: string;
+  name?: string;
   Img?: string;
-  brand: string;
-  price: number;
-  type: string;
-  description: string;
-  quantity: number;
-  inStock: boolean;
+  brand?: string;
+  price?: number;
+  type?: string;
+  description?: string;
+  quantity?: number;
+  inStock?: boolean;
   _id?: string;
   createdAt?: string | Date;
   updatedAt?: string | Date;

@@ -1,11 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import Loading from "@/components/shared/Loading";
-import { useGetAllProductsQuery } from "@/redux/api/productApi";
-import { Card } from "@/components/ui/card"; // ✅ Added for consistent layout
-import { Pagination, Table, Typography, Statistic } from "antd";
-import { ShoppingCart, CheckCircle, XCircle } from "lucide-react"; // ✅ Added icons to match style
+import {
+  useDeleteProductMutation,
+  useGetAllProductsQuery,
+  useUpdateProductMutation,
+} from "@/redux/api/productApi";
+import { Card } from "@/components/ui/card"; // Added for consistent layout
+import { ItemData } from "@/components/shared/ItemsCard";
+import { Pagination, Table, Typography, Statistic, message, Modal } from "antd";
+import { ShoppingCart, CheckCircle, XCircle } from "lucide-react"; // Added icons to match style
 import { useState } from "react";
+import { toast } from "sonner";
 
 const { Title, Text } = Typography;
 
@@ -13,12 +19,22 @@ const AllProductsPage = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(4);
 
-  const { data, isLoading, isError } = useGetAllProductsQuery({
+  //* Delete product
+  const [deleteProduct] = useDeleteProductMutation();
+
+  //* update product
+  const [updateProduct] = useUpdateProductMutation();
+
+  //* modal
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<ItemData | null>(null);
+
+  const { data, isLoading, isError, refetch } = useGetAllProductsQuery({
     page,
     limit: pageSize,
   });
 
-  // ✅ Handle pagination updates
+  //* Handle pagination updates
   const handlePageChange = (page: number) => {
     setPage(page);
     setPageSize(pageSize);
@@ -26,7 +42,51 @@ const AllProductsPage = () => {
 
   const products = data?.data?.result || [];
 
-  // ✅ Table columns styled similarly to order table
+  //* Confirm and delete
+  const handleDelete = (id: string) => {
+    Modal.confirm({
+      title: "Are you sure you want to delete this product?",
+      content: "This action cannot be undone.",
+      okText: "Yes, delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      onOk: async () => {
+        try {
+          await deleteProduct(id).unwrap();
+          message.success("Product deleted successfully!");
+        } catch (err) {
+          console.error(err);
+          message.error("Failed to delete product.");
+        }
+      },
+    });
+  };
+
+  //* update product
+  const handleUpdate = async () => {
+    if (!selectedProduct?._id) return;
+    try {
+      await updateProduct({
+        productId: selectedProduct._id,
+        updateData: {
+          price: selectedProduct.price,
+          quantity: selectedProduct.quantity,
+          inStock: selectedProduct.inStock,
+        },
+      }).unwrap();
+
+      await refetch(); //? refetch product list
+
+      toast.success("Product updated successfully!");
+      setIsEditModalOpen(false);
+      setSelectedProduct(null);
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to update product.");
+    }
+  };
+
+  //* Table columns styled similarly to order table
   const columns = [
     {
       title: "Image",
@@ -85,12 +145,38 @@ const AllProductsPage = () => {
       dataIndex: "quantity",
       key: "quantity",
     },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (_: any, record: ItemData) => (
+        <div className="flex gap-2">
+          {/* Edit Button (navigate to edit page, assumed) */}
+          <button
+            onClick={() => {
+              setSelectedProduct(record);
+              setIsEditModalOpen(true);
+            }}
+            className="px-2 py-1 text-xs bg-blue-600 text-white rounded hover:bg-blue-700 transition-all"
+          >
+            Edit
+          </button>
+
+          {/* Delete Button */}
+          <button
+            onClick={() => handleDelete(record._id!)}
+            className="px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition-all"
+          >
+            Delete
+          </button>
+        </div>
+      ),
+    },
   ];
 
   return (
     <div className="w-full p-6">
       <div className="space-y-6">
-        {/* ✅ Page Header & Title */}
+        {/* Page Header & Title */}
         <div className="flex flex-col">
           <Title level={2} className="!mb-1">
             All Bicycles
@@ -98,10 +184,12 @@ const AllProductsPage = () => {
           <Text type="secondary">Browse and manage all available bicycles</Text>
         </div>
 
-        {/* ✅ Placeholder Stat Section — you can update with actual values later */}
+        {/* Placeholder Stat Section — you can update with actual values later */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Statistic
-            title={<span className="text-gray-600 text-base">Total Products</span>}
+            title={
+              <span className="text-gray-600 text-base">Total Products</span>
+            }
             value={data?.data?.meta?.total || 0}
             prefix={<ShoppingCart />}
             className="bg-gradient-to-br from-purple-50 to-white !p-4 rounded-xl shadow-sm hover:shadow-md transition-all duration-300 border border-purple-100"
@@ -109,7 +197,7 @@ const AllProductsPage = () => {
           />
         </div>
 
-        {/* ✅ Main Table/Card Content */}
+        {/* Main Table/Card Content */}
         <Card className="p-6 border-0 shadow-lg">
           {isLoading ? (
             <div className="flex justify-center items-center min-h-[200px]">
@@ -125,7 +213,7 @@ const AllProductsPage = () => {
             </div>
           ) : (
             <>
-              {/* ✅ Desktop Table */}
+              {/* Desktop Table */}
               <div className="hidden md:block">
                 <Table
                   columns={columns}
@@ -140,7 +228,7 @@ const AllProductsPage = () => {
                 />
               </div>
 
-              {/* ✅ Mobile Cards */}
+              {/* Mobile Cards */}
               <div className="md:hidden grid grid-cols-1 gap-4 mt-4">
                 {products.map((item: any) => (
                   <div key={item._id} className="border p-4 rounded shadow-md">
@@ -158,7 +246,7 @@ const AllProductsPage = () => {
                 ))}
               </div>
 
-              {/* ✅ Pagination */}
+              {/* Pagination */}
               <div className="flex justify-center mt-6">
                 <Pagination
                   current={page}
@@ -174,6 +262,71 @@ const AllProductsPage = () => {
           )}
         </Card>
       </div>
+
+      {/* Edit Product Modal */}
+      <Modal
+        title="Edit Product"
+        open={isEditModalOpen}
+        onCancel={() => {
+          setIsEditModalOpen(false);
+          setSelectedProduct(null);
+        }}
+        onOk={handleUpdate}
+        okText="Save"
+        cancelText="Cancel"
+      >
+        <div className="space-y-4">
+          {/* Price */}
+          <div>
+            <label className="text-sm text-gray-600">Price ($)</label>
+            <input
+              type="number"
+              min={0}
+              step={0.01}
+              className="w-full px-3 py-2 border rounded"
+              value={selectedProduct?.price || ""}
+              onChange={(e) =>
+                setSelectedProduct((prev) =>
+                  prev ? { ...prev, price: parseFloat(e.target.value) } : prev,
+                )
+              }
+            />
+          </div>
+
+          {/* Quantity */}
+          <div>
+            <label className="text-sm text-gray-600">Quantity</label>
+            <input
+              type="number"
+              min={0}
+              className="w-full px-3 py-2 border rounded"
+              value={selectedProduct?.quantity || ""}
+              onChange={(e) =>
+                setSelectedProduct((prev) =>
+                  prev ? { ...prev, quantity: parseInt(e.target.value) } : prev,
+                )
+              }
+            />
+          </div>
+
+          {/* In Stock */}
+          <div>
+            <label className="text-sm text-gray-600 block mb-1">In Stock</label>
+            <select
+              className="w-full px-3 py-2 border rounded"
+              value={selectedProduct?.inStock ? "yes" : "no"}
+              onChange={(e) =>
+                setSelectedProduct((prev) =>
+                  prev ? { ...prev, inStock: e.target.value === "yes" } : prev,
+                )
+              }
+            >
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
