@@ -1,30 +1,34 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { ItemData } from "@/components/shared/ItemsCard";
 import Loading from "@/components/shared/Loading";
+import { Card } from "@/components/ui/card"; // Added for consistent layout
 import {
   useDeleteProductMutation,
   useGetAllProductsQuery,
   useUpdateProductMutation,
 } from "@/redux/api/productApi";
-import { Card } from "@/components/ui/card"; // Added for consistent layout
-import { ItemData } from "@/components/shared/ItemsCard";
 import {
+  Input,
+  Modal,
   Pagination,
+  Popconfirm,
+  Statistic,
   Table,
   Typography,
-  Statistic,
-  Modal,
-  Popconfirm,
 } from "antd";
-import { ShoppingCart, CheckCircle, XCircle } from "lucide-react"; // Added icons to match style
-import { useState } from "react";
+import { useForm } from "antd/es/form/Form";
+import { CheckCircle, ShoppingCart, XCircle } from "lucide-react"; //? Added icons to match style
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const { Title, Text } = Typography;
+const { Search } = Input; //? Destructure the Search component from Input
 
 const AllProductsPage = () => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(4);
+  const [searchQuery, setSearchQuery] = useState(""); //? State for the search query
 
   //* Delete product
   const [deleteProduct] = useDeleteProductMutation();
@@ -36,10 +40,27 @@ const AllProductsPage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<ItemData | null>(null);
 
+  //* Create form instance
+  const [form] = useForm(); // Initialize form instance here
+
   const { data, isLoading, isError, refetch } = useGetAllProductsQuery({
     page,
     limit: pageSize,
   });
+
+  // Handle when a product is selected for editing
+  const handleEditProduct = (product: any) => {
+    setSelectedProduct(product);
+    setIsEditModalOpen(true);
+  };
+
+  // Ensure modal opens only when product data is fetched
+  useEffect(() => {
+    if (data && data.length > 0) {
+      // You can set the selected product based on your logic (e.g., the first product, or a specific one)
+      setSelectedProduct(data[0]);
+    }
+  }, [data]); // Dependency on 'data' to re-run when the data is updated
 
   //* Handle pagination updates
   const handlePageChange = (page: number) => {
@@ -71,6 +92,12 @@ const AllProductsPage = () => {
           price: selectedProduct.price,
           quantity: selectedProduct.quantity,
           inStock: selectedProduct.inStock,
+          name: selectedProduct.name,
+          brand: selectedProduct.brand,
+          type: selectedProduct.type,
+          rating: selectedProduct.rating,
+          description: selectedProduct.description,
+          Img: selectedProduct.Img,
         },
       }).unwrap();
 
@@ -85,6 +112,14 @@ const AllProductsPage = () => {
     }
   };
 
+  //* Filtered products based on search query
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.brand?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      product.type?.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
   //* Table columns styled similarly to order table
   const columns = [
     {
@@ -95,7 +130,7 @@ const AllProductsPage = () => {
         <img
           src={img || "https://via.placeholder.com/100"}
           alt="Product"
-          className="w-16 h-16 object-cover rounded"
+          className="w-16 h-16 object-fill rounded"
         />
       ),
     },
@@ -126,7 +161,7 @@ const AllProductsPage = () => {
       key: "inStock",
       render: (inStock: boolean) => (
         <span
-          className={`px-2 py-1 rounded-full text-sm font-medium ${
+          className={`flex items-center justify-center px-2 w-full py-1 rounded-full text-xs font-medium ${
             inStock ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
           }`}
         >
@@ -143,6 +178,11 @@ const AllProductsPage = () => {
       title: "Quantity",
       dataIndex: "quantity",
       key: "quantity",
+    },
+    {
+      title: "Rating",
+      dataIndex: "rating",
+      key: "rating",
     },
     {
       title: "Actions",
@@ -216,6 +256,17 @@ const AllProductsPage = () => {
           />
         </div>
 
+        {/* Search Field */}
+        <div className="mb-4">
+          <Search
+            placeholder="Search products by name, brand, or type"
+            enterButton="Search"
+            size="large"
+            onSearch={(value) => setSearchQuery(value)}
+            allowClear
+          />
+        </div>
+
         {/* Main Table/Card Content */}
         <Card className="p-6 border-0 shadow-lg">
           {isLoading ? (
@@ -226,7 +277,7 @@ const AllProductsPage = () => {
             <div className="flex justify-center items-center min-h-[200px]">
               <p className="text-red-500 text-lg">Failed to load products.</p>
             </div>
-          ) : products.length === 0 ? (
+          ) : filteredProducts.length === 0 ? (
             <div className="flex justify-center items-center min-h-[200px]">
               <p className="text-gray-500 text-lg">No products found.</p>
             </div>
@@ -236,7 +287,7 @@ const AllProductsPage = () => {
               <div className="hidden md:block">
                 <Table
                   columns={columns}
-                  dataSource={products.map((item: any) => ({
+                  dataSource={filteredProducts.map((item: any) => ({
                     ...item,
                     key: item._id,
                   }))}
@@ -249,7 +300,7 @@ const AllProductsPage = () => {
 
               {/* Mobile Cards */}
               <div className="md:hidden grid grid-cols-1 gap-4 mt-4">
-                {products.map((item: any) => (
+                {filteredProducts.map((item: any) => (
                   <div key={item._id} className="border p-4 rounded shadow-md">
                     <img
                       src={item.Img || "https://via.placeholder.com/300"}
@@ -294,80 +345,193 @@ const AllProductsPage = () => {
         okText="Save"
         cancelText="Cancel"
       >
-        <div className="space-y-4">
-          {/* Price */}
-          <div>
-            <label className="text-sm text-gray-600">Price ($)</label>
-            <input
-              type="number"
-              min={0}
-              step={0.01}
-              className="w-full px-3 py-2 border rounded"
-              value={selectedProduct?.price ?? ""}
-              onChange={(e) =>
-                setSelectedProduct((prev) =>
-                  prev ? { ...prev, price: parseFloat(e.target.value) } : prev,
-                )
-              }
-            />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Left Column */}
+          <div className="space-y-4">
+            {/* name */}
+            <div>
+              <label className="text-sm text-gray-600">Name</label>
+              <input
+                type="text"
+                className="w-full px-3 py-2 border rounded"
+                value={selectedProduct?.name ?? ""}
+                onChange={(e) =>
+                  setSelectedProduct((prev) =>
+                    prev ? { ...prev, name: e.target.value } : prev,
+                  )
+                }
+              />
+            </div>
+
+            {/* brand */}
+            <div>
+              <label className="text-sm text-gray-600">Brand</label>
+              <input
+                type="text"
+                className="w-full px-3 py-2 border rounded"
+                value={selectedProduct?.brand ?? ""}
+                onChange={(e) =>
+                  setSelectedProduct((prev) =>
+                    prev ? { ...prev, brand: e.target.value } : prev,
+                  )
+                }
+              />
+            </div>
+
+            {/* type */}
+            <div>
+              <label className="text-sm text-gray-600">Type</label>
+              <select
+                name="type"
+                id="type"
+                className="w-full px-3 py-2 border rounded"
+                value={selectedProduct?.type ?? ""}
+                onChange={(e) =>
+                  setSelectedProduct((prev) =>
+                    prev ? { ...prev, type: e.target.value } : prev,
+                  )
+                }
+              >
+                <option value="Mountain">Mountain</option>
+                <option value="Road">Road</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="BMX">BMX</option>
+                <option value="Electric">Electric</option>
+                <option value="Fat Bikes">Fat Bikes</option>
+              </select>
+            </div>
+
+            {/* rating */}
+            <div>
+              <label className="text-sm text-gray-600">Rating</label>
+              <select
+                className="w-full px-3 py-2 border rounded"
+                value={selectedProduct?.rating ?? ""}
+                onChange={(e) =>
+                  setSelectedProduct((prev) =>
+                    prev ? { ...prev, rating: parseInt(e.target.value) } : prev,
+                  )
+                }
+              >
+                {[1, 2, 3, 4, 5].map((r) => (
+                  <option key={r} value={r}>
+                    {r}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* In Stock */}
+            <div>
+              <label className="text-sm text-gray-600 block mb-1">
+                In Stock
+              </label>
+              <div className="flex gap-4">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="inStock"
+                    value="yes"
+                    checked={selectedProduct?.inStock === true}
+                    onChange={() =>
+                      setSelectedProduct((prev) =>
+                        prev
+                          ? {
+                              ...prev,
+                              inStock: true,
+                              quantity: prev.quantity === 0 ? 1 : prev.quantity,
+                            }
+                          : prev,
+                      )
+                    }
+                  />
+                  Yes
+                </label>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="radio"
+                    name="inStock"
+                    value="no"
+                    checked={selectedProduct?.inStock === false}
+                    onChange={() =>
+                      setSelectedProduct((prev) =>
+                        prev ? { ...prev, inStock: false, quantity: 1 } : prev,
+                      )
+                    }
+                  />
+                  No
+                </label>
+              </div>
+            </div>
           </div>
 
-          {/* Quantity */}
-          <div>
-            <label className="text-sm text-gray-600">Quantity</label>
-            <input
-              type="number"
-              min={selectedProduct?.inStock ? 1 : 0}
-              className="w-full px-3 py-2 border rounded"
-              value={selectedProduct?.quantity ?? ""}
-              onChange={(e) => {
-                const value = parseInt(e.target.value);
-                setSelectedProduct((prev) =>
-                  prev ? { ...prev, quantity: value } : prev,
-                );
-              }}
-              disabled={!selectedProduct?.inStock}
-            />
-          </div>
+          {/* Right Column */}
+          <div className="space-y-4">
+            {/* image */}
+            <div>
+              <label className="text-sm text-gray-600">Image</label>
+              <input
+                type="text"
+                className="w-full px-3 py-2 border rounded"
+                value={selectedProduct?.Img ?? ""}
+                onChange={(e) =>
+                  setSelectedProduct((prev) =>
+                    prev ? { ...prev, Img: e.target.value } : prev,
+                  )
+                }
+              />
+            </div>
 
-          {/* In Stock (Radio) */}
-          <div>
-            <label className="text-sm text-gray-600 block mb-1">In Stock</label>
-            <div className="flex gap-4">
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="inStock"
-                  value="yes"
-                  checked={selectedProduct?.inStock === true}
-                  onChange={() =>
-                    setSelectedProduct((prev) =>
-                      prev
-                        ? {
-                            ...prev,
-                            inStock: true,
-                            quantity: prev.quantity === 0 ? 1 : prev.quantity, // ensure min 1
-                          }
-                        : prev,
-                    )
-                  }
-                />
-                Yes
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="radio"
-                  name="inStock"
-                  value="no"
-                  checked={selectedProduct?.inStock === false}
-                  onChange={() =>
-                    setSelectedProduct((prev) =>
-                      prev ? { ...prev, inStock: false, quantity: 1 } : prev,
-                    )
-                  }
-                />
-                No
-              </label>
+            {/* Price */}
+            <div>
+              <label className="text-sm text-gray-600">Price ($)</label>
+              <input
+                type="number"
+                min={0}
+                step={0.01}
+                className="w-full px-3 py-2 border rounded"
+                value={selectedProduct?.price ?? ""}
+                onChange={(e) =>
+                  setSelectedProduct((prev) =>
+                    prev
+                      ? { ...prev, price: parseFloat(e.target.value) }
+                      : prev,
+                  )
+                }
+              />
+            </div>
+
+            {/* Quantity */}
+            <div>
+              <label className="text-sm text-gray-600">Quantity</label>
+              <input
+                type="number"
+                min={selectedProduct?.inStock ? 1 : 0}
+                className="w-full px-3 py-2 border rounded"
+                value={selectedProduct?.quantity ?? ""}
+                onChange={(e) => {
+                  const value = parseInt(e.target.value);
+                  setSelectedProduct((prev) =>
+                    prev ? { ...prev, quantity: value } : prev,
+                  );
+                }}
+                disabled={!selectedProduct?.inStock}
+              />
+            </div>
+
+            {/* description */}
+            <div>
+              <label className="text-sm text-gray-600">Description</label>
+              <textarea
+                className="w-full px-3 py-2 border rounded"
+                rows={4}
+                value={selectedProduct?.description ?? ""}
+                onChange={(e) =>
+                  setSelectedProduct((prev) =>
+                    prev ? { ...prev, description: e.target.value } : prev,
+                  )
+                }
+              />
             </div>
           </div>
         </div>

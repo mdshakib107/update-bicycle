@@ -26,6 +26,8 @@ const productTypes = [
   "Fat Bikes",
 ];
 
+const ratings = [1, 2, 3, 4, 5];
+
 const AddBicycle = () => {
   const [form] = Form.useForm();
   const [createProduct, { isLoading: isSubmitting }] =
@@ -115,6 +117,20 @@ const AddBicycle = () => {
                 placeholder="Enter price"
               />
             </Form.Item>
+
+            <Form.Item
+              label="Rating"
+              name="rating"
+              rules={[{ required: false, message: "Please enter a rating" }]}
+            >
+              <Select placeholder="Select rating">
+                {ratings.map((rating) => (
+                  <Select.Option key={rating} value={rating}>
+                    {rating}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item>
           </div>
 
           {/* RIGHT COLUMN */}
@@ -140,7 +156,7 @@ const AddBicycle = () => {
                 { required: true, message: "Please enter a description" },
               ]}
             >
-              <TextArea rows={4} placeholder="Describe the bicycle..." />
+              <TextArea rows={5} placeholder="Describe the bicycle..." />
             </Form.Item>
 
             <Form.Item
