@@ -123,83 +123,85 @@ const Checkout = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="min-h-screen container mx-auto space-y-6 sm:space-y-8 lg:space-y-12 sm:px-6 px-4 lg:px-8">
-      {/* navbar */}
+    <div className="">
       <ResponsiveNavbar />
+      <div className="min-h-screen container mx-auto space-y-6 sm:space-y-8 lg:space-y-12 sm:px-6 px-4 lg:px-8">
+        {/* navbar */}
 
-      <div className="w-full min-h-[55vh] rounded-4xl shadow-purple-600 shadow-2xl my-10 p-10">
-        {product && (
-          <div className="w-full mx-auto">
-            {/* <img src= alt="" className="hidden md:flex"/> */}
-            <img
-              src={
-                product.Img
-                  ? product.Img
-                  : "../../../src/assets/images/img/bicycle.jpg"
-              }
-              alt={product?.name}
-              className="hidden md:flex rounded-4xl justify-center items-center w-full max-h-[70vh] bg-cover"
-            />
-            <div className="w-full mx-auto p-6 bg-white rounded-4xl shadow-md">
-              <h2 className="text-2xl font-bold mb-6">Checkout</h2>
+        <div className="w-full min-h-[55vh] rounded-4xl shadow-purple-600 shadow-2xl my-10 p-10">
+          {product && (
+            <div className="w-full mx-auto">
+              {/* <img src= alt="" className="hidden md:flex"/> */}
+              <img
+                src={
+                  product.Img
+                    ? product.Img
+                    : "../../../src/assets/images/img/bicycle.jpg"
+                }
+                alt={product?.name}
+                className="hidden md:flex rounded-4xl justify-center items-center w-full max-h-[70vh] bg-cover"
+              />
+              <div className="w-full mx-auto p-6 bg-white rounded-4xl shadow-md">
+                <h2 className="text-2xl font-bold mb-6">Checkout</h2>
 
-              <div className="mb-6 border-b pb-4">
-                <h3 className="text-xl font-semibold">{product?.name}</h3>
-                <p className="text-gray-600"> {product?.price} Tk per unit</p>
-              </div>
+                <div className="mb-6 border-b pb-4">
+                  <h3 className="text-xl font-semibold">{product?.name}</h3>
+                  <p className="text-gray-600"> {product?.price} Tk per unit</p>
+                </div>
 
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="mb-4">
-                  <label
-                    className="block text-gray-700 mb-2"
-                    htmlFor="quantity"
-                  >
-                    Quantity
-                  </label>
-                  <input
-                    type="number"
-                    id="quantity"
-                    min="1"
-                    max="100"
-                    className="w-full p-2 border rounded"
-                    {...register("quantity", {
-                      required: "Quantity is required",
-                      min: {
-                        value: 1,
-                        message: "Quantity must be at least 1",
-                      },
-                      valueAsNumber: true,
-                    })}
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <div className="mb-4">
+                    <label
+                      className="block text-gray-700 mb-2"
+                      htmlFor="quantity"
+                    >
+                      Quantity
+                    </label>
+                    <input
+                      type="number"
+                      id="quantity"
+                      min="1"
+                      max="100"
+                      className="w-full p-2 border rounded"
+                      {...register("quantity", {
+                        required: "Quantity is required",
+                        min: {
+                          value: 1,
+                          message: "Quantity must be at least 1",
+                        },
+                        valueAsNumber: true,
+                      })}
+                    />
+                    {errors.quantity && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.quantity.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="mb-6">
+                    <h4 className="text-lg font-semibold">Order Summary</h4>
+                    <div className="flex justify-between mt-2">
+                      <span>Subtotal ({quantity} items):</span>
+                      <span>{totalPrice} Taka</span>
+                    </div>
+                    <div className="border-t mt-2 pt-2 font-bold flex justify-between">
+                      <span>Total:</span>
+                      <span>{totalPrice} Taka</span>
+                    </div>
+                  </div>
+
+                  <CustomButton
+                    textName={isSubmitting ? "Placing Order..." : "Place Order"}
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full"
                   />
-                  {errors.quantity && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {errors.quantity.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="mb-6">
-                  <h4 className="text-lg font-semibold">Order Summary</h4>
-                  <div className="flex justify-between mt-2">
-                    <span>Subtotal ({quantity} items):</span>
-                    <span>{totalPrice} Taka</span>
-                  </div>
-                  <div className="border-t mt-2 pt-2 font-bold flex justify-between">
-                    <span>Total:</span>
-                    <span>{totalPrice} Taka</span>
-                  </div>
-                </div>
-
-                <CustomButton
-                  textName={isSubmitting ? "Placing Order..." : "Place Order"}
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="w-full"
-                />
-              </form>
+                </form>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

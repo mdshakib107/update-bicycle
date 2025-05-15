@@ -1,11 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // import image
-import cycle from "../../assets/images/img/bicycle.jpg";
 
-import { FrownOutlined, MehOutlined, SmileOutlined } from "@ant-design/icons";
-import { Card, Flex, Rate, Skeleton } from "antd";
+import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
-import { FcMoneyTransfer } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { JSX } from "react/jsx-runtime";
 import CustomButton from "./CustomButton";
@@ -34,16 +31,16 @@ export interface ItemsCardProps {
 
 const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
   // loading state
-  const [loading, _setLoading] = useState<boolean>(isPending);
+  const [_setLoading] = useState<boolean>(isPending);
 
   // mavigation
   const navigate = useNavigate();
 
   // destructure items
   const {
-    brand,
+    // brand,
     // description,
-    // inStock,
+    inStock,
     name,
     // quantity,
     Img,
@@ -51,134 +48,84 @@ const ItemsCard: React.FC<ItemsCardProps> = ({ data, isPending }) => {
     // updatedAt,
     _id,
     price,
-    rating,
+    // rating,
     // createdAt,
     // isDeleted,
   } = data;
 
   //* button for card
-  const actions: React.ReactNode[] = [
-    <>
-      <CustomButton
-        handleAnything={(e) => {
-          e.preventDefault(); //  Prevent <Link> default nav
-          e.stopPropagation(); //  Prevents the Link from triggering / event bubbling
-          navigate(`/checkout/${_id}`);
-        }}
-        textName={
-          <div className="flex gap-1 justify-content-center items-center">
-            <FcMoneyTransfer />
-            BuyNow
-          </div>
-        }
-        className="w-[90%] !py-1.5"
-      />
-    </>,
-  ];
+  // const actions: React.ReactNode[] = [<></>];
 
   //* rating
-  const desc = ["terrible", "bad", "normal", "good", "wonderful"];
-  const customIcons: Record<number, React.ReactNode> = {
-    1: "😢",
-    2: <FrownOutlined />,
-    3: <MehOutlined />,
-    4: <SmileOutlined />,
-    5: "😁",
-  };
+  const randomRating = Math.floor(Math.random() * 5) + 1;
 
   return (
     <Link to={`/bicycles/${_id}`}>
-      <Flex
-        gap="middle"
-        align="start"
-        vertical
-        className="hover:shadow-blue-600 shadow-2xl hover:scale-105 rounded-2xl"
-      >
-        {/* <Switch
-          checked={!loading}
-          onChange={(checked) => setLoading(!checked)}
-        /> */}
+      <div className="bg-white/90 backdrop-blur-md shadow-lg rounded-xl overflow-hidden transform hover:scale-[1.03] transition duration-300 ease-in-out hover:shadow-2xl border border-gray-200 relative group">
+        <img
+          src={Img}
+          alt={name}
+          className="w-full p-12 h-52 object-cover transition-transform duration-300 group-hover:scale-105"
+        />
 
-        {loading ? (
-          <div className="w-full p-4">
-            <Skeleton active avatar paragraph={{ rows: 3 }} />
+        <div className="p-5 space-y-3">
+          <h2 className="text-sm font-semibold text-gray-800 truncate">
+            {name}
+          </h2>
+
+          <p className="text-sm font-bold text-blue-600">{price} ৳</p>
+
+          {/* ⭐ Star Ratings */}
+          <div className="flex items-center space-x-1">
+            {[...Array(5)].map((_, index) => (
+              <svg
+                key={index}
+                className={`h-3 w-3 transition-all duration-200 ${
+                  index < randomRating ? "text-yellow-400" : "text-gray-300"
+                }`}
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.945a1 1 0 00.95.69h4.148c.969 0 1.371 1.24.588 1.81l-3.36 2.444a1 1 0 00-.364 1.118l1.287 3.945c.3.921-.755 1.688-1.54 1.118l-3.36-2.443a1 1 0 00-1.175 0l-3.36 2.443c-.784.57-1.838-.197-1.539-1.118l1.286-3.945a1 1 0 00-.364-1.118L2.075 9.372c-.783-.57-.38-1.81.588-1.81h4.148a1 1 0 00.95-.69l1.286-3.945z" />
+              </svg>
+            ))}
           </div>
-        ) : (
-          <Card
-            loading={loading}
-            actions={actions}
-            style={{ minWidth: 200 }}
-            className="w-full"
-            styles={{
-              body: {
-                padding: "12px",
-              },
-            }}
-          >
-            {!Img ? (
-              <img
-                alt="Bicycle"
-                src={cycle}
-                className="mb-3 w-full h-40 object-cover"
-              />
-            ) : (
-              <img
-                alt="Bicycle"
-                src={Img}
-                className="mb-3 w-full h-40 object-cover"
-              />
-            )}
 
-            <Card.Meta
-              className="max-h-68"
-              // avatar={
-              //   <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=1" />
-              // }
-              title={
-                <h3 className="text-base font-medium mb-1 line-clamp-1">
-                  {name}
-                </h3>
-              }
-              description={
-                <div className="space-y-1.5 text-sm">
-                  {/* <p className="mb-2 min-h-20 font-semibold">{description}</p> */}
-                  <p className="flex justify-between">
-                    <span className="font-medium">Brand:</span>
-                    <span className="font-serif">{brand}</span>
-                  </p>
-                  {/* <p className="flex justify-between">
-                    <span className="font-medium">Type:</span>
-                    <span className="font-serif">{type}</span>
-                  </p> */}
-                  <p className="flex justify-between">
-                    <span className="font-medium">Price:</span>
-                    <span className="font-serif">{price} ৳</span>
-                  </p>
-                  {/* <p className="flex justify-between">
-                    <span className="font-medium">Quantity:</span>
-                    <span className="font-serif">{quantity}</span>
-                  </p> */}
-                  {/* <p className="flex justify-between">
-                    <span className="font-medium">In Stock:</span>
-                    <span className="font-serif">{inStock ? "Yes" : "No"}</span>
-                  </p> */}
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium">Rating:</span>
-                    {/* <span className="font-serif">{rating}⭐</span> */}
-                    <Rate
-                      tooltips={desc}
-                      defaultValue={rating}
-                      character={({ index = 0 }) => customIcons[index + 1]}
-                      disabled
-                    />
-                    {/* {rating ? <span>{desc[rating - 1]}</span> : null} */}
-                  </div>
+          {/* 🛒 Buy Now Button */}
+          <div className="text-left">
+            <CustomButton
+              handleAnything={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                navigate(`/checkout/${_id}`);
+              }}
+              textName={
+                <div className="flex gap-1 justify-center items-center">
+                  <ShoppingCart />
+                  <span className="font-medium">Buy Now</span>
                 </div>
               }
+              className=" text-sm p-1! bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold rounded-md hover:from-indigo-600 hover:to-blue-600 transition"
             />
-          </Card>
+          </div>
+        </div>
+        {inStock !== undefined && (
+          <span
+            className={`absolute top-2 right-2 text-xs font-semibold px-2 py-0.5 rounded-full shadow-md ${
+              inStock
+                ? "bg-green-100 text-green-700"
+                : "bg-red-100 text-red-600"
+            }`}
+          >
+            {inStock ? "In Stock" : "Out of Stock"}
+          </span>
         )}
-      </Flex>
+
+        {/* Hover Badge */}
+        <div className="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded shadow hidden group-hover:block transition">
+          🚲 Bicycle Product
+        </div>
+      </div>
     </Link>
   );
 };

@@ -6,8 +6,12 @@ import AdminDashboardLayout from "@/layout/Dashboard/admin/AdminDashboardLayout"
 import DashboardLayout from "@/layout/Dashboard/DashboardLayout";
 import UserDashboardLayout from "@/layout/Dashboard/user/UserDashboardLayout";
 import PolicyLayout from "@/layout/policy/PolicyLayout";
+import ShowroomLayout from "@/layout/Showroom/ShowroomLayout";
 import ForgotPassword from "@/pages/authentication/ForgotPassword";
 import Register from "@/pages/authentication/register";
+import FailedOrder from "@/pages/failedOrder/FailedOrder";
+import FindShowroomPage from "@/pages/showroom/FindShowroomPage";
+import SuccessOrder from "@/pages/successOrder/SuccessOrder";
 import PrivacyPolicy from "@/pages/terms/PrivacyPolicy";
 import TermsAndCondition from "@/pages/terms/TermsAndCondition";
 import { createBrowserRouter } from "react-router-dom";
@@ -20,9 +24,6 @@ import Page404 from "../pages/shared/Page404";
 import { routeGenerator } from "../utils/routesGenerator";
 import { adminPaths } from "./admin.routes";
 import { userPaths } from "./user.routes";
-import SuccessOrder from "@/pages/successOrder/SuccessOrder";
-import FailedOrder from "@/pages/failedOrder/FailedOrder";
-
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -43,8 +44,18 @@ const routes = createBrowserRouter([
         element: <AboutusLayout />,
       },
       {
+        path: "showroom",
+        element: <ShowroomLayout />,
+        children: [
+          {
+            index: true,
+            element: <FindShowroomPage />,
+          },
+        ],
+      },
+      {
         path: "successfull-order",
-        element: <SuccessOrder/>
+        element: <SuccessOrder />,
       },
       {
         path: "failed-order",
@@ -59,7 +70,7 @@ const routes = createBrowserRouter([
             element: <TermsAndCondition />,
           },
           {
-            path: "policies", 
+            path: "policies",
             element: <PrivacyPolicy />,
           },
         ],

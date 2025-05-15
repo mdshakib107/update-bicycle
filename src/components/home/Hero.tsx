@@ -1,42 +1,122 @@
-// import image
-import cycle from "../../assets/images/img/bicycle.jpg";
+import { Carousel } from "antd";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import CustomButton from "../shared/CustomButton";
+const carouselItems = [
+  {
+    title: "PRO CYCLIST HELMET",
+    description: "Enjoy 40% Off Everything!",
+    imageUrl:
+      "https://bicycle-store-html.vercel.app/assets/images/hero-swiper-3.png",
+    gradientClass: "bg-gradient-to-r from-amber-100 via-amber-300 to-amber-200",
+  },
+  {
+    title: "GRIPWEAR GLOVES",
+    description: "Flat 25% Off!",
+    imageUrl:
+      "https://bicycle-store-html.vercel.app/assets/images/hero-swiper-3.png",
+    gradientClass:
+      "bg-gradient-to-r from-indigo-100 via-indigo-300 to-indigo-100",
+  },
+  {
+    title: "MOUNTAIN BIKE SHOES",
+    description: "Buy 1 Get 1 Free!",
+    imageUrl:
+      "https://bicycle-store-html.vercel.app/assets/images/hero-swiper-3.png",
+    gradientClass: "bg-gradient-to-r from-green-100 via-green-300 to-green-200",
+  },
+];
 
 const Hero = () => {
-  // handle click
+  const navigate = useNavigate();
   const handleClick = () => {
-    const section = document.getElementById("featured");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
+    navigate("/AllBicycles");
+    toast.success("Navigating to Shop Section!");
   };
-
   return (
-    <div className="w-full rounded-4xl shadow-purple-600 shadow-2xl flex flex-col justify-center items-center">
-      {/* header */}
-      <header className="flex h-full lg:flex-row flex-col-reverse gap-4 lg:gap-0 justify-center items-center ">
-        <div className="px-8 mt-0  w-full lg:w-[60%] h-full py-4 lg:py-0 lg:h-80">
-          <div className="flex flex-col items-center justify-start text-center space-y-6 lg:space-y-8 xl:space-y-12">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight transition-all duration-300 hover:scale-[1.02]">
-              Discover Your Perfect Ride With Us!
-            </h1>
-            <p className="max-w-2xl text-lg md:text-xl text-gray-600 leading-relaxed text-justify lg:text-center">
-              Explore our premium collection of bicycles, crafted for
-              performance and style. Find your ideal companion for every
-              journey.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 mt-0">
-            <CustomButton textName="Shop Now" handleAnything={handleClick}/>
+    <section className="bg-white w-full">
+      <div className="container mx-auto">
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Left: Carousel */}
+          <div className="w-full lg:w-[70%]">
+            <Carousel autoplay>
+              {carouselItems.map((item, index) => (
+                <div key={index}>
+                  <div
+                    className={`${item.gradientClass} p-6 rounded-lg shadow-md flex flex-col lg:flex-row items-center justify-between h-[350px]`}
+                  >
+                    {/* Text */}
+                    <div className="w-full lg:w-1/2 text-center lg:text-left space-y-4">
+                      <h3 className="text-2xl font-bold">{item.title}</h3>
+                      <p className="text-gray-600 text-base">
+                        {item.description}
+                      </p>
+                      <CustomButton
+                        textName="Shop Now"
+                        handleAnything={handleClick}
+                      />
+                    </div>
+                    {/* Image */}
+                    <div className="w-full lg:w-1/2 flex justify-center">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        className="max-h-64 object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </Carousel>
+          </div>
+
+          {/* Right: Cards */}
+          <div className="w-full lg:w-[30%] flex flex-col gap-4">
+            {/* Card 1 */}
+            <div className="bg-gradient-to-r from-indigo-100 via-indigo-300 to-indigo-100 p-4 rounded-lg shadow-md flex items-center gap-4 h-[170px]">
+              <div className="w-1/2">
+                <img
+                  src="https://bicycle-store-html.vercel.app/assets/images/hero-swiper-3.png"
+                  alt="Helmet"
+                  className="h-24 w-full object-contain"
+                />
+              </div>
+              <div className="w-1/2 space-y-2">
+                <h4 className="text-md font-bold">PRO CYCLIST HELMET</h4>
+                <p className="text-sm text-gray-600">
+                  Enjoy 40% Off Everything!
+                </p>
+                <CustomButton
+                  textName="Shop Now"
+                  handleAnything={handleClick}
+                  className="text-sm"
+                />
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div className="bg-gradient-to-r from-amber-100 via-amber-300 to-amber-200 p-4 rounded-lg shadow-md flex items-center gap-4 h-[170px]">
+              <div className="w-1/2">
+                <img
+                  src="https://bicycle-store-html.vercel.app/assets/images/hero-swiper-3.png"
+                  alt="Gripwear"
+                  className="h-24 w-full object-contain"
+                />
+              </div>
+              <div className="w-1/2 space-y-2">
+                <h4 className="text-md font-bold">GRIPWEAR GLOVES</h4>
+                <p className="text-sm text-gray-600">Flat 25% Off!</p>
+                <CustomButton
+                  textName="Shop Now"
+                  handleAnything={handleClick}
+                  className="text-sm"
+                />
+              </div>
             </div>
           </div>
         </div>
-
-        {/* image */}
-        <div className="w-full lg:w-[40%] object-cover md:p-10 p-6">
-          <img src={cycle} alt="image" className="lg:h-80  lg:rounded-4xl w-full h-full rounded-4xl" />
-        </div>
-      </header>
-    </div>
+      </div>
+    </section>
   );
 };
 

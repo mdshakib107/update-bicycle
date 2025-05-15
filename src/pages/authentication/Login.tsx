@@ -54,7 +54,7 @@ const Login = () => {
           setUser({
             user: res?.data as TUserFromToken,
             token: res?.token,
-          }),
+          })
         );
 
         //! Persist token based on "remember me"

@@ -81,7 +81,7 @@ const AllBicycles = () => {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 px-4 mt-6">
         {/* Products */}
         <div className="lg:col-span-4 col-span-1">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {filteredProducts && filteredProducts.length > 0 ? (
               filteredProducts.map((product: ItemData) => (
                 <ItemsCard

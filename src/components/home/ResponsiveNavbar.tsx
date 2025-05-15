@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 // react icons
+import { useGetUserByIdQuery } from "@/redux/api/userApi";
+import { LayoutDashboard } from "lucide-react";
 import { BsArrowRight } from "react-icons/bs";
 import { CiMenuFries } from "react-icons/ci";
 import { FiUser } from "react-icons/fi";
@@ -11,12 +13,9 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { TbLogout2 } from "react-icons/tb";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import logo from "../../assets/images/logo/logo.png";
 import { logout, useCurrentUser } from "../../redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import CustomButton from "../shared/CustomButton";
-import { useGetUserByIdQuery } from "@/redux/api/userApi";
-import { LayoutDashboard } from "lucide-react";
 // import { MdDashboard } from "react-icons/md";
 
 const ResponsiveNavbar = () => {
@@ -64,7 +63,6 @@ const ResponsiveNavbar = () => {
   //* user role leading dashboard
   const toDashboard = user ? `/dashboard/${user?.role}/my-dashboard` : "/";
 
-
   //* NavLink is active
   const activeLink = ({ isActive }: { isActive: boolean }) => {
     return isActive
@@ -74,7 +72,7 @@ const ResponsiveNavbar = () => {
 
   const activeLinkForNavbar = ({ isActive }: { isActive: boolean }) => {
     return isActive
-      ? "text-white font-medium transition-all duration-300"
+      ? "text-cyan-500 font-medium transition-all duration-300"
       : "text-black hover:text-white transition-all duration-300";
   };
 
@@ -122,15 +120,126 @@ const ResponsiveNavbar = () => {
         </NavLink>
       </li>
 
-      <li className="transition-all duration-500 cursor-pointer hover:text-white capitalize">
+      <li
+        className="relative group transition-all duration-300 cursor-pointer capitalize"
+        onClick={() => navigate("/AllBicycles")}
+      >
         <NavLink to="/AllBicycles" className={activeLinkForNavbar}>
-          All Bicycle
+          <span className="flex">
+            {" "}
+            <span>Shop</span>
+            <span>
+              <MdKeyboardArrowDown className="text-[1.5rem] group-hover:text-white transition-all duration-500 group-hover:rotate-[180deg]" />
+              <article className="p-6 bg-white rounded-md boxShadow w-[200px] absolute top-[40px] z-[-1] dark:bg-black group-hover:translate-y-0 translate-y-[-20px] group-hover:opacity-100 opacity-0 group-hover:z-30 transition-all duration-300 shadow-purple-600 shadow-lg"></article>
+            </span>
+          </span>
         </NavLink>
+        {/* Mega Menu */}
+        <div className="absolute top-[40px] left-0 bg-white rounded-md p-6 shadow-lg w-[800px] grid grid-cols-3 gap-6 z-50 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-300 pointer-events-none group-hover:pointer-events-auto">
+          {/* Road Bikes */}
+          <div>
+            <h4 className="font-semibold mb-2 text-gray-800 border-b border-gray-200 pb-1">
+              🚴‍♂️ Road Bikes
+            </h4>
+            <div className="flex flex-col gap-4">
+              <div className="flex gap-3 items-center hover:bg-blue-50 p-2 rounded-md transition">
+                <img
+                  src="https://i.ibb.co/rGkRPzY/product-1.png"
+                  alt="Road Bike 1"
+                  className="w-[60px] h-[60px] object-cover rounded border"
+                />
+                <div>
+                  <p className="text-sm font-medium">Speedster 300</p>
+                  <p className="text-xs text-gray-500">৳ 45,000</p>
+                </div>
+              </div>
+              <div className="flex gap-3 items-center hover:bg-blue-50 p-2 rounded-md transition">
+                <img
+                  src="https://i.ibb.co/Hf6t7fQ/product-4.png"
+                  alt="Road Bike 2"
+                  className="w-[60px] h-[60px] object-cover rounded border"
+                />
+                <div>
+                  <p className="text-sm font-medium">Swift Aero</p>
+                  <p className="text-xs text-gray-500">৳ 55,000</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Mountain Bikes */}
+          <div>
+            <h4 className="font-semibold mb-2 text-gray-800 border-b border-gray-200 pb-1">
+              🏔️ Mountain Bikes
+            </h4>
+            <div className="flex flex-col gap-4">
+              <div className="flex gap-3 items-center hover:bg-green-50 p-2 rounded-md transition">
+                <img
+                  src="https://i.ibb.co/mrD7yzFp/product-2.png"
+                  alt="Mountain Bike 1"
+                  className="w-[60px] h-[60px] object-cover rounded border"
+                />
+                <div>
+                  <p className="text-sm font-medium">Rock Climber</p>
+                  <p className="text-xs text-gray-500">৳ 38,000</p>
+                </div>
+              </div>
+              <div className="flex gap-3 items-center hover:bg-green-50 p-2 rounded-md transition">
+                <img
+                  src="https://i.ibb.co/bgtD7rnM/product-3.png"
+                  alt="Mountain Bike 2"
+                  className="w-[60px] h-[60px] object-cover rounded border"
+                />
+                <div>
+                  <p className="text-sm font-medium">Hill Tracker</p>
+                  <p className="text-xs text-gray-500">৳ 42,000</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Training Bikes */}
+          <div>
+            <h4 className="font-semibold mb-2 text-gray-800 border-b border-gray-200 pb-1">
+              🎯 Training Bikes
+            </h4>
+            <div className="flex flex-col gap-4">
+              <div className="flex gap-3 items-center hover:bg-purple-50 p-2 rounded-md transition">
+                <img
+                  src="https://i.ibb.co/Hf6t7fQ/product-4.png"
+                  alt="Training Bike 1"
+                  className="w-[60px] h-[60px] object-cover rounded border"
+                />
+                <div>
+                  <p className="text-sm font-medium">Trainer Lite</p>
+                  <p className="text-xs text-gray-500">৳ 25,000</p>
+                </div>
+              </div>
+              <div className="flex gap-3 items-center hover:bg-purple-50 p-2 rounded-md transition">
+                <img
+                  src="https://i.ibb.co/qMLS6CSv/product-5.png"
+                  alt="Training Bike 2"
+                  className="w-[60px] h-[60px] object-cover rounded border"
+                />
+                <div>
+                  <p className="text-sm font-medium">Balance Pro</p>
+                  <p className="text-xs text-gray-500">৳ 28,500</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </li>
 
       <li className="transition-all duration-500 cursor-pointer hover:text-white capitalize">
         <NavLink to="/about" className={activeLinkForNavbar}>
-          About Us
+          About
+        </NavLink>
+      </li>
+
+      <li className="transition-all duration-500 cursor-pointer hover:text-white capitalize">
+        <NavLink to="/showroom" className={activeLinkForNavbar}>
+          Showroom
         </NavLink>
       </li>
 
@@ -181,6 +290,14 @@ const ResponsiveNavbar = () => {
         </NavLink>
       </li>
 
+      <li className="capitalize cursor-pointer">
+        <NavLink to="/showroom" className={activeLink}>
+          <span className="hover:text-[#3B9DF8] transition-all duration-300  text-white">
+            Showroom
+          </span>
+        </NavLink>
+      </li>
+
       {/* Terms Mobile Dropdown */}
       <li
         onClick={() => setMobileAboutUsOpen(!mobileAboutUsOpen)}
@@ -226,12 +343,19 @@ const ResponsiveNavbar = () => {
             {data?.data?.name || data?.data?.email}
           </h1>
 
-          <div
+          {/* <div
             className={`${
               accountMenuOpen
                 ? "translate-y-0 opacity-100 z-[1]"
                 : "translate-y-[10px] opacity-0 z-[-1]"
             } bg-white w-max rounded-md absolute top-[45px] right-0 p-[10px] flex flex-col transition-all duration-300 gap-[5px] shadow-lg z-50 shadow-purple-600`}
+          > */}
+          <div
+            className={`absolute top-[45px] right-0 w-max rounded-md p-[10px] flex flex-col gap-[5px] shadow-lg shadow-purple-600 bg-white transition-all duration-300 ${
+              accountMenuOpen
+                ? "opacity-100 translate-y-0 pointer-events-auto z-50"
+                : "opacity-0 translate-y-2 pointer-events-none z-[-1]"
+            }`}
           >
             <span className="px-4 py-1.5 bg-[#e4d4f4] text-[#7828c8] rounded-full text-[0.9rem] font-[500] flex items-center gap-2">
               {user.role === "admin" ? (
@@ -291,7 +415,11 @@ const ResponsiveNavbar = () => {
   );
 
   return (
-    <nav className="flex items-center justify-between w-full h-auto shadow-md p-4 bg-gradient-to-r from-blue-400 to-purple-600 border-purple-600 shadow-purple-600 rounded-4xl sticky top-0 z-50">
+    <nav
+      className=" px-8 flex items-center justify-between w-full h-auto shadow-md p-4 bg-gradient-to-r from-white via-purple-100 to-indigo-200 border-indigo-200 shadow-indigo-100
+
+ sticky top-0 z-50"
+    >
       <div className="flex space-x-4 ">
         <ul className="items-center gap-[20px] text-[1rem] text-[#424242] md:flex">
           <li className="transition-all duration-500 cursor-pointer hover:bg-[#d8e0e1] rounded-full capitalize">
@@ -299,7 +427,7 @@ const ResponsiveNavbar = () => {
               {/* <MdDashboard className="h-20px w-20px" /> */}
               {/* logo */}
               <img
-                src={logo}
+                src="https://i.ibb.co/KjXKV8sY/19745b155034486b8ce3facd020bda1c.png"
                 alt="logo"
                 className="w-[60px] border-2 border-purple-600 rounded-full"
               />
